@@ -50,7 +50,7 @@ const StoreCard = ({ store }: { store: StoreData }) => {
               </div>
             </div>
           </div>
-          <p className="mt-2 text-gray-600">Store Description</p>
+          <p className="mt-2 text-gray-600">{store.description}</p>
         </div>
       </div>
     </div>

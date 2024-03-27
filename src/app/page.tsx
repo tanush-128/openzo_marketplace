@@ -9,14 +9,24 @@ import Separator from "~/widgets/separator";
 import StoreCategories from "./categories";
 import MainCategories from "./mainCategories";
 import SearchBar from "./search";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
     <div>
-      <div className="bg-primary  z-50 p-2 text-white">
-        <h1 className="text-center text-xl font-bold">Openzo</h1>
+      <div className="z-50  bg-primary p-2 text-white">
+        <div className="ml-2 mt-2 flex items-center gap-4">
+          <Image
+            alt="logo"
+            src="/assets/images/logo.png"
+            width={50}
+            height={50}
+            className="rounded-lg"
+          />
+          <h1 className="text-left  text-3xl font-bold">Openzo</h1>
+        </div>
       </div>
-      <div className="bg-primary sticky top-0 z-50  py-2 ">
+      <div className="sticky top-0 z-50 bg-primary  py-2 ">
         <SearchBar />
       </div>
       <AdSpace />

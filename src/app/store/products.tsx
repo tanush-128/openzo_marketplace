@@ -10,10 +10,8 @@ import {
 import { Product } from "~/models/product";
 import ProductCard from "~/widgets/productCard";
 import SearchBar from "./search";
+import { CategorizedProducts } from "./[id]/page";
 
-interface CategorizedProducts {
-  [category: string]: Product[];
-}
 
 function categorizeProducts(products: Product[]): CategorizedProducts {
   const categories: CategorizedProducts = {};
@@ -29,33 +27,15 @@ function categorizeProducts(products: Product[]): CategorizedProducts {
   return categories;
 }
 
-export function Products({ storeId }: { storeId: number }) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [categorizedProducts, setCategorizedProducts] =
-    useState<CategorizedProducts>({});
+export function Products({
+  categorizedProducts,
+}: {
+  categorizedProducts: CategorizedProducts;
+}) {
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await Product.fetchByStore(storeId);
-
-        setProducts(response);
-        setCategorizedProducts(categorizeProducts(response));
-        setLoading(false);
-      } catch (error) {
-        setError("An error occurred while fetching products.");
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   return (
     <div className="bg-white px-4">
-      <SearchBar products={products} />
       <Accordion
         type="single"
         collapsible
@@ -75,8 +55,7 @@ export function Products({ storeId }: { storeId: number }) {
             </AccordionContent>
           </AccordionItem>
         ))}
-        {loading && <div>Loading...</div>}
-        {error && <div>Error: {error}</div>}
+       
       </Accordion>
     </div>
   );

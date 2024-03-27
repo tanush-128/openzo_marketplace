@@ -13,12 +13,15 @@ const ProductCategoryPage = ({
   };
 }) => {
   const productCategoryName = decodeURIComponent(params.categoryName);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [storeWithProducts, setStoreWithProducts] = useState<
     StoreWithProduct[]
   >([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await StoreWithProduct.getStoresAndProductsByPincode(
           "123456",
@@ -26,19 +29,29 @@ const ProductCategoryPage = ({
         );
         setStoreWithProducts(response);
       } catch (error) {
+        setError("An error occurred while fetching data.");
         console.error("Error fetching data:", error);
       }
     };
 
     if (productCategoryName) {
       fetchData();
+      setLoading(false);
     }
   }, [productCategoryName]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="container mx-auto py-8">
       <h1 className="mb-4 text-2xl font-semibold">{productCategoryName}</h1>
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="">
         {storeWithProducts.map((storeWithProduct, index) => (
           <StoreWithProductsCard
             key={index}
@@ -68,10 +81,14 @@ const StoreWithProductsCard = ({
             {storeWithProduct.store.name}
           </h2>
           <h3 className="mb-4 text-base font-medium">Matching Products</h3>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex gap-4 overflow-x-auto">
             {storeWithProduct.products.map((product) => (
               <VerticalProductCard key={product.id} product={product} />
             ))}
+            <VerticalProductCard
+              key={storeWithProduct.products[0]!.id}
+              product={storeWithProduct.products[0]!}
+            />
           </div>
         </div>
       </div>

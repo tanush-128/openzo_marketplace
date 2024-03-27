@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import React, { useState } from "react";
 
 import { Product } from "~/models/product";
@@ -16,16 +16,16 @@ const SearchBar = ({ products }: { products: Product[] }) => {
 
   miniSearch.addAll(products);
 
-    const searchResults = miniSearch.search(query, {
-        prefix: true,
-        fuzzy: 0.2,
-    });
+  const searchResults = miniSearch.search(query, {
+    prefix: true,
+    fuzzy: 0.2,
+  });
   const filteredProducts = searchResults.map((result) =>
     products.find((product) => product.id === result.id),
   );
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 rounded-md bg-white">
       <div className="flex w-full gap-2 rounded-md border border-gray-300 p-2">
         <Search size={24} />
         <input
@@ -41,6 +41,11 @@ const SearchBar = ({ products }: { products: Product[] }) => {
           }}
           className="w-full outline-none"
         />
+        {query !== "" && (
+          <span onClick={() => setQuery("")}>
+            <X />
+          </span>
+        )}
       </div>
       <div className="mt-4">
         {filteredProducts.map(
