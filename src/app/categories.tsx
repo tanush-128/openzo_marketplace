@@ -24,11 +24,11 @@ const StoreCategoryTile = ({
   return (
     <Link href={`/category/${storeCategory.categoryName}`}>
       <div className="block h-24 w-20">
-        <div className="mx-auto mb-2 overflow-hidden rounded-md shadow-md">
+        <div className="mx-auto mb-2 h-16 w-16  overflow-hidden rounded-md shadow-md">
           <img
             src={`/assets/images/${storeCategory.imageName}`}
             alt={storeCategory.categoryName}
-            className="h-full w-full object-cover"
+            className="h-16 w-16  object-cover"
           />
         </div>
         <p className="text-center text-sm font-medium text-gray-700">

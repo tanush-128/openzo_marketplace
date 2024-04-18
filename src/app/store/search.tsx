@@ -1,3 +1,4 @@
+"use client";
 import { Search, X } from "lucide-react";
 import React, { useState } from "react";
 
@@ -5,7 +6,13 @@ import { Product } from "~/models/product";
 import ProductCard from "~/widgets/productCard";
 import MiniSearch from "minisearch";
 
-const SearchBar = ({ products }: { products: Product[] }) => {
+const SearchBar = ({ storeId }: { storeId: number }) => {
+  // var products: Product[] = await Product.fetchAll();
+  // var products: Product[] = Product.fetchByStore(storeId);
+  const [products, setProducts] = useState<Product[]>([]);
+  Product.fetchByStore(storeId).then((products) => {
+    setProducts(products);
+  });
   const [query, setQuery] = useState("");
 
   const miniSearch = new MiniSearch({

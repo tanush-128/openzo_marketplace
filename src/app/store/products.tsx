@@ -1,6 +1,6 @@
-"use client";
+// "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +9,6 @@ import {
 } from "~/components/ui/accordion";
 import { Product } from "~/models/product";
 import ProductCard from "~/widgets/productCard";
-import SearchBar from "./search";
 import { CategorizedProducts } from "./[id]/page";
 
 

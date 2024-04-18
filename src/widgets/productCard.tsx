@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import Image from "next/image";
 import { Product } from "~/models/product";
-import Autoplay from "embla-carousel-autoplay";
+// import Autoplay from "embla-carousel-autoplay";
 import {
   Drawer,
   DrawerClose,
@@ -25,17 +24,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const [quantity, setQuantity] = useState(0);
-
-  const handleAdd = () => {
-    setQuantity(quantity + 1);
-  };
-
-  const handleRemove = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
-    }
-  };
+  // const [quantity, setQuantity] = useState(0);
+  const quantity = 0;
 
   return (
     <Drawer>
@@ -94,11 +84,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </DrawerHeader>
         <Carousel
           className=" w-full"
-          plugins={[
-            Autoplay({
-              delay: 2000,
-            }),
-          ]}
+          plugins={[]}
           opts={{
             loop: true,
             // align: "center",

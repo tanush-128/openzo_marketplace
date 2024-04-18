@@ -1,38 +1,19 @@
-"use client";
 import { Clock } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+
 import { Store, StoreData } from "~/models/store";
 
 interface StoreInfoProps {
   storeId: number;
 }
 
-const StoreInfo: React.FC<StoreInfoProps> = ({ storeId }) => {
-  // Dummy data for demonstration
-  const [store, setStore] = useState<StoreData>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchStore = async () => {
-      try {
-        const response = await Store.fetchStore(storeId);
-        setStore(response);
-        setLoading(false);
-      } catch (error) {
-        setError("An error occurred while fetching store.");
-        setLoading(false);
-      }
-    };
-
-    fetchStore();
-  }, [storeId]);
+const StoreInfo: React.FC<StoreInfoProps> = async ({ storeId }) => {
+ 
+  const store = await Store.fetchStore(storeId);
+ 
 
   return (
     <div className="mx-auto mt-8 max-w-2xl rounded-lg bg-white pt-2">
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error}</div>}
       {!store && <div>No store found</div>}
       {store && (
         <div>

@@ -30,7 +30,16 @@ export class Ad {
   static async fetchMany(pincode: string): Promise<Ad[]> {
     const ads: Ad[] = [];
     try {
-      const response = await axios.get(`${GlobalConsts.backend_url}/ad/?pincode=${pincode}`);
+      const response = await axios.get(`${GlobalConsts.backend_url}/ad/?pincode=${pincode}`, 
+
+      {
+          headers: {
+          'Content-Type': 'application/json',
+            
+          },
+        }
+
+      );
       if (response.status === 200) {
         const data: AdData[] = response.data;
         data.forEach(ad => {

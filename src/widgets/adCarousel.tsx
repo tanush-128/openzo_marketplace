@@ -1,5 +1,4 @@
 // import { Car } from "lucide-react";
-import { useEffect, useState } from "react";
 
 import {
   Carousel,
@@ -8,57 +7,35 @@ import {
 } from "~/components/ui/carousel";
 import { Ad } from "~/models/ad";
 
-const AdSpace = () => {
-  const [ads, setAds] = useState<Ad[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+async function fetchAds() {
+  const response = await Ad.fetchMany("123456");
+  return response;
+  //   setAds(response);
+  //   setLoading(false);
+  // } catch (error) {
+  //   setError("An error occurred while fetching ads.");
+  //   setLoading(false);
+}
 
-  useEffect(() => {
-    const fetchAds = async () => {
-      try {
-        const response = await Ad.fetchMany("123456");
-        setAds(response);
-        setLoading(false);
-      } catch (error) {
-        setError("An error occurred while fetching ads.");
-        setLoading(false);
-      }
-    };
+const AdSpace = async () => {
+  const ads = await fetchAds();
 
-    fetchAds();
-  }, []);
+  //   fetchAds();
+  // }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
-  if (ads.length === 0) {
-    return <div>No ads found</div>;
-  }
+  // if (ads.length === 0) {
+  //   return <div>No ads found</div>;
+  // }
 
   return (
-    // <AliceCarousel
-    //   autoPlay
-    //   autoPlayInterval={5000}
-    //   mouseTracking
-    //   infinite
-    //   disableDotsControls
-    // >
-    //   {ads.map((ad, index) => (
-    //     <div key={index} className="h-60  rounded-lg shadow-lg">
-    //       <img
-    //         src={ad.image}
-    //         alt={ad.name}
-    //         className="h-full w-full rounded-lg object-cover p-4 shadow-lg"
-    //       />
-    //       <p className="mt-4 text-center text-lg">{ad.name}</p>
-    //     </div>
-    //   ))}
-    // </AliceCarousel>
     <Carousel>
       <CarouselContent>
         {ads.map((ad, index) => (

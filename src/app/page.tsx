@@ -1,4 +1,3 @@
-"use client";
 import { Product } from "~/models/product";
 import { Store, StoreData, StoreType } from "~/models/store";
 import AdSpace from "~/widgets/adCarousel";
