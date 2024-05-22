@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.openzo.openzo",
+      "sha256_cert_fingerprints":
+      ["0A:06:B9:D5:7E:AB:1A:6A:CC:0F:B6:F6:DD:F1:2A:91:CE:7B:56:8A:87:7D:68:3B:55:1E:88:02:36:CB:4E:8B"]
+    }
+  }]

@@ -254,29 +254,11 @@ export class Store {
     this.store_type = data.store_type;
   }
 
-  static async getStoreWithUserEmail(userEmail: string): Promise<Store | null> {
-    const response = await axios.get(
-      `${GlobalConsts.backend_url}/store/?user_email=${userEmail}`,
-      {
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          Authorization: GlobalConsts.token,
-        },
-      }
-    );
-    if (response.status === 200) {
-      // response.data.store_type = StoreType[response.data.store_type];
-      var store = new Store(response.data);
 
-      return store;
-    } else {
-      return null;
-    }
-  }
 
   static async fetchStore(storeId: number): Promise<Store> {
     const response = await axios.get(
-      `${GlobalConsts.backend_url}/store/${storeId}`,
+      `${GlobalConsts.backend_url}/stores/${storeId}`,
       {
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
@@ -293,7 +275,7 @@ export class Store {
 
   static async getStoresWithPincode(pincode: string): Promise<Store[]> {
     const response = await axios.get(
-      `${GlobalConsts.backend_url}/store/?pincode=${pincode}`,
+      `${GlobalConsts.backend_url}/stores/pincode/${pincode}`,
       {
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
@@ -313,7 +295,7 @@ export class Store {
     category: string
   ): Promise<Store[]> {
     const response = await axios.get(
-      `${GlobalConsts.backend_url}/store/?pincode=${pincode}&store_type=${category}`
+      `${GlobalConsts.backend_url}/stores/pincode=${pincode}/category/${category}`
     );
     if (response.status === 200) {
       return response.data.map((store: StoreData) => new Store(store));

@@ -20,8 +20,8 @@ async function fetchAds() {
 
 
 const AdSpace = async () => {
-  const ads = await fetchAds();
-
+  // const ads = await fetchAds();
+const ads:Ad[] = []
   //   fetchAds();
   // }, []);
 
