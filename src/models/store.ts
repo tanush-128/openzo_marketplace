@@ -81,7 +81,7 @@ export class Store {
       // const token = await getAsyncStorageItem('token');
       const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTgzNjEzNDgsInVzZXJfaWQiOiIzNGJlYjMyYi02MTI3LTQzYTUtOTIyOS04MDcyNzFlZTAzMWEifQ.RODbZLtkWjruSFCaxkSt0QX8iTvYm6GvdwtV3RQFOL8"
       if (!token) throw new Error('Token not found');
-
+  
       const response = await axios.get(`${GlobalConsts.backend_url}/stores/${storeId}`, {
         headers: {
           // 'Content-Type': 'application/json; charset=UTF-8',

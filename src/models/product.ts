@@ -137,7 +137,7 @@ class Product {
   discount_price: number;
   images: ProductImage[];
   size_variants: SizeVariant[];
-  colorVariants: ColorVariant[];
+  color_variants: ColorVariant[];
   brand: string;
   critical_quantity?: number;
   customCode: string;
@@ -203,7 +203,7 @@ class Product {
     this.critical_quantity = criticalQuantity;
     this.customCode = customCode;
     this.size_variants = sizeVariants;
-    this.colorVariants = colorVariants;
+    this.color_variants = colorVariants;
     this.images = images;
     this.category = category;
     this.store_id = storeID;
@@ -220,7 +220,7 @@ class Product {
       const response = await axios.get(`${GlobalConsts.backend_url}/products/store/${storeID}`);
       if (response.status === 200) {
         const productsData = response.data;
-        console.log(productsData);
+
         productsData.forEach((product: any) => {
           products.push(Product.fromJson(product));
         });
@@ -327,7 +327,7 @@ class Product {
       critical_quantity: this.critical_quantity,
       custom_code: this.customCode,
       size_variants: this.size_variants.map(sizeVariant => sizeVariant.toJson()),
-      color_variants: this.colorVariants.map(colorVariant => colorVariant.toJson()),
+      color_variants: this.color_variants.map(colorVariant => colorVariant.toJson()),
       type: this.type,
       veg_type: this.veg_type,
       servers: this.servers,

@@ -1,3 +1,4 @@
+"use client";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 
@@ -119,7 +120,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
 
   return (
     <div className={"w-full flex flex-col items-center font-sans " + poppins.className}>
-      <div className="w-full h-[100vw] relative overflow-hidden rounded-b-lg">
+      <div className="w-full h-[100vw] max-h-72 relative overflow-hidden rounded-b-lg">
         <Image
           src={store.image}
           alt={store.name}

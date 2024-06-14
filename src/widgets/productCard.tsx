@@ -47,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         if (orderItem) {
           setQuantity(orderItem.quantity);
           setSelectedSize(product.size_variants.find(variant => variant.id === orderItem.size_variant_id));
-          setSelectedColor(product.colorVariants.find(variant => variant.id === orderItem.color_variant_id));
+          setSelectedColor(product.color_variants.find(variant => variant.id === orderItem.color_variant_id));
         }
       }
     }

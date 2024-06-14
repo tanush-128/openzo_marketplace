@@ -8,8 +8,12 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: "Openzo",
+  title: {
+    default: "Openzo",
+    template: "%s | Openzo"
+  },
   description: "Marketplace for locality",
+
 
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -32,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
 
-      <body className={`font-sans ${poppins.className}  overflow-x-hidden w-full`}>{children}</body>
+      <body className={`font-sans ${poppins.className}  overflow-x-hidden w-full max-w-lg mx-auto`}>{children}</body>
     </html>
   );
 }
