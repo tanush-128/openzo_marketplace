@@ -1,20 +1,12 @@
-import { Product } from "~/models/product";
-// import { Store, StoreData, StoreType } from "~/models/store";
 import AdSpace from "~/widgets/adCarousel";
-import ProductCard from "~/widgets/productCard";
-import StoreCard from "~/widgets/storeCard";
-import { StoresList } from "./storesList";
 import Separator from "~/widgets/separator";
-// import StoreCategories from "./categories";
-import MainCategories from "./mainCategories";
-// import SearchBar from "./search";
+import { StoresList } from "./storesList";
 import Image from "next/image";
-import CategoryGrid from "./mainCategories";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
-// import 'public/assets/icons/Openzo User App final.png' as LogOut
-import Logo from 'public/assets/icons/Openzo User App final.png'
-import "src/styles/globals.css";
+import CategoryGrid from "./mainCategories";
 import { Poppins } from "next/font/google";
+import Logo from 'public/assets/icons/Openzo User App final.png';
+
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],

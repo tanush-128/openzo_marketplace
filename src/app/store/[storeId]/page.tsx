@@ -1,13 +1,9 @@
 
 import { Product } from "~/models/product";
 import StorePageDynamic from "./pageElements";
-
 import { Store } from "~/models/store";
 import { Metadata } from "next";
 
-
-
-// import { useEffect, useState } from "react";
 
 interface CategorizedProducts {
   [category: string]: Product[];
@@ -24,9 +20,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: { storeId: string };
 }): Promise<Metadata> {
-  var storeId = params.id;
+  var storeId = params.storeId;
 
   var store: Store = await Store.fetchStore(storeId);
   // var products: Product[] = await Product.fetchMany(storeId);
@@ -51,17 +47,16 @@ export async function generateMetadata({
 export default async function StorePage({
   params,
 }: {
-  params: { id: string };
+  params: { storeId: string };
 }) {
-  var storeId = params.id;
+  var storeId = params.storeId;
   var products: Product[] = await Product.fetchMany(storeId);
-  var store = await Store.fetchStore(storeId);
+  // var store = await Store.fetchStore(storeId);
   var productsObj = products.map((product) => product.toJson());
-  var metaContent = store.name + " " + store.subCategory + " " + store.description;
+
   return (
-    //meta description
+
     <div >
-      <meta name="description" content={metaContent} />
       <StorePageDynamic storeID={storeId} productsObj={productsObj} />
     </div>
 
