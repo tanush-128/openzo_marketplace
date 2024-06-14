@@ -1,15 +1,27 @@
 import "~/styles/globals.css";
 
 import { Poppins } from "next/font/google";
+import { Metadata, Viewport } from "next";
 
 const poppins = Poppins({
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
-export const metadata = {
+export const metadata: Metadata = {
   title: "Openzo",
   description: "Marketplace for locality",
+
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+
+  // userScalable: "no",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -19,7 +31,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${poppins.className}`}>{children}</body>
+
+      <body className={`font-sans ${poppins.className}  overflow-x-hidden w-full`}>{children}</body>
     </html>
   );
 }

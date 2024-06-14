@@ -16,7 +16,7 @@ const GlobalSearchBar: React.FC = () => {
 
     return (
         <SalesProvider>
-            <div className="w-full h-14">
+            <div className="w-full h-12">
                 <div className="w-full h-full bg-gray-100 border border-gray-200 rounded-lg flex items-center px-2">
                     <img src="/assets/icons/search.png" alt="Search" className="w-6 h-6" />
                     <input

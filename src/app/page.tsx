@@ -11,25 +11,34 @@ import MainCategories from "./mainCategories";
 import Image from "next/image";
 import CategoryGrid from "./mainCategories";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
+// import 'public/assets/icons/Openzo User App final.png' as LogOut
+import Logo from 'public/assets/icons/Openzo User App final.png'
+import "src/styles/globals.css";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export default function HomePage() {
   return (
-    <div>
+    <div >
       <div className="z-50  bg-primary p-2 text-white">
         <div className="ml-2 mt-2 flex items-center gap-4">
           <Image
             alt="logo"
-            src="/assets/images/logo.png"
+            src={Logo}
             width={50}
             height={50}
             className="rounded-lg"
           />
-          <h1 className="text-left  text-3xl font-bold">Openzo</h1>
+          <h1 className="text-left  text-3xl font-bold ">Openzo</h1>
         </div>
       </div>
-      <div className="sticky top-0 z-50 bg-primary  py-2 ">
+      <div className="sticky top-0 z-50  ">
         {/* <SearchBar /> */}
-        <div className="p-4">
+        <div className="p-2">
           <GlobalSearchBar />
         </div>
       </div>

@@ -35,9 +35,11 @@ const SearchBar = ({ productsObj }: { productsObj: any }) => {
   );
 
   return (
-    <div className="mt-4 rounded-md bg-white">
-      <div className="flex w-full gap-2 rounded-md border border-gray-300 p-2">
-        <Search size={24} />
+    <div className="w-full h-12">
+      <div className="w-full h-full bg-gray-100 border border-gray-200 rounded-lg flex items-center px-2">
+        {/* <Search size={24} />
+         */}
+        <img src="/assets/icons/search.png" alt="Search" className="w-6 h-6" />
         <input
           type="text"
           placeholder="Search Products..."
@@ -49,7 +51,7 @@ const SearchBar = ({ productsObj }: { productsObj: any }) => {
             });
             setQuery(e.target.value);
           }}
-          className="w-full outline-none"
+          className="flex-grow bg-transparent outline-none px-2"
         />
         {query !== "" && (
           <span onClick={() => setQuery("")}>

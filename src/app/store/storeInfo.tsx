@@ -12,6 +12,12 @@ import { Rating } from './Rating'; // Assuming you have a Rating component
 import 'tailwindcss/tailwind.css';
 import { StoreDetailsSkeleton } from "./StoreDetailsSkeleton";
 import GlobalConsts, { StoreType } from "~/constants/constants";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 // interface StoreInfoProps {
 //   storeId: string;
 // }
@@ -112,14 +118,14 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
   }
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className={"w-full flex flex-col items-center font-sans " + poppins.className}>
       <div className="w-full h-[100vw] relative overflow-hidden rounded-b-lg">
         <Image
           src={store.image}
           alt={store.name}
           layout="fill"
           objectFit="cover"
-          className="object-cover"
+          className="object-contain"
         />
         <div className="absolute bottom-3 right-3 shadow-md rounded-md bg-white p-3">
           <div className="flex flex-col items-center">
@@ -146,7 +152,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
             </div>
             <div className="flex justify-between items-end">
               {store.pureVeg ? (
-                <Image src="/assets/icons/veg.png" width={24} height={24} alt="Veg" className="text-green-500" />
+                <Image src="/assets/icons/veg.png" width={24} height={24} alt="Veg" className="text-green-500 " />
               ) : (
                 <div className="flex">
                   <Image src="/assets/icons/veg.png" width={24} height={24} alt="Veg" className="text-green-500" />

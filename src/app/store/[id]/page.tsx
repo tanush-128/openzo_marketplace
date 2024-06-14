@@ -4,7 +4,12 @@ import SearchBar from "../search";
 import { Product } from "~/models/product";
 import { SalesProvider } from "~/providers/salesContext";
 import StorePageDynamic from "./pageElements";
+import { Poppins } from "next/font/google";
 
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 // import { useEffect, useState } from "react";
 
 interface CategorizedProducts {
@@ -26,7 +31,7 @@ export default async function StorePage({
 
   return (
 
-    <div>
+    <div className={"font-sans " + poppins.className}>
       <StorePageDynamic storeID={storeId} productsObj={productsObj} />
     </div>
 
