@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { GlobalConsts } from '~/constants/constants';
+import GlobalConsts from '~/constants/constants';
+
 
 interface AdData {
   id: number;
@@ -30,12 +31,12 @@ export class Ad {
   static async fetchMany(pincode: string): Promise<Ad[]> {
     const ads: Ad[] = [];
     try {
-      const response = await axios.get(`${GlobalConsts.backend_url}/ad/?pincode=${pincode}`, 
+      const response = await axios.get(`${GlobalConsts.backend_url}/ad/?pincode=${pincode}`,
 
-      {
+        {
           headers: {
-          'Content-Type': 'application/json',
-            
+            'Content-Type': 'application/json',
+
           },
         }
 

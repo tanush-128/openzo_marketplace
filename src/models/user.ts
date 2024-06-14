@@ -109,7 +109,7 @@
 // }
 
 import axios from "axios";
-import { GlobalConsts } from "~/constants/constants";
+import GlobalConsts from "~/constants/constants";
 
 export interface User {
   id: number;

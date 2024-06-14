@@ -1,14 +1,16 @@
 import { Product } from "~/models/product";
-import { Store, StoreData, StoreType } from "~/models/store";
+// import { Store, StoreData, StoreType } from "~/models/store";
 import AdSpace from "~/widgets/adCarousel";
 import ProductCard from "~/widgets/productCard";
 import StoreCard from "~/widgets/storeCard";
 import { StoresList } from "./storesList";
 import Separator from "~/widgets/separator";
-import StoreCategories from "./categories";
+// import StoreCategories from "./categories";
 import MainCategories from "./mainCategories";
-import SearchBar from "./search";
+// import SearchBar from "./search";
 import Image from "next/image";
+import CategoryGrid from "./mainCategories";
+import GlobalSearchBar from "~/components/search/globalSearchBar";
 
 export default function HomePage() {
   return (
@@ -26,15 +28,21 @@ export default function HomePage() {
         </div>
       </div>
       <div className="sticky top-0 z-50 bg-primary  py-2 ">
-        <SearchBar />
+        {/* <SearchBar /> */}
+        <div className="p-4">
+          <GlobalSearchBar />
+        </div>
       </div>
+
       <AdSpace />
-      <MainCategories />
+      {/* <MainCategories />
+       */}
+      <Separator title="Explore" />
+      <CategoryGrid />
       <div className="h-4" />
 
-      <Separator title="Explore" />
       <div className="h-2" />
-      <StoreCategories />
+      {/* <StoreCategories /> */}
       <div className="h-4" />
 
       <Separator title="Featured Stores" />
@@ -44,3 +52,7 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+
+// export default MainCategoryTile;

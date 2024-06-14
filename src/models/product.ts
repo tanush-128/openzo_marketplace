@@ -1,400 +1,341 @@
-// // type Product struct {
-// // 	ID          int            `json:"id"`
-// // 	Name        string         `json:"name"`
-// // 	Description string         `json:"description"`
-// // 	Price       int            `json:"price"`
-// // 	Quantity    int            `json:"quantity"`
-// // 	Images      []ProductImage `json:"images"`
-// // 	Category    string         `json:"category"`
-// // Barcode     string         `json:"barcode"`
+import axios from 'axios';
+// import { GlobalConsts } from '~/constants/constants';
+// import { GlobalConsts } from 'path-to-constants';
+import GlobalConsts from '~/constants/constants';
 
-// // 	StoreID     int            `json:"store_id"`
-// // }
-
-// // type ProductImage struct {
-// // 	ID        int    `json:"id"`
-// // 	ProductID int    `json:"product_id"`
-// // 	Image     string `json:"image" gorm:"type:text"`
-// // }
-
-// // type Category struct {
-// // 	ID      int    `json:"id"`
-// // 	Name    string `json:"name"`
-// // 	StoreID int    `json:"store_id"`
-// // }
-
-// import 'dart:convert';
-
-// import 'package:http/http.dart' as http;
-// import 'package:openzo_frontend/constants/constants.dart';
-
-// class Product {
-//   final int id;
-//   final String name;
-//   final String description;
-//   final int mrp;
-//   int msrp = 0;
-//   int discountPrice = 0;
-//   final int quantity;
-//   final List<ProductImage> images;
-//   final String category;
-//   final int storeID;
-//   final String barcode;
-
-//   Product({
-//     required this.id,
-//     required this.name,
-//     required this.description,
-//     required this.mrp,
-//     required this.msrp,
-//     required this.discountPrice,
-//     required this.quantity,
-//     required this.images,
-//     required this.category,
-//     required this.storeID,
-//     required this.barcode,
-//   });
-
-//   static Future<List<Product>> fetchMany(int storeID) async {
-//     List<Product> products = [];
-//     // fetch products from the server
-//     http.Request req = http.Request('GET',
-//         Uri.parse('${GlobalConsts.backend_url}/product/?store_id=$storeID'));
-//     http.StreamedResponse res = await req.send();
-
-//     String body = await res.stream.bytesToString();
-
-//     var products0 = json.decode(body);
-//     // print(_products);
-//     products0.forEach((product) {
-//       products = [...products, Product.fromJson(product)];
-//     });
-
-//     return products;
-//   }
-
-//   static Future<Product> fetchOne(int productID) async {
-//     // fetch products from the server
-//     http.Request req = http.Request(
-//         'GET', Uri.parse('${GlobalConsts.backend_url}/product/$productID'));
-//     http.StreamedResponse res = await req.send();
-
-//     String body = await res.stream.bytesToString();
-
-//     var product = json.decode(body);
-
-//     return Product.fromJson(product);
-//   }
-
-//   static getItemsByOrderId(int orderId) async {
-//     List<Product> products = [];
-//     http.Response res = await http.get(
-//       Uri.parse('${GlobalConsts.backend_url}/product/?order_id=$orderId'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json',
-//         'Authorization': GlobalConsts.token,
-//       },
-//     );
-//     print(res.body);
-//     if (res.statusCode == 200) {
-//       for (var product in jsonDecode(res.body)) {
-//         products.add(Product.fromJson(product));
-//       }
-//       return products;
-//     } else {
-//       return null;
-//     }
-//   }
-
-//   static Future<List<Product>> searchProducts(
-//       String pincode, String nameContains) async {
-//     List<Product> products = [];
-//     http.Response res = await http.get(
-//       Uri.parse(
-//           '${GlobalConsts.backend_url}/product/?pincode=$pincode&name_contains=$nameContains'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json',
-//         'Authorization': GlobalConsts.token,
-//       },
-//     );
-//     print(res.body);
-//     if (res.statusCode == 200) {
-//       for (var product in jsonDecode(res.body)) {
-//         products.add(Product.fromJson(product));
-//       }
-//       return products;
-//     } else {
-//       return [];
-//     }
-//   }
-
-//   factory Product.fromJson(Map<String, dynamic> json) {
-//     return Product(
-//       id: json['id'],
-//       name: json['name'],
-//       description: json['description'],
-//       mrp: json['mrp'],
-//       msrp: json['msrp'],
-//       discountPrice: json['discount_price'],
-//       quantity: json['quantity'],
-//       barcode: json['barcode'],
-//       images: (json['images'] as List)
-//           .map((image) => ProductImage.fromJson(image))
-//           .toList(),
-//       category: json['category'],
-//       storeID: json['store_id'],
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     Product product = this;
-//     return {
-//       'id': product.id,
-//       'name': product.name,
-//       'description': product.description,
-//       'mrp': product.mrp,
-//       'msrp': product.msrp,
-//       'discount_price': product.discountPrice,
-//       'quantity': product.quantity,
-//       'barcode': product.barcode,
-//       'images':
-//           product.images.map((e) => {'id': e.id, 'image': e.image}).toList(),
-//       'category': product.category,
-//       'store_id': product.storeID,
-//     };
-//   }
-// }
-
-// class ProductImage {
-//   final int id;
-//   final int productID;
-//   final String image;
-
-//   ProductImage({
-//     required this.id,
-//     required this.productID,
-//     required this.image,
-//   });
-
-//   factory ProductImage.fromJson(Map<String, dynamic> json) {
-//     return ProductImage(
-//       id: json['id'],
-//       productID: json['product_id'],
-//       image: json['image'],
-//     );
-//   }
-// }
-
-import axios from "axios";
-
-import { GlobalConsts } from "~/constants/constants";
-
-interface ProductData {
+class SizeVariant {
   id: number;
+  productID: string;
+  size: string;
+  price: number;
+  quantity: number;
+
+  constructor({
+    id,
+    productID,
+    size,
+    price,
+    quantity
+  }: {
+    id: number;
+    productID: string;
+    size: string;
+    price: number;
+    quantity: number;
+  }) {
+    this.id = id;
+    this.productID = productID;
+    this.size = size;
+    this.price = price;
+    this.quantity = quantity;
+  }
+
+  toJson() {
+    return {
+      id: this.id,
+      product_id: this.productID,
+      size: this.size,
+      price: this.price,
+      quantity: this.quantity,
+    };
+  }
+
+  static fromJson(json: any): SizeVariant {
+    return new SizeVariant({
+      id: json['id'],
+      productID: json['product_id'],
+      size: json['size'],
+      price: json['price'],
+      quantity: json['quantity'],
+    });
+  }
+}
+
+class ColorVariant {
+  id: number;
+  productID: string;
+  color: string;
+  price: number;
+  quantity: number;
+
+  constructor({
+    id,
+    productID,
+    color,
+    price,
+    quantity
+  }: {
+    id: number;
+    productID: string;
+    color: string;
+    price: number;
+    quantity: number;
+  }) {
+    this.id = id;
+    this.productID = productID;
+    this.color = color;
+    this.price = price;
+    this.quantity = quantity;
+  }
+
+  toJson() {
+    return {
+      id: this.id,
+      product_id: this.productID,
+      color: this.color,
+      price: this.price,
+      quantity: this.quantity,
+    };
+  }
+
+  static fromJson(json: any): ColorVariant {
+    return new ColorVariant({
+      id: json['id'],
+      productID: json['product_id'],
+      color: json['color'],
+      price: json['price'],
+      quantity: json['quantity'],
+    });
+  }
+}
+
+class ProductImage {
+  id: number;
+  productID: string;
+  image: string;
+
+  constructor({
+    id,
+    productID,
+    image
+  }: {
+    id: number;
+    productID: string;
+    image: string;
+  }) {
+    this.id = id;
+    this.productID = productID;
+    this.image = image;
+  }
+
+  static fromJson(json: any): ProductImage {
+    return new ProductImage({
+      id: json['id'],
+      productID: json['product_id'],
+      image: json['image'],
+    });
+  }
+}
+
+class Product {
+  id: string;
   name: string;
   description: string;
   mrp: number;
+  quantityUnit: string;
   msrp: number;
   discount_price: number;
-  quantity: number;
-  images: ProductImageData[];
+  images: ProductImage[];
+  size_variants: SizeVariant[];
+  colorVariants: ColorVariant[];
+  brand: string;
+  critical_quantity?: number;
+  customCode: string;
   category: string;
-  storeID: number;
+  store_id: string;
   barcode: string;
-}
+  type?: string;
+  veg_type?: string;
+  servers?: number;
+  store_name?: string;
 
-interface ProductImageData {
-  id: number;
-  productID: number;
-  image: string;
-}
-
-export class Product {
-  public readonly id: number;
-  public readonly name: string;
-  public readonly description: string;
-  public readonly mrp: number;
-  public readonly msrp: number;
-  public readonly discount_price: number;
-  public readonly quantity: number;
-  public readonly images: ProductImage[];
-  public readonly category: string;
-  public readonly storeID: number;
-  public readonly barcode: string;
-
-  constructor(data: ProductData) {
-    this.id = data.id;
-    this.name = data.name;
-    this.description = data.description;
-    this.mrp = data.mrp;
-    this.msrp = data.msrp;
-    this.discount_price = data.discount_price;
-    this.quantity = data.quantity;
-    this.images = data.images.map((image) => new ProductImage(image));
-    this.category = data.category;
-    this.storeID = data.storeID;
-    this.barcode = data.barcode;
+  constructor({
+    id,
+    name,
+    description,
+    quantityUnit,
+    mrp,
+    msrp,
+    discountPrice = 0,
+    brand = '',
+    criticalQuantity,
+    customCode = "",
+    sizeVariants = [],
+    colorVariants = [],
+    images = [],
+    category,
+    storeID,
+    barcode,
+    type,
+    vegType,
+    servers,
+    storeName
+  }: {
+    id: string;
+    name: string;
+    description: string;
+    quantityUnit: string;
+    mrp: number;
+    msrp: number;
+    discountPrice?: number;
+    brand?: string;
+    criticalQuantity?: number;
+    customCode?: string;
+    sizeVariants?: SizeVariant[];
+    colorVariants?: ColorVariant[];
+    images?: ProductImage[];
+    category: string;
+    storeID: string;
+    barcode: string;
+    type?: string;
+    vegType?: string;
+    servers?: number;
+    storeName?: string;
+  }) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.quantityUnit = quantityUnit;
+    this.mrp = mrp;
+    this.msrp = msrp;
+    this.discount_price = discountPrice;
+    this.brand = brand;
+    this.critical_quantity = criticalQuantity;
+    this.customCode = customCode;
+    this.size_variants = sizeVariants;
+    this.colorVariants = colorVariants;
+    this.images = images;
+    this.category = category;
+    this.store_id = storeID;
+    this.barcode = barcode;
+    this.type = type;
+    this.veg_type = vegType;
+    this.servers = servers;
+    this.store_name = storeName;
   }
 
-  static async fetchMany(storeID: number): Promise<Product[]> {
+  static async fetchMany(storeID: string): Promise<Product[]> {
     const products: Product[] = [];
     try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/?store_id=${storeID}`
-      );
+      const response = await axios.get(`${GlobalConsts.backend_url}/products/store/${storeID}`);
       if (response.status === 200) {
-        const data: ProductData[] = response.data;
-        data.forEach((product) => {
-          products.push(new Product(product));
+        const productsData = response.data;
+        console.log(productsData);
+        productsData.forEach((product: any) => {
+          products.push(Product.fromJson(product));
         });
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error(error);
     }
     return products;
   }
 
-  static async fetchOne(productID: number): Promise<Product> {
-    let product: Product | null = null;
+  static async fetchOne(productID: string): Promise<Product> {
     try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/${productID}`
-      );
+      const response = await axios.get(`${GlobalConsts.backend_url}/products/${productID}`);
       if (response.status === 200) {
-        product = new Product(response.data);
+        const productData = response.data;
+        return Product.fromJson(productData);
+      } else {
+        throw new Error('Failed to load product');
       }
     } catch (error) {
-      console.error("Error fetching product:", error);
+      console.error(error);
+      throw new Error('Failed to load product');
     }
-    return product!;
   }
 
-  static async getItemsByOrderId(orderId: number): Promise<Product[]> {
-    const products: Product[] = [];
+  static async getItemsByOrderId(orderId: number): Promise<Product[] | null> {
     try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/?order_id=${orderId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: GlobalConsts.token,
-          },
+      const response = await axios.get(`${GlobalConsts.backend_url}/product/?order_id=${orderId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': GlobalConsts.token,
         }
-      );
+      });
       if (response.status === 200) {
-        response.data.forEach((product: ProductData) => {
-          products.push(new Product(product));
-        });
+        const products: Product[] = response.data.map((product: any) => Product.fromJson(product));
+        return products;
+      } else {
+        return null;
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error(error);
+      return null;
     }
-    return products;
   }
 
-  static async searchProducts(
-    pincode: string,
-    nameContains: string
-  ): Promise<Product[]> {
+  static async searchProducts(pincode: string, nameContains: string): Promise<Product[]> {
     const products: Product[] = [];
     try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/?pincode=${pincode}&name_contains=${nameContains}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: GlobalConsts.token,
-          },
+      const response = await axios.get(`${GlobalConsts.backend_url}/search/products/${pincode}?term=${nameContains}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': GlobalConsts.token,
         }
-      );
+      });
       if (response.status === 200) {
-        response.data.forEach((product: ProductData) => {
-          products.push(new Product(product));
+        response.data.forEach((product: any) => {
+          products.push(Product.fromJson(product));
         });
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error(error);
     }
     return products;
   }
 
-  static async fetchByCategory(category: string): Promise<Product[]> {
-    const products: Product[] = [];
-    try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/?category=${category}`
-      );
-      if (response.status === 200) {
-        response.data.forEach((product: ProductData) => {
-          products.push(new Product(product));
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-    return products;
+  static fromJson(json: any): Product {
+    return new Product({
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      quantityUnit: json['quantity_unit'],
+      mrp: json['mrp'],
+      msrp: json['msrp'],
+      discountPrice: json['discount_price'],
+      barcode: json['barcode'],
+      images: json['images'] ? json['images'].map((image: any) => ProductImage.fromJson(image)) : [],
+      category: json['category'],
+      storeID: json['store_id'],
+      brand: json['brand'],
+      criticalQuantity: json['critical_quantity'],
+      customCode: json['custom_code'] ?? '',
+      sizeVariants: json['size_variants'] ? json['size_variants'].map((sizeVariant: any) => SizeVariant.fromJson(sizeVariant)) : [],
+      colorVariants: json['color_variants'] ? json['color_variants'].map((colorVariant: any) => ColorVariant.fromJson(colorVariant)) : [],
+      type: json['type'],
+      vegType: json['veg_type'],
+      servers: json['servers'],
+      storeName: json['store_name'],
+    });
   }
 
-  static async fetchByStore(storeID: number): Promise<Product[]> {
-    const products: Product[] = [];
-    try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/?store_id=${storeID}`
-      );
-      if (response.status === 200) {
-        response.data.forEach((product: ProductData) => {
-          products.push(new Product(product));
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-    return products;
-  }
+  toJson() {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      mrp: this.mrp,
+      msrp: this.msrp,
+      discount_price: this.discount_price,
+      barcode: this.barcode,
+      images: this.images.map(image => ({ id: image.id, image: image.image })),
+      category: this.category,
+      store_id: this.store_id,
+      brand: this.brand,
+      critical_quantity: this.critical_quantity,
+      custom_code: this.customCode,
+      size_variants: this.size_variants.map(sizeVariant => sizeVariant.toJson()),
+      color_variants: this.colorVariants.map(colorVariant => colorVariant.toJson()),
+      type: this.type,
+      veg_type: this.veg_type,
+      servers: this.servers,
+      store_name: this.store_name,
 
-  static async fetchByBarcode(barcode: string): Promise<Product | null> {
-    let product: Product | null = null;
-    try {
-      const response = await axios.get(
-        `${GlobalConsts.backend_url}/product/?barcode=${barcode}`
-      );
-      if (response.status === 200) {
-        product = new Product(response.data[0]);
-      }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-    return product;
-  }
-
-  static async update(product: Product): Promise<void> {
-    try {
-      await axios.put(
-        `${GlobalConsts.backend_url}/product/${product.id}`,
-        product
-      );
-    } catch (error) {
-      console.error("Error updating product:", error);
-    }
-  }
-
-  static async create(product: Product): Promise<void> {
-    try {
-      await axios.post(`${GlobalConsts.backend_url}/product`, product);
-    } catch (error) {
-      console.error("Error creating product:", error);
-    }
+    };
   }
 }
 
-export class ProductImage {
-  public readonly id: number;
-  public readonly productID: number;
-  public readonly image: string;
 
-  constructor(data: ProductImageData) {
-    this.id = data.id;
-    this.productID = data.productID;
-    this.image = data.image;
-  }
-}
+export { Product, ProductImage, SizeVariant, ColorVariant }

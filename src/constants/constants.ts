@@ -1,270 +1,232 @@
-// Define enums for store types
+// Define an enum for StoreType
 enum StoreType {
-  GeneralStore = "general_store",
-  Stationery = "stationery",
-  Electronics = "electronics",
-  Fashion = "fashion",
-  Footwear = "footwear",
-  Accessories = "accessories",
-  Rental = "rental",
-  Grocery = "grocery",
-  Beauty = "beauty",
-  Sports = "sports",
+  Store = 'store',
+  Food = 'food',
+  Service = 'service',
 }
 
-// Define interfaces for store and product categories
-interface ProductCategory {
+// Define the SubCategory class
+class SubCategory {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+// Define the Category class
+class Category {
+  name: string;
+  type: StoreType;
+  subCategories: SubCategory[];
+
+  constructor(name: string, type: StoreType, subCategories: SubCategory[]) {
+    this.name = name;
+    this.type = type;
+    this.subCategories = subCategories;
+  }
+}
+
+// Define the ProductCategory class
+class ProductCategory {
   categoryName: string;
   image: string;
+
+  constructor(categoryName: string, image: string) {
+    this.categoryName = categoryName;
+    this.image = image;
+  }
 }
 
-interface StoreCategory {
+// Define the StoreCategory class
+class StoreCategory {
   imageName: string;
   categoryName: string;
   productCategories: ProductCategory[];
-  storeType: StoreType;
+
+  constructor(imageName: string, categoryName: string, productCategories: ProductCategory[]) {
+    this.imageName = imageName;
+    this.categoryName = categoryName;
+    this.productCategories = productCategories;
+  }
 }
 
-// Define a class to hold global constants
+// Define the GlobalConsts class
 class GlobalConsts {
-  // static readonly backend_url = "http://10.145.59.41:8080";
-  static readonly backend_url = "https://backend.openzo.in";
-  static readonly token =
+  static backend_url: string = "https://backend.openzo.in";
+
+  static token: string =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJwYXNzd29yZCI6InF3ZXJ0eTEyOCIsInVzZXJfZW1haWwiOiJ0YW51ZWR1MTI4QGdtYWlsLmNvbSJ9.j5m62NcdDLO5kTrM3bGW1oI0HU-4XkNOUF2Q5pfJuRg";
-  static readonly StoreCategories: StoreCategory[] = [
-    {
-      imageName: "General stores.png",
-      categoryName: "General Stores",
-      productCategories: [
-        { categoryName: "Household essentials", image: "House essentials" },
-        { categoryName: "Cleaning supplies", image: "Pantry" },
-        { categoryName: "Snacks and beverages", image: "Snacks and drinks" },
-        { categoryName: "Personal care products", image: "Self care" },
-        { categoryName: "Pet care items", image: "Pet care" },
-        { categoryName: "Office supplies", image: "Office essentials" },
-        { categoryName: "Toys and games", image: "Toys" },
-        { categoryName: "Kitchenware", image: "Kitchen" },
-        { categoryName: "Seasonal items", image: "Spices and powders" },
-        { categoryName: "Health and wellness", image: "Health and wellness" },
-      ],
-      storeType: StoreType.GeneralStore,
-    },
-    {
-      imageName: "Stationary stores.png",
-      categoryName: "Stationary Stores",
-      productCategories: [
-        { categoryName: "Writing instruments", image: "writing_instruments" },
-        { categoryName: "Notebooks and pads", image: "notebooks_and_pads" },
-        { categoryName: "Art supplies", image: "art_supplies" },
-        { categoryName: "Desk accessories", image: "desk_accessories" },
-        {
-          categoryName: "Calendars and planners",
-          image: "calendars_and_planners",
-        },
-        {
-          categoryName: "Filing and organization",
-          image: "filing_and_organization",
-        },
-        { categoryName: "Crafting materials", image: "crafting_materials" },
-        { categoryName: "School supplies", image: "school_supplies" },
-        { categoryName: "Classroom essentials", image: "Classroom essentials" },
-      ],
-      storeType: StoreType.Stationery,
-    },
-    {
-      imageName: "Electronic stores.png",
-      categoryName: "Electronic Stores",
-      productCategories: [
-        { categoryName: "Smartphones and accessories", image: "Smartphones" },
-        { categoryName: "Laptops and computers", image: "Laptop accessories" },
-        { categoryName: "Audio devices", image: "Speakers" },
-        {
-          categoryName: "Cameras and photography equipment",
-          image: "Cameras and equipment",
-        },
-        { categoryName: "Home appliances", image: "Home appliances" },
-        {
-          categoryName: "Gaming consoles and accessories",
-          image: "Gaming Accessories",
-        },
-        { categoryName: "Wearable technology", image: "Wearables" },
-        {
-          categoryName: "Batteries and chargers",
-          image: "Chargers and batteries",
-        },
-      ],
-      storeType: StoreType.Electronics,
-    },
-    {
-      imageName: "Fashion stores.png",
-      categoryName: "Fashion Stores",
-      productCategories: [
-        { categoryName: "Men’s clothing", image: "mens_clothing" },
-        { categoryName: "Women’s clothing", image: "womens_clothing" },
-        { categoryName: "Kids’ clothing", image: "kids_clothing" },
-        {
-          categoryName: "Accessories (hats, scarves, etc.)",
-          image: "accessories",
-        },
-        { categoryName: "Jewelery", image: "jewelery" },
-        { categoryName: "Handbags and purses", image: "handbags_and_purses" },
-        { categoryName: "Sunglasses", image: "sunglasses" },
-      ],
-      storeType: StoreType.Fashion,
-    },
-    {
-      imageName: "Footwear stores.png",
-      categoryName: "Footwear Stores",
-      productCategories: [
-        { categoryName: "Men’s shoes", image: "mens_shoes" },
-        { categoryName: "Women’s shoes", image: "womens_shoes" },
-        { categoryName: "Boots and booties", image: "boots_and_booties" },
-        { categoryName: "Slippers", image: "slippers" },
-        { categoryName: "Kids’ shoes", image: "kids_shoes" },
-      ],
-      storeType: StoreType.Footwear,
-    },
-    {
-      imageName: "Accessory stores.png",
-      categoryName: "Accessory Stores",
-      productCategories: [
-        {
-          categoryName: "Handbags and clutches",
-          image: "handbags_and_clutches.png",
-        },
-        { categoryName: "Jewelry", image: "jewelry.png" },
-        { categoryName: "Hats and caps", image: "hats_and_caps.png" },
-        { categoryName: "Scarves and wraps", image: "scarves_and_wraps.png" },
-        { categoryName: "Sunglasses", image: "sunglasses.png" },
-        { categoryName: "Watches", image: "watches.png" },
-        { categoryName: "Belts", image: "belts.png" },
-        { categoryName: "Gloves and mittens", image: "gloves_and_mittens.png" },
-        { categoryName: "Hair accessories", image: "hair_accessories.png" },
-        { categoryName: "Tech accessories", image: "tech_accessories.png" },
-      ],
-      storeType: StoreType.Accessories,
-    },
-    {
-      imageName: "Rental stores.png",
-      categoryName: "Rental Stores",
-      productCategories: [
-        { categoryName: "Event equipment", image: "event_equipment.png" },
-        {
-          categoryName: "Tools and machinery",
-          image: "tools_and_machinery.png",
-        },
-        { categoryName: "Party supplies", image: "party_supplies.png" },
-        {
-          categoryName: "Formal attire rentals",
-          image: "formal_attire_rentals.png",
-        },
-        { categoryName: "Outdoor gear", image: "outdoor_gear.png" },
-        { categoryName: "Furniture rentals", image: "furniture_rentals.png" },
-        {
-          categoryName: "Home appliance rentals",
-          image: "home_appliance_rentals.png",
-        },
-        { categoryName: "Vehicle rentals", image: "vehicle_rentals.png" },
-        {
-          categoryName: "Audio-visual equipment",
-          image: "audio_visual_equipment.png",
-        },
-        {
-          categoryName: "Recreational equipment",
-          image: "recreational_equipment.png",
-        },
-      ],
-      storeType: StoreType.Rental,
-    },
-    {
-      imageName: "Grocery stores.png",
-      categoryName: "Grocery Stores",
-      productCategories: [
-        { categoryName: "Fresh produce", image: "fresh_produce.png" },
-        { categoryName: "Dairy and eggs", image: "dairy_and_eggs.png" },
-        { categoryName: "Meat and seafood", image: "meat_and_seafood.png" },
-        {
-          categoryName: "Canned and packaged goods",
-          image: "canned_and_packaged_goods.png",
-        },
-        { categoryName: "Bakery items", image: "bakery_items.png" },
-        { categoryName: "Frozen foods", image: "frozen_foods.png" },
-        { categoryName: "Beverages", image: "beverages.png" },
-        { categoryName: "Snacks and sweets", image: "snacks_and_sweets.png" },
-        {
-          categoryName: "Organic and natural products",
-          image: "organic_and_natural_products.png",
-        },
-        {
-          categoryName: "International foods",
-          image: "international_foods.png",
-        },
-      ],
-      storeType: StoreType.Grocery,
-    },
-    {
-      imageName: "Beauty and products store.png",
-      categoryName: "Beauty and Products",
-      productCategories: [
-        { categoryName: "Skincare", image: "skincare.png" },
-        { categoryName: "Makeup", image: "makeup.png" },
-        { categoryName: "Haircare", image: "haircare.png" },
-        { categoryName: "Fragrances", image: "fragrances.png" },
-        {
-          categoryName: "Bath and body products",
-          image: "bath_and_body_products.png",
-        },
-        { categoryName: "Nail care", image: "nail_care.png" },
-        {
-          categoryName: "Men’s grooming products",
-          image: "mens_grooming_products.png",
-        },
-        {
-          categoryName: "Beauty tools and accessories",
-          image: "beauty_tools_and_accessories.png",
-        },
-        { categoryName: "Wellness products", image: "wellness_products.png" },
-        {
-          categoryName: "Specialty beauty items",
-          image: "specialty_beauty_items.png",
-        },
-      ],
-      storeType: StoreType.Beauty,
-    },
-    {
-      imageName: "Internet and technology stores.png",
-      categoryName: "Sports Stores",
-      productCategories: [
-        { categoryName: "Athletic apparel", image: "athletic_apparel.png" },
-        {
-          categoryName: "Footwear for sports",
-          image: "footwear_for_sports.png",
-        },
-        { categoryName: "Exercise equipment", image: "exercise_equipment.png" },
-        { categoryName: "Team sports gear", image: "team_sports_gear.png" },
-        {
-          categoryName: "Outdoor and adventure gear",
-          image: "outdoor_and_adventure_gear.png",
-        },
-        {
-          categoryName: "Yoga and fitness accessories",
-          image: "yoga_and_fitness_accessories.png",
-        },
-        { categoryName: "Swimwear", image: "swimwear.png" },
-        { categoryName: "Sports nutrition", image: "sports_nutrition.png" },
-        {
-          categoryName: "Recovery and injury prevention",
-          image: "recovery_and_injury_prevention.png",
-        },
-        {
-          categoryName: "Camping and hiking equipment",
-          image: "camping_and_hiking_equipment.png",
-        },
-      ],
-      storeType: StoreType.Sports,
-    },
+
+  static categories: Category[] = [
+    new Category('Stores', StoreType.Store, [
+      new SubCategory('Appliances'),
+      new SubCategory('Electronics'),
+      new SubCategory('Furniture'),
+      new SubCategory('Footwear'),
+      new SubCategory('Grocery stores'),
+      new SubCategory('Jewellery & Accessories'),
+      new SubCategory('Sports'),
+      new SubCategory('Books & Stationary'),
+      new SubCategory('Fashion'),
+      new SubCategory('General stores'),
+      new SubCategory('Household'),
+      new SubCategory('Personal care'),
+    ]),
+    new Category('Home Services', StoreType.Service, [
+      new SubCategory('AC Repair'),
+      new SubCategory('Electrician'),
+      new SubCategory('Painter'),
+      new SubCategory('TV Repair'),
+      new SubCategory('Beautician'),
+      new SubCategory('Mechanic'),
+      new SubCategory('Plumber'),
+      new SubCategory('Washing Machine Repair'),
+      new SubCategory('carpenter'),
+      new SubCategory('Metal Works'),
+      new SubCategory('Refrigator Repair'),
+      new SubCategory('Cook'),
+      new SubCategory('Transporter'),
+      new SubCategory('Others'),
+    ]),
+    new Category('Services', StoreType.Service, [
+      new SubCategory('Beauty Parlours'),
+      new SubCategory('Car wash'),
+      new SubCategory('Courier services'),
+      new SubCategory('GYMs'),
+      new SubCategory('Internet stores'),
+      new SubCategory('Laundry store'),
+      new SubCategory('Mechanic Stores'),
+      new SubCategory('Repair stores'),
+      new SubCategory('Saloons'),
+    ]),
+    new Category('Food', StoreType.Food, [
+      new SubCategory('Bakery'),
+      new SubCategory('Cafe'),
+      new SubCategory('Fast Food'),
+      new SubCategory('Food Truck'),
+      new SubCategory('Ice Cream Parlour'),
+      new SubCategory('Juice shop'),
+      new SubCategory('Street foods'),
+      new SubCategory('Sweets'),
+      new SubCategory('Restaurants'),
+    ]),
+    new Category('Rental stores', StoreType.Service, [
+      new SubCategory('Banquet Hall'),
+      new SubCategory('Electronics Rentals'),
+      new SubCategory('Vehicle Rentals'),
+      new SubCategory('Bike Rentals'),
+      new SubCategory('Fashion Rentals'),
+      new SubCategory('Car rentals'),
+      new SubCategory('Furniture Rentals'),
+    ]),
+    new Category('Coachings', StoreType.Service, [
+      new SubCategory('Academic Coaching'),
+      new SubCategory('language Coaching'),
+      new SubCategory('Technology Coaching'),
+      new SubCategory('Arts Coaching'),
+      new SubCategory('Music Coaching'),
+      new SubCategory('Test Prep Coaching'),
+      new SubCategory('Dance Coaching'),
+      new SubCategory('Sports Coaching'),
+      new SubCategory('Wellness Coaching'),
+    ]),
+    new Category('Agencies', StoreType.Service, [
+      new SubCategory('Advertising Agency'),
+      new SubCategory('Event Planning Agency'),
+      new SubCategory('Travel Agency'),
+      new SubCategory('Desining Agency'),
+      new SubCategory('Marketing Agency'),
+      new SubCategory('Employement Agency'),
+      new SubCategory('Printing Press'),
+    ]),
+    new Category('Showrooms', StoreType.Store, [
+      new SubCategory('Automobile Showrooms'),
+      new SubCategory('Electronics Showrooms'),
+      new SubCategory('Jewellery Showrooms'),
+      new SubCategory('Clothing Showrooms'),
+      new SubCategory('Furniture Showrooms'),
+    ]),
+    new Category('Movies & Events', StoreType.Service, [
+      new SubCategory('Amusement parks'),
+      new SubCategory('Carnivals'),
+      new SubCategory('Events'),
+      new SubCategory('Movies'),
+      new SubCategory('Video Games'),
+    ]),
+    new Category('Explore', StoreType.Service, [
+      new SubCategory('Local Toursims'),
+      new SubCategory('Pubs & Bars'),
+      new SubCategory('Sweets & Bakeries'),
+      new SubCategory('Parks'),
+      new SubCategory('Street foods'),
+      new SubCategory('Top Restaurants'),
+    ]),
+    new Category('Businesses', StoreType.Service, []),
+  ];
+
+  static storeCategories: StoreCategory[] = [
+    new StoreCategory('General stores.png', 'General Stores', [
+      new ProductCategory('Cleaning supplies', 'Pantry'),
+      new ProductCategory('Household essentials', 'House essentials'),
+      new ProductCategory('Snacks and beverages', 'Snacks and drinks'),
+      new ProductCategory('Personal care products', 'Self care'),
+      new ProductCategory('Pet care items', 'Pet care'),
+      new ProductCategory('Office supplies', 'Office essentials'),
+      new ProductCategory('Toys and games', 'Toys'),
+      new ProductCategory('Kitchenware', 'Kitchen'),
+      new ProductCategory('Seasonal items', 'Spices and powders'),
+      new ProductCategory('Health and wellness', 'Health and wellness'),
+    ]),
+    new StoreCategory('Stationary stores.png', 'Stationary Stores', [
+      new ProductCategory('Writing instruments', 'writing_instruments'),
+      new ProductCategory('Notebooks and pads', 'notebooks_and_pads'),
+      new ProductCategory('Art supplies', 'art_supplies'),
+      new ProductCategory('Desk accessories', 'desk_accessories'),
+      new ProductCategory('Calendars and planners', 'calendars_and_planners'),
+      new ProductCategory('Filing and organization', 'filing_and_organization'),
+      new ProductCategory('Crafting materials', 'crafting_materials'),
+      new ProductCategory('School supplies', 'school_supplies'),
+      new ProductCategory('Classroom essentials', 'Classroom essentials'),
+    ]),
+    new StoreCategory('Electronic stores.png', 'Electronic Stores', [
+      new ProductCategory('Smartphones and accessories', 'Smartphones'),
+      new ProductCategory('Laptops and computers', 'Laptop accessories'),
+      new ProductCategory('Audio devices', 'Speakers'),
+      new ProductCategory('Cameras and photography equipment', 'Cameras and equipment'),
+      new ProductCategory('Home appliances', 'Home appliances'),
+      new ProductCategory('Gaming consoles and accessories', 'Gaming Accessories'),
+      new ProductCategory('Wearable technology', 'Wearables'),
+      new ProductCategory('Batteries and chargers', 'Chargers and batteries'),
+    ]),
+    new StoreCategory('Fashion stores.png', 'Fashion Stores', [
+      new ProductCategory('Men’s clothing', 'mens_clothing'),
+      new ProductCategory('Women’s clothing', 'womens_clothing'),
+      new ProductCategory('Kids’ clothing', 'kids_clothing'),
+      new ProductCategory('Accessories (hats, scarves, etc.)', 'accessories'),
+      new ProductCategory('Jewelery', 'jewelery'),
+      new ProductCategory('Handbags and purses', 'handbags_and_purses'),
+      new ProductCategory('Sunglasses', 'sunglasses'),
+    ]),
+    new StoreCategory('Footwear stores.png', 'Footwear Stores', [
+      new ProductCategory('Men’s shoes', 'mens_shoes'),
+      new ProductCategory('Women’s shoes', 'womens_shoes'),
+      new ProductCategory('Boots and booties', 'boots_and_booties'),
+      new ProductCategory('Slippers', 'slippers'),
+      new ProductCategory('Kids’ shoes', 'kids_shoes'),
+    ]),
+    new StoreCategory('Accessory stores.png', 'Accessory Stores', [
+      new ProductCategory('Handbags and clutches', 'handbags_and_clutches.png'),
+      new ProductCategory('Jewelry', 'jewelry.png'),
+      new ProductCategory('Watches', 'watches.png'),
+      new ProductCategory('Belts and buckles', 'belts_and_buckles.png'),
+      new ProductCategory('Hats and caps', 'hats_and_caps.png'),
+    ]),
   ];
 }
 
-export { StoreType, GlobalConsts };
-export type { ProductCategory, StoreCategory };
+
+
+export default GlobalConsts;
+
+export { StoreType, Category, SubCategory, ProductCategory, StoreCategory };

@@ -1,6 +1,5 @@
-// "use client";
-
 // import { useEffect, useState } from "react";
+"use client";
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +9,11 @@ import {
 import { Product } from "~/models/product";
 import ProductCard from "~/widgets/productCard";
 import { CategorizedProducts } from "./[id]/page";
+import { SalesProvider, useSales } from "~/providers/salesContext";
+// import Sale from "~/models/sale";
+
+import Sale, { SaleData } from '~/models/sale';
+
 
 
 function categorizeProducts(products: Product[]): CategorizedProducts {
@@ -27,12 +31,16 @@ function categorizeProducts(products: Product[]): CategorizedProducts {
 }
 
 export function Products({
-  categorizedProducts,
+  productsObj,
 }: {
-  categorizedProducts: CategorizedProducts;
+  productsObj: any;
 }) {
 
+  var products: Product[] = productsObj.map((product: any) => Product.fromJson(product));
 
+  const categorizedProducts = categorizeProducts(products);
+
+  // console.log('cart', cart);
   return (
     <div className="bg-white px-4">
       <Accordion
@@ -54,7 +62,7 @@ export function Products({
             </AccordionContent>
           </AccordionItem>
         ))}
-       
+
       </Accordion>
     </div>
   );
