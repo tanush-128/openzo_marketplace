@@ -1,8 +1,8 @@
 "use client";
 import { SalesProvider } from "~/providers/salesContext"
-import SearchBar from "../search"
-import StoreInfo from "../storeInfo"
-import { Products } from "../products"
+import SearchBar from "./search"
+import StoreInfo from "./storeInfo"
+import { Products } from "./products"
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({

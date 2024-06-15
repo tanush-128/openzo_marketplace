@@ -1,11 +1,10 @@
 "use client";
-import { Search, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 
+import MiniSearch from "minisearch";
 import { Product } from "~/models/product";
 import ProductCard from "~/widgets/productCard";
-import MiniSearch from "minisearch";
-import { SalesProvider } from "~/providers/salesContext";
 
 const SearchBar = ({ productsObj }: { productsObj: any }) => {
   // var products: Product[] = await Product.fetchAll();

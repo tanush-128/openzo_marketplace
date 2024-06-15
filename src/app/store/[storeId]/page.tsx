@@ -1,6 +1,6 @@
 
 import { Product } from "~/models/product";
-import StorePageDynamic from "./pageElements";
+import StorePageDynamic from "../pageElements";
 import { Store } from "~/models/store";
 import { Metadata } from "next";
 
@@ -13,7 +13,7 @@ export type { CategorizedProducts };
 
 export async function generateStaticParams() {
   var stores = await Store.getStoresWithPincode("123456");
-  return stores.map((store) => ({ id: store.id }));
+  return stores.map((store) => ({ storeId: store.id }));
 
 }
 
@@ -57,7 +57,8 @@ export default async function StorePage({
   return (
 
     <div >
-      <StorePageDynamic storeID={storeId} productsObj={productsObj} />
+          <StorePageDynamic storeID={storeId} productsObj={productsObj} />
+          {/* <h1>Store Page</h1> */}
     </div>
 
   );

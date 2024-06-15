@@ -1,19 +1,17 @@
 "use client";
-import { Clock } from "lucide-react";
 import Image from "next/image";
 
-import { Store, StoreData } from "~/models/store";
+import { Store } from "~/models/store";
 
 // components/StoreDetails.tsx
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 import { Rating } from './Rating'; // Assuming you have a Rating component
 // import {'; // Assuming you have a skeleton loader component
-import 'tailwindcss/tailwind.css';
-import { StoreDetailsSkeleton } from "./StoreDetailsSkeleton";
-import GlobalConsts, { StoreType } from "~/constants/constants";
 import { Poppins } from "next/font/google";
+import GlobalConsts, { StoreType } from "~/constants/constants";
+import { StoreDetailsSkeleton } from "./StoreDetailsSkeleton";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
