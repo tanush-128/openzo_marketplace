@@ -25,7 +25,6 @@ export async function generateMetadata({
   var storeId = params.storeId;
 
   var store: Store = await Store.fetchStore(storeId);
-  // var products: Product[] = await Product.fetchMany(storeId);
 
   return {
     title: store.name,
@@ -51,14 +50,14 @@ export default async function StorePage({
 }) {
   var storeId = params.storeId;
   var products: Product[] = await Product.fetchMany(storeId);
-  // var store = await Store.fetchStore(storeId);
+
   var productsObj = products.map((product) => product.toJson());
 
   return (
 
     <div >
           <StorePageDynamic storeID={storeId} productsObj={productsObj} />
-          {/* <h1>Store Page</h1> */}
+
     </div>
 
   );

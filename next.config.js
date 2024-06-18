@@ -3,9 +3,18 @@
  * for Docker builds.
  */
 await import("./src/env.js");
+import withPWAInit from "next-pwa";
 
-/** @type {import("next").NextConfig} */
-const config = {
+const withPWA = withPWAInit({
+  dest: "public",
+});
+
+// /** @type {import("next").NextConfig} */
+// const config = ;
+
+
+
+export default withPWA({
   images: {
     remotePatterns: [
       {
@@ -14,6 +23,7 @@ const config = {
       },
     ],
   },
+  
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -22,6 +32,5 @@ const config = {
 
   },
 
-};
-
-export default config;
+  
+});

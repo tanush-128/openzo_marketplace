@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 
 import { Poppins } from "next/font/google";
 import { Metadata, Viewport } from "next";
+import BottomNavBar from "~/components/bottomNavBar";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s | Openzo"
   },
   description: "Marketplace for locality",
-
+  manifest: "/manifest.json",
 
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -36,7 +37,16 @@ export default function RootLayout({
   return (
     <html lang="en">
 
-      <body className={`font-sans ${poppins.className}  overflow-x-hidden w-full max-w-lg mx-auto`}>{children}</body>
+
+      <body className={`overflow-x-hidden w-full max-w-lg mx-auto ${poppins.className} `}>
+        <div className="mb-12">
+        {children}
+
+        </div>
+      <BottomNavBar  />
+      
+      </body>
+   
     </html>
   );
 }

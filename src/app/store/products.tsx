@@ -9,10 +9,9 @@ import {
 import { Product } from "~/models/product";
 import ProductCard from "~/widgets/productCard";
 import { CategorizedProducts } from "./[storeId]/page";
-import { SalesProvider, useSales } from "~/providers/salesContext";
+// import { SalesProvider, useSales } from "~/providers/salesContext";
 // import Sale from "~/models/sale";
 
-import Sale, { SaleData } from '~/models/sale';
 
 
 

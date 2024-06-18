@@ -5,26 +5,26 @@ import GlobalConsts from '~/constants/constants';
 
 class SizeVariant {
   id: number;
-  productID: string;
+  product_id: string;
   size: string;
   price: number;
   quantity: number;
 
   constructor({
     id,
-    productID,
+    product_id,
     size,
     price,
     quantity
   }: {
     id: number;
-    productID: string;
+    product_id: string;
     size: string;
     price: number;
     quantity: number;
   }) {
     this.id = id;
-    this.productID = productID;
+    this.product_id = product_id;
     this.size = size;
     this.price = price;
     this.quantity = quantity;
@@ -33,7 +33,7 @@ class SizeVariant {
   toJson() {
     return {
       id: this.id,
-      product_id: this.productID,
+      product_id: this.product_id,
       size: this.size,
       price: this.price,
       quantity: this.quantity,
@@ -43,7 +43,7 @@ class SizeVariant {
   static fromJson(json: any): SizeVariant {
     return new SizeVariant({
       id: json['id'],
-      productID: json['product_id'],
+      product_id: json['product_id'],
       size: json['size'],
       price: json['price'],
       quantity: json['quantity'],

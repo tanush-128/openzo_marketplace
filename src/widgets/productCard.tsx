@@ -1,9 +1,15 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { useSales } from '~/providers/salesContext';
 import Image from "next/image";
+import { useEffect, useState } from 'react';
 
-// import Autoplay from "embla-carousel-autoplay";
+import { Button } from "~/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "~/components/ui/carousel";
 import {
   Drawer,
   DrawerClose,
@@ -14,67 +20,68 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
-import { Button } from "~/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "~/components/ui/carousel";
 import { ColorVariant, Product, SizeVariant } from '~/models/product';
+import useSalesStore from '~/providers/salesStore';
 interface ProductCardProps {
   product: Product;
+  addable?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, addable = true }) => {
+  // const addable = true;
   // const [quantity, setQuantity] = useState(0);
   // const quantity = 0;
+  const [selectedSize, setSelectedSize] = useState<SizeVariant | null>(null);
+  const [selectedColor, setSelectedColor] = useState<ColorVariant | null>(null);
+  let { cart , updateSaleOrderItems } =  useSalesStore(
+    state => ({
+      // onlineOrders: state.onlineOrders,
+      cart : state.getSaleByStoreId(product.store_id),
+      updateSaleOrderItems: state.updateSaleOrderItems,
+      
+    })
+  );
+  // let orderItem = cart?.orderItems.find(item => item.product_id === product.id);
+  // let quantity = orderItem?.quantity || 0;
   const [quantity, setQuantity] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<SizeVariant | undefined>(undefined);
-  const [selectedColor, setSelectedColor] = useState<ColorVariant | undefined>(undefined);
-  const { onlineOrders, placedOrders, unplacedOrders, deliveredOrders, fetching, getOrders, updateOrderStatus, addSale, updateSale, updateSaleOrderItems, isInCart } = useSales();
+
 
   // Update quantity and selected size/color based on cart prop
   product = Product.fromJson(product);
-  console.log('product', product.type?.toString());
+
 
   useEffect(() => {
-    if (onlineOrders.length > 0) {
-      const cart = onlineOrders.find(order => order.storeId === product.store_id);
-      if (cart !== undefined) {
-        const orderItem = cart.orderItems.find(item => item.product_id === product.id);
-        if (orderItem) {
-          setQuantity(orderItem.quantity);
-          setSelectedSize(product.size_variants.find(variant => variant.id === orderItem.size_variant_id));
-          setSelectedColor(product.color_variants.find(variant => variant.id === orderItem.color_variant_id));
-        }
+    if (cart !== null) {
+      const orderItem = cart.order_items.find(item => item.product_id === product.id);
+      if (orderItem) {
+        setQuantity(orderItem.quantity);
+        setSelectedSize(product.size_variants.find(variant => variant.id === orderItem.size_variant_id) || null);
+        setSelectedColor(product.color_variants.find(variant => variant.id === orderItem.color_variant_id) || null);
       }
     }
-  }
-    , [onlineOrders, product]);
+ }
+    , [cart?.order_items.find(item => item.product_id === product.id)]);
 
   // Function to handle adding or updating quantity
   const handleUpdateQuantity = (newQuantity: number) => {
-    setQuantity(newQuantity);
+
     updateSaleOrderItems(product, selectedSize, selectedColor, newQuantity);
-    // Implement your logic to update sale order items
-  };
-
-  // Function to handle size change
-  const handleSizeChange = (value: SizeVariant | undefined) => {
-    setSelectedSize(value);
-    updateSaleOrderItems(product, selectedSize, selectedColor, quantity);
 
   };
 
-  // Function to handle color change
-  const handleColorChange = (value: ColorVariant | undefined) => {
-    setSelectedColor(value);
-    updateSaleOrderItems(product, selectedSize, selectedColor, quantity);
-  };
+  // // Function to handle size change
+  // const handleSizeChange = (value: SizeVariant | null) => {
+  //   setSelectedSize(value);
+  //   updateSaleOrderItems(product, selectedSize, selectedColor, quantity);
 
-  const addable = true;
+  // };
+
+  // // Function to handle color change
+  // const handleColorChange = (value: ColorVariant | null) => {
+  //   setSelectedColor(value);
+  //   updateSaleOrderItems(product, selectedSize, selectedColor, quantity);
+  // };
+
 
   return (
     <div className='bg-white shadow-sm p-2 mb-2'>
@@ -174,10 +181,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     </Drawer>
       {addable ? (
         <div className="">
-          {quantity > 0 ? (
+          { quantity ?? 0 > 0 ? (
             <div className="flex items-center">
               <button className="px-2 py-1 border border-primary text-primary rounded-lg" onClick={() => handleUpdateQuantity(quantity - 1)}>-</button>
-              <span className="px-3 py-1 bg-primary text-white font-semibold mx-1 rounded-lg">{quantity}</span>
+              <span className="px-3 py-1 bg-primary text-white font-semibold mx-1 rounded-lg">{quantity ?? 0}</span>
               <button className="px-2 py-1 border border-primary text-primary rounded-lg" onClick={() => handleUpdateQuantity(quantity + 1)}>+</button>
             </div>
           ) : (
@@ -185,7 +192,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
       ) : (
-        <p className="text-gray-600 text-sm mt-1">{`Quantity: ${quantity}`}</p>
+        <p className="text-gray-600 text-sm mt-1">{`Quantity: ${quantity ?? 0}`}</p>
       )}
             </div>
   );
@@ -196,21 +203,3 @@ export default ProductCard;
 
 
 
-// / Adjust path based on your project structure
-
-
-// import { Product, SizeVariant, ColorVariant } from '~/models/product';
-// interface ProductCardProps {
-//   product: Product;
-//   // cart?: SaleData;
-//   addable?: boolean;
-// }
-
-// const _ProductCard: React.FC<ProductCardProps> = ({ product, addable = true }) => {
-
-//   return (
-   
-//   );
-// };
-
-// export default ProductCard;

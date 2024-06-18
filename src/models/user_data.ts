@@ -1,146 +1,87 @@
-// // type UserData struct {
-// // 	Id                int    `json:"id"`
-// // 	UserId            int    `json:"user_id"`
-// // 	Latitude          string `json:"latitude"`
-// // 	Longitude         string `json:"longitude"`
-// // 	Address           string `json:"address"`
-// // 	Pincode           string `json:"pincode"`
-// // 	City 			string `json:"city"`
-// // 	State 			string `json:"state"`
-// // 	Country 			string `json:"country"`
-// // 	NotificationToken string `json:"notification_token"`
-// // }
+// services/UserData.ts
 
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
-// import 'package:openzo_frontend/constants/constants.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import GlobalConsts from "~/constants/constants";
 
-// class UserData {
-//   int id;
-//   int userId;
-//   String latitude;
-//   String longitude;
-//   String address;
-//   String pincode;
-//   String city;
-//   String state;
-//   String country;
-//   String notificationToken;
+interface UserData {
+  id: string;
+  userId: string;
+  latitude: string;
+  longitude: string;
+  address: string;
+  pincode: string;
+  city: string;
+  state: string;
+  country: string;
+  notificationToken: string;
+}
 
-//   UserData({
-//     required this.id,
-//     required this.userId,
-//     required this.latitude,
-//     required this.longitude,
-//     required this.address,
-//     required this.pincode,
-//     required this.city,
-//     required this.state,
-//     required this.country,
-//     required this.notificationToken,
-//   });
+const BACKEND_URL = GlobalConsts.backend_url;
 
-//   factory UserData.fromJson(Map<String, dynamic> json) {
-//     return UserData(
-//       id: json['id'],
-//       userId: json['user_id'],
-//       latitude: json['latitude'],
-//       longitude: json['longitude'],
-//       address: json['address'],
-//       pincode: json['pincode'],
-//       city: json['city'],
-//       state: json['state'],
-//       country: json['country'],
-//       notificationToken: json['notification_token'],
-//     );
-//   }
+class UserService {
+  static async createUserData(userData: Partial<UserData>): Promise<UserData | null> {
+    const res = await fetch(`${BACKEND_URL}/users/userdata`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        user_id: userData.userId,
+        latitude: userData.latitude,
+        longitude: userData.longitude,
+        address: userData.address,
+        pincode: userData.pincode,
+        notification_token: userData.notificationToken,
+      }),
+    });
 
-//   static createUserData(UserData userData) async {
-//     final res =
-//         await http.post(Uri.parse('${GlobalConsts.backend_url}/userData/'),
-//             headers: <String, String>{
-//               'Content-Type': 'application/json; charset=UTF-8',
-//             },
-//             body: jsonEncode({
-//               'user_id': userData.userId,
-//               'latitude': userData.latitude,
-//               'longitude': userData.longitude,
-//               'address': userData.address,
-//               'pincode': userData.pincode,
-//               'notification_token': userData.notificationToken,
-//             }));
+    if (res.status === 201) {
+      const data: UserData = await res.json();
+      localStorage.setItem('user_data_id', data.id);
+      return data;
+    } else {
+      console.error('Failed to create user data', await res.text());
+      return null;
+    }
+  }
 
-//     if (res.statusCode == 200) {
-//       UserData userData = UserData.fromJson(jsonDecode(res.body));
-//       SharedPreferences prefs = await SharedPreferences.getInstance();
-//       prefs.setInt('user_data_id', userData.id);
-//       return userData;
-//     } else {
-//       return null;
-//     }
-//   }
+  static async getUserData(userDataId: string): Promise<UserData> {
+    const res = await fetch(`${BACKEND_URL}/users/userdata/${userDataId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    });
 
-//   static Future<UserData> getUserData(
-//     int userDataId,
-//   ) async {
-//     final res = await http.get(
-//       Uri.parse('${GlobalConsts.backend_url}/userData/$userDataId'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//     );
+    if (res.status === 200) {
+      return await res.json();
+    } else {
+      throw new Error(`Failed to load user data: ${await res.text()}`);
+    }
+  }
 
-//     if (res.statusCode == 200) {
-//       return UserData.fromJson(jsonDecode(res.body));
-//     } else {
-//       throw Exception('Failed to load user data');
-//     }
-//   }
+  static async updateUserData(userData: Partial<UserData>): Promise<UserData> {
+    const res = await fetch(`${BACKEND_URL}/users/userdata`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        id: userData.id,
+        user_id: userData.userId,
+        latitude: userData.latitude,
+        longitude: userData.longitude,
+        address: userData.address,
+        pincode: userData.pincode,
+        notification_token: userData.notificationToken,
+      }),
+    });
 
-//   static Future<UserData> UpdateUserData(UserData userData) async {
-//     final res = await http.put(
-//       Uri.parse('${GlobalConsts.backend_url}/userData/${userData.id}'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: jsonEncode({
-//         'user_id': userData.userId,
-//         'latitude': userData.latitude,
-//         'longitude': userData.longitude,
-//         'address': userData.address,
-//         'pincode': userData.pincode,
-//         'notification_token': userData.notificationToken,
-//       }),
-//     );
+    if (res.status === 200) {
+      return await res.json();
+    } else {
+      throw new Error(`Failed to update user data: ${await res.text()}`);
+    }
+  }
+}
 
-//     if (res.statusCode == 200) {
-//       return UserData.fromJson(jsonDecode(res.body));
-//     } else {
-//       throw Exception('Failed to update user data');
-//     }
-//   }
-// }
-
-
-
-// // func (router *UserDataServiceRouter) CreateUserData(c *gin.Context) {
-
-// // 	var userData models.UserData
-// // 	c.ShouldBindJSON(&userData)
-// // 	// var location utils.Location
-// // 	location, err := utils.GetLocation(userData.Latitude, userData.Longitude)
-// // 	if err != nil {
-// // 		c.JSON(400, gin.H{"error": "invalid location"})
-// // 		return
-// // 	}
-// // 	userData.City = location.Address.City
-// // 	userData.State = location.Address.State
-// // 	userData.Country = location.Address.Country
-// // 	userData.Address = location.Address.HouseNumber + ", " + location.Address.Road + ", " + location.Address.City + ", " + location.Address.State + ", " + location.Address.Country
-
-// // 	router.DB.Create(&userData)
-// // 	c.JSON(200, userData)
-// // }
-
-
+export default UserService;

@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 
 import GlobalSearchDelegate from './GlobalSearchDelegate';
-import { SalesProvider } from '~/providers/salesContext';
+import { X } from 'lucide-react';
+
 
 
 const GlobalSearchBar: React.FC = () => {
@@ -12,21 +13,36 @@ const GlobalSearchBar: React.FC = () => {
 
     const handleSearchClick = () => {
         setIsSearching(true);
+        // if (query !== ""){
+
+        // }
     };
 
     return (
-        <SalesProvider>
+      
             <div className="w-full h-12">
                 <div className="w-full h-full bg-gray-100 border border-gray-200 rounded-lg flex items-center px-2">
                     <img src="/assets/icons/search.png" alt="Search" className="w-6 h-6" />
                     <input
                         type="text"
                         value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => {
+                            setQuery(e.target.value);
+                           
+                        }}
+                     
                         onClick={handleSearchClick}
-                        className="flex-grow bg-transparent outline-none px-2"
+                        className="flex-grow  max-w-[270px] sm:max-w-none bg-transparent  outline-none px-2"
                         placeholder="Search for products, stores ..."
                     />
+                         {query !== "" && (
+          <span className='w-4 h-6 mr-2' onClick={() => {
+            setQuery("")
+            setIsSearching(false)
+          }}>
+            <X />
+          </span>
+        )}
                 </div>
                 {isSearching && (
                     <div className="absolute top-16 left-0 right-0 z-50 bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -34,8 +50,8 @@ const GlobalSearchBar: React.FC = () => {
                     </div>
                 )}
             </div>
-        </SalesProvider>
-    );
+    )
+
 };
 
 export default GlobalSearchBar;

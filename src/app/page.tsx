@@ -15,7 +15,7 @@ const poppins = Poppins({
 
 export default function HomePage() {
   return (
-    <div >
+    <div className={poppins.className} >
       <div className="z-50  bg-primary p-2 text-white">
         <div className="ml-2 mt-2 flex items-center gap-4">
           <Image

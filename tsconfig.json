@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-, ".next/types/app/store/page.tsx"  ],
+, ".next/types/app/store/page.tsx", "src/app/cart"  ],
   "exclude": ["node_modules"]
 }

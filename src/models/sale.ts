@@ -1,20 +1,20 @@
 // models/types.ts
 
 export interface Customer {
-  id: number;
-  phone: string;
-  address: string;
-  userDataId: string;
-  saleId: string;
+  id: number | null;
+  phone: string | null;
+  address: string | null;
+  user_data_id: string | null;
+  saleId: string | null;
 }
 
 export interface OrderItem {
-  id: number;
-  product_id: string;
-  order_id: string;
-  quantity: number;
-  size_variant_id: number;
-  color_variant_id: number;
+  id: number | null;
+  product_id: string | null; 
+  order_id: string | null;
+  quantity: number ;
+  size_variant_id: number | null;
+  color_variant_id: number | null;
   // sizeVariantId?: number;
   // colorVariantId?: number;
 }
@@ -30,6 +30,8 @@ function orderItemToJson(orderItem: OrderItem) {
     'color_variant_id': orderItem.color_variant_id,
   };
 }
+
+
 
 
 export interface SaleData {
@@ -57,11 +59,11 @@ const backendUrl = 'https://backend.openzo.in'; // Replace with your backend URL
 
 class Sale {
   id: string;
-  orderItems: OrderItem[];
+  order_items: OrderItem[];
   customer?: Customer;
   orderTime?: string;
-  totalAmount: number;
-  undiscountedTotalAmount: number;
+  total_amount: number;
+  undiscounted_total_amount: number;
   amountPaid: number;
   paymentMode?: string;
   storeId: string;
@@ -73,11 +75,11 @@ class Sale {
 
   constructor(sale: Sale) {
     this.id = sale.id;
-    this.orderItems = sale.orderItems;
+    this.order_items = sale.order_items;
     this.customer = sale.customer;
     this.orderTime = sale.orderTime;
-    this.totalAmount = sale.totalAmount;
-    this.undiscountedTotalAmount = sale.undiscountedTotalAmount;
+    this.total_amount = sale.total_amount;
+    this.undiscounted_total_amount = sale.undiscounted_total_amount;
     this.amountPaid = sale.amountPaid;
     this.paymentMode = sale.paymentMode;
     this.storeId = sale.storeId;
@@ -98,11 +100,11 @@ class Sale {
       },
       body: JSON.stringify({
         id: sale.id,
-        order_items: sale.orderItems.map(orderItemToJson),
+        order_items: sale.order_items.map(orderItemToJson),
         customer: sale.customer,
         order_time: sale.orderTime,
-        total_amount: sale.totalAmount,
-        undiscounted_amount: sale.undiscountedTotalAmount,
+        total_amount: sale.total_amount,
+        undiscounted_amount: sale.undiscounted_total_amount,
         amount_paid: sale.amountPaid,
         payment_mode: sale.paymentMode,
         store_id: sale.storeId,
@@ -116,11 +118,14 @@ class Sale {
     });
 
     if (!response.ok) {
+      console.log(response);
       throw new Error('Failed to create sale');
     }
 
     const data = await response.json();
+    console.log(data);
     return Sale.fromJson(data);
+  
   }
 
   static async getSaleByID(id: string): Promise<Sale> {
@@ -138,20 +143,7 @@ class Sale {
     return data;
   }
 
-  static async getSalesByStoreID(storeID: string): Promise<Sale[]> {
-    const response = await fetch(`${backendUrl}/sales/store/${storeID}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to get sales');
-    }
-
-    const data = await response.json();
-    return data;
-  }
+  
 
   static async getSalesByUserDataID(userDataId: string): Promise<Sale[]> {
     const response = await fetch(`${backendUrl}/sales/user/${userDataId}`, {
@@ -165,7 +157,8 @@ class Sale {
     }
 
     const data = await response.json();
-    return data;
+    console.log("fetch sales by user data id " + userDataId);
+    return  data.map((sale: any) => Sale.fromJson(sale));
   }
 
   static async changeSaleStatus(id: string, status: string): Promise<Sale> {
@@ -181,7 +174,7 @@ class Sale {
     }
 
     const data = await response.json();
-    return data;
+    return  Sale.fromJson(data);
   }
 
   static async updateSale(sale: Sale): Promise<Sale> {
@@ -192,11 +185,11 @@ class Sale {
       },
       body: JSON.stringify({
         id: sale.id,
-        order_items: sale.orderItems.map(orderItemToJson),
+        order_items: sale.order_items.map(orderItemToJson),
         customer: sale.customer,
         order_time: sale.orderTime,
-        total_amount: sale.totalAmount,
-        undiscounted_amount: sale.undiscountedTotalAmount,
+        total_amount: sale.total_amount,
+        undiscounted_amount: sale.undiscounted_total_amount,
         amount_paid: sale.amountPaid,
         payment_mode: sale.paymentMode,
         store_id: sale.storeId,
@@ -210,21 +203,24 @@ class Sale {
     });
 
     if (!response.ok) {
+    console.log(response);
       throw new Error('Failed to update sale');
     }
 
     const data = await response.json();
+    console.log("update sale")
+    console.log(data);
     return Sale.fromJson(data);
   }
 
   static fromJson(json: any): Sale {
     return new Sale({
       id: json['id'],
-      orderItems: json['order_items'],
+      order_items: json['order_items'],
       customer: json['customer'],
       orderTime: json['order_time'],
-      totalAmount: json['total_amount'],
-      undiscountedTotalAmount: json['undiscounted_amount'],
+      total_amount: json['total_amount'],
+      undiscounted_total_amount: json['undiscounted_amount'],
       amountPaid: json['amount_paid'],
       paymentMode: json['payment_mode'],
       storeId: json['store_id'],
@@ -241,29 +237,6 @@ class Sale {
 
 
 }
-
-
-//   factory Sale.fromJson(Map < String, dynamic > json) {
-//   return Sale(
-//     id: json['id'],
-//     orderItems: List<OrderItem>.from(
-//       json['order_items'].map((x) => OrderItem.fromJson(x))),
-//     customer: Customer.fromJson(json['customer']),
-//     orderTime: DateTime.parse(json['order_time']),
-//     totalAmount: double.parse(json['total_amount'].toString()),
-//     undiscountedTotalAmount:
-//     double.parse(json['undiscounted_amount'].toString()),
-//     amountPaid: double.parse(json['amount_paid'].toString()),
-//     paymentMode: json['payment_mode'],
-//     storeId: json['store_id'],
-//     type: json['type'],
-//     status: json['status'],
-//     tableId: json['table_id'],
-//     occupants: json['occupants'],
-//     note: json['note'],
-//   );
-// }
-
 
 export default Sale;
 
