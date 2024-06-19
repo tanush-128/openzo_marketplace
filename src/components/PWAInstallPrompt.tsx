@@ -2,11 +2,37 @@
 "use client";
 import { X } from 'lucide-react';
 import usePWAInstallPrompt from '../hooks/usePWAInstallPrompt';
+import { useEffect } from 'react';
+
+function safeLocalStorage() {
+  if (typeof window !== 'undefined') {
+    return window.localStorage;
+  }
+  return null;  // Return null or a mock object if on the server
+}
 
 const PWAInstallPrompt = () => {
   const { isInstallPromptVisible, showInstallPrompt, setInstallPromptVisible } = usePWAInstallPrompt();
+  var hasDismissedPrompt = false;
+
+  useEffect(() => {
+    const storage = safeLocalStorage();
+    if (storage) {
+      const status = storage.getItem('pwaPromptDismissed');
+      if (status) {
+        setInstallPromptVisible(false);
+        hasDismissedPrompt = true;
+      }
+      console.log(status);
+      
+    }
+  }, []);
 
   if (!isInstallPromptVisible) {
+    return null;
+  }
+
+  if (hasDismissedPrompt) {
     return null;
   }
 

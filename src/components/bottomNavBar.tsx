@@ -7,10 +7,11 @@ import { usePathname } from 'next/navigation';
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
 import { getLocation } from '../services/LocationService';
-import UserService from '~/models/user_data';
+import UserData from '~/models/user_data';
 import useSalesStore from '~/providers/salesStore';
 import { stat } from 'fs';
 import FcmTokenComp from '~/services/firebaseForeground';
+import { handleUserData, handleUserLogin } from '~/lib/user_util';
 // import UserService from '../services/UserData';
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -32,35 +33,11 @@ const BottomNavBar = () => {
     useEffect(() => {
     const initializeUserData = async () => {
       try {
-        const fcmToken = localStorage.getItem('fcmToken');
-        let userDataId = localStorage.getItem('user_data_id');
-        console.log('fcmToken:', fcmToken);
-        console.log('userDataId:', userDataId);
-        // const user = await handleUserLogin();
-        
-        if (!userDataId) {
-          const position = await getLocation();
-          if (!position) return;
-          
-          const userData = {
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString(),
-            notificationToken: fcmToken || '',
-            // userId: user.id,
-          };
-          const createdUserData = await UserService.createUserData(userData);
-          if (createdUserData) {
-            localStorage.setItem('user_data_id', createdUserData.id);
-          }
-        } else {
-          const userData = await UserService.getUserData(userDataId);
-          if (userData.notificationToken !== fcmToken ) {
-            userData.notificationToken = fcmToken || '';
-            // userData.userId = user.id;
-            await UserService.updateUserData(userData);
-          }
-        }
-        fetchOrders();
+        // handleUserData(null);
+        await handleUserData(null).then((data) => {
+            console.log(data);
+            fetchOrders();
+        });
       } catch (error) {
         console.error('Error initializing user data:', error);
       }

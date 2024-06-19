@@ -18,10 +18,10 @@ const usePWAInstallPrompt = (): PWAInstallPrompt => {
   const [isInstallPromptVisible, setInstallPromptVisible] = useState(false);
   const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
 
-  useEffect(() => {
+  useEffect( () => {
     // Check if app is installed or prompt has been dismissed before
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    const hasDismissedPrompt = localStorage.getItem('pwaPromptDismissed') === 'true';
+    const hasDismissedPrompt =  localStorage.getItem('pwaPromptDismissed') === 'true';
 
     if (isStandalone || hasDismissedPrompt) {
       return;
