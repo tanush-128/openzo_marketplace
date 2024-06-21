@@ -1,18 +1,15 @@
 // components/BottomNavBar.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
-import { getLocation } from '../services/LocationService';
-import UserData from '~/models/user_data';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { handleUserData } from '~/lib/user_util';
 import useSalesStore from '~/providers/salesStore';
-import { stat } from 'fs';
 import FcmTokenComp from '~/services/firebaseForeground';
-import { handleUserData, handleUserLogin } from '~/lib/user_util';
-// import UserService from '../services/UserData';
+
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
@@ -23,7 +20,7 @@ const navItems = [
   { label: 'Categories', href: '/category', icon: '/icons/Categories.png' },
   { label: 'Bytes', href: '/bytes', icon: '/icons/Bytes.png' },
   { label: 'Carts', href: '/cart', icon: '/icons/Bags.png' },
-  { label: 'Profile', href: '/profile', icon: '/icons/Local marketplace.png' },
+  { label: 'Marketplace', href: '/marketplace', icon: '/icons/Local marketplace.png' },
 ];
 
 const BottomNavBar = () => {

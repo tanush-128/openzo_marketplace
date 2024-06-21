@@ -157,10 +157,8 @@ class GlobalConsts {
     new Category('Explore', StoreType.Service, [
       new SubCategory('Local Toursims'),
       new SubCategory('Pubs & Bars'),
-      new SubCategory('Sweets & Bakeries'),
       new SubCategory('Parks'),
-      new SubCategory('Street foods'),
-      new SubCategory('Top Restaurants'),
+
     ]),
     new Category('Businesses', StoreType.Service, []),
   ];

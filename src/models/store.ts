@@ -79,19 +79,30 @@ export class Store {
   static async fetchStore(storeId: string): Promise<Store> {
     try {
       // const token = await getAsyncStorageItem('token');
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTgzNjEzNDgsInVzZXJfaWQiOiIzNGJlYjMyYi02MTI3LTQzYTUtOTIyOS04MDcyNzFlZTAzMWEifQ.RODbZLtkWjruSFCaxkSt0QX8iTvYm6GvdwtV3RQFOL8"
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTkwNzA3MTYsInVzZXJfaWQiOiIzNGJlYjMyYi02MTI3LTQzYTUtOTIyOS04MDcyNzFlZTAzMWEifQ.MRry-kfn6-0tWsPQQV8uTP7ss-TO7mWEO_qbnwf4W2E"
       if (!token) throw new Error('Token not found');
   
-      const response = await axios.get(`${GlobalConsts.backend_url}/stores/${storeId}`, {
+
+      const response = await fetch(`${GlobalConsts.backend_url}/stores/${storeId}`,
+    
+      {
+        method: 'GET',
         headers: {
-          // 'Content-Type': 'application/json; charset=UTF-8',
-          // 'Authorization': ,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token,
+        },
+      
+        next : {
+          revalidate:3600
         }
+
+        
       });
+
       if (response.status === 200) {
         // console.log(Store.fromJson(response.data).name);
-        console.log(response.data);
-        return Store.fromJson(response.data);
+        // console.log(await response.json() );
+        return Store.fromJson(await response.json());
       } else {
         throw new Error('Failed to load store');
       }
@@ -103,19 +114,23 @@ export class Store {
 
   static async getStoresWithPincode(pincode: string): Promise<Store[]> {
     try {
-      const response = await axios.get(`${GlobalConsts.backend_url}/stores/pincode/${pincode}`, {
+   const response = await fetch(`${GlobalConsts.backend_url}/stores/pincode/${pincode}`, 
+        {
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
+        },
+        next : {
+          revalidate:3600
         }
-      });
+      }
+      );
       if (response.status === 200) {
-        const stores: Store[] = response.data.map((store: any) => Store.fromJson(store));
-        console.log(stores);
+        const stores: Store[] = await response.json();
         return stores;
       } else {
-        console.log(response.data);
         return [];
       }
+
     } catch (error) {
       console.error(error);
       return [];

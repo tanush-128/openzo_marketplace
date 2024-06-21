@@ -13,7 +13,7 @@ function safeLocalStorage() {
 
 const PWAInstallPrompt = () => {
   const { isInstallPromptVisible, showInstallPrompt, setInstallPromptVisible } = usePWAInstallPrompt();
-  var hasDismissedPrompt = false;
+  var hasDismissedPrompt = true;
 
   useEffect(() => {
     const storage = safeLocalStorage();
@@ -55,7 +55,7 @@ const PWAInstallPrompt = () => {
 
                      }               
               }>
-        {/* <img src="/assets/icons/close.svg" alt="Close" /> */}
+
         <X  />
       </button>
     </div>
