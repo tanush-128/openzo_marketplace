@@ -79,8 +79,8 @@ export class Store {
   static async fetchStore(storeId: string): Promise<Store> {
     try {
       // const token = await getAsyncStorageItem('token');
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTkwNzA3MTYsInVzZXJfaWQiOiIzNGJlYjMyYi02MTI3LTQzYTUtOTIyOS04MDcyNzFlZTAzMWEifQ.MRry-kfn6-0tWsPQQV8uTP7ss-TO7mWEO_qbnwf4W2E"
-      if (!token) throw new Error('Token not found');
+      // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTkwNzA3MTYsInVzZXJfaWQiOiIzNGJlYjMyYi02MTI3LTQzYTUtOTIyOS04MDcyNzFlZTAzMWEifQ.MRry-kfn6-0tWsPQQV8uTP7ss-TO7mWEO_qbnwf4W2E"
+      // if (!token) throw new Error('Token not found');
   
 
       const response = await fetch(`${GlobalConsts.backend_url}/stores/${storeId}`,
@@ -89,7 +89,7 @@ export class Store {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': token,
+          'Authorization': "",
         },
       
         next : {
@@ -118,6 +118,7 @@ export class Store {
         {
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':"",
         },
         next : {
           revalidate:3600
