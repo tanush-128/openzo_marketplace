@@ -3,7 +3,7 @@
 import { getMessaging, onMessage } from 'firebase/messaging';
 // import firebaseApp from '../firebase/firebase';
 import { useEffect } from 'react';
-import firebaseApp from '~/app/firebase';
+import firebaseApp from '~/app/(app)/firebase';
 import useSalesStore from '~/providers/salesStore';
 import useFcmToken from '~/providers/useFCMToken';
 

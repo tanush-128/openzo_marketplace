@@ -1,12 +1,11 @@
 import AdSpace from "~/widgets/adCarousel";
 import Separator from "~/widgets/separator";
-import { StoresList } from "./storesList";
+import { StoresList } from "../storesList";
 import Image from "next/image";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
 import CategoryGrid from "./mainCategories";
 import { Poppins } from "next/font/google";
-import Logo from 'public/assets/icons/Openzo User App final.png';
-
+import Logo from "public/assets/icons/Openzo User App final.png";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -15,7 +14,7 @@ const poppins = Poppins({
 
 export default function HomePage() {
   return (
-    <div className={poppins.className} >
+    <div className={poppins.className}>
       <div className="z-50  bg-primary p-2 text-white">
         <div className="ml-2 mt-2 flex items-center gap-4">
           <Image
@@ -53,7 +52,5 @@ export default function HomePage() {
     </div>
   );
 }
-
-
 
 // export default MainCategoryTile;

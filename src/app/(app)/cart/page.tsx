@@ -1,33 +1,34 @@
 // components/CartsPage.tsx
 "use client";
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 // import CartList from './CartList';
 
 const tabs = [
-  { name: 'Pending', status: 'not_placed' },
-  { name: 'Placed', status: 'placed' },
-  { name: 'Delivered', status: 'delivered' },
+  { name: "Pending", status: "not_placed" },
+  { name: "Placed", status: "placed" },
+  { name: "Delivered", status: "delivered" },
 ] as const;
 
 const CartsPage = () => {
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]['status']>('not_placed');
+  const [activeTab, setActiveTab] =
+    useState<(typeof tabs)[number]["status"]>("not_placed");
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Carts</h1>
+      <h1 className="mb-4 text-2xl font-bold">Carts</h1>
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-4">
           {tabs.map((tab) => (
             <button
               key={tab.status}
               onClick={() => setActiveTab(tab.status)}
-              className={`px-3 py-2 font-medium text-sm rounded-t-lg border-b-2 ${
+              className={`rounded-t-lg border-b-2 px-3 py-2 text-sm font-medium ${
                 activeTab === tab.status
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
               }`}
             >
               {tab.name}
@@ -44,28 +45,23 @@ const CartsPage = () => {
 
 export default CartsPage;
 
-
-
-
-
 // components/CartList.tsx
-import { useEffect } from 'react';
-import Sale from '~/models/sale';
-import { Store } from '~/models/store';
-import useSalesStore from '~/providers/salesStore';
+import { useEffect } from "react";
+import Sale from "~/models/sale";
+import { Store } from "~/models/store";
+import useSalesStore from "~/providers/salesStore";
 // import { format } from 'date-fns';
 // import { useSalesStore } from '~/stores/useSalesStore';
 
-
 interface CartListProps {
-  status: 'not_placed' | 'placed' | 'delivered';
+  status: "not_placed" | "placed" | "delivered";
 }
 
 const CartList = ({ status }: CartListProps) => {
   const fetchOrders = useSalesStore((state) => state.fetchOrders);
   // const carts = useSalesStore((state) => state.onlineOrders
   // .filter((sale) => sale.status === status));
-    const carts = useSalesStore((state) => state.onlineOrders);
+  const carts = useSalesStore((state) => state.onlineOrders);
   const fetching = useSalesStore((state) => state.fetching);
 
   useEffect(() => {
@@ -84,7 +80,6 @@ const CartList = ({ status }: CartListProps) => {
   );
 };
 
-
 interface CartListTileProps {
   cart: Sale;
 }
@@ -98,17 +93,17 @@ const CartListTile = ({ cart }: CartListTileProps) => {
   useEffect(() => {
     const getStore = async () => {
       try {
-        const fetchedStore = await Store.fetchStore(cart.storeId);
+        const fetchedStore = await Store.fetchStore(cart.store_id);
         setStore(fetchedStore);
       } catch (err) {
-        setError('Failed to fetch store data');
+        setError("Failed to fetch store data");
       } finally {
         setLoading(false);
       }
     };
 
     getStore();
-  }, [cart.storeId]);
+  }, [cart.store_id]);
 
   if (loading) {
     return (
@@ -121,15 +116,15 @@ const CartListTile = ({ cart }: CartListTileProps) => {
   if (error || !store) {
     return (
       <div className="flex items-center justify-center p-4">
-        <span>{error || 'Error loading store'}</span>
+        <span>{error || "Error loading store"}</span>
       </div>
     );
   }
 
   return (
-    <div className="my-2 p-0 shadow-lg rounded-lg bg-white">
+    <div className="my-2 rounded-lg bg-white p-0 shadow-lg">
       <Link href={`/cart/${cart.id}`} passHref>
-        <div className="flex items-center cursor-pointer">
+        <div className="flex cursor-pointer items-center">
           <Image
             src={store.image}
             alt={store.name}
@@ -143,14 +138,19 @@ const CartListTile = ({ cart }: CartListTileProps) => {
             <p className="text-gray-500">
               {/* {format(cart.orderTime ? new Date(cart.orderTime) : new Date(), 'hh:mm a   dd-MMMM')}
                */}
-                
             </p>
           </div>
           <button
             className="p-2 text-blue-500 hover:text-blue-700"
             onClick={() => router.push(`/cart/${cart.id}`)}
           >
-            <Image src={"/assets/icons/cart.png"} className='mr-3'  height={22} width={22} alt='cart'/>
+            <Image
+              src={"/assets/icons/cart.png"}
+              className="mr-3"
+              height={22}
+              width={22}
+              alt="cart"
+            />
             {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -171,8 +171,6 @@ const CartListTile = ({ cart }: CartListTileProps) => {
     </div>
   );
 };
-
-
 
 // interface CartListProps {
 //   status: 'not_placed' | 'placed' | 'delivered';

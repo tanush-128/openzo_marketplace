@@ -45,7 +45,7 @@ export interface SaleData {
   undiscountedTotalAmount: number;
   amountPaid: number;
   paymentMode?: string;
-  storeId: string;
+  store_id: string;
   type: string;
   status: string;
   tableId?: string;
@@ -68,7 +68,7 @@ class Sale {
   undiscounted_total_amount: number;
   amountPaid: number;
   paymentMode?: string;
-  storeId: string;
+  store_id: string;
   type: string;
   status: string;
   tableId?: string;
@@ -84,7 +84,7 @@ class Sale {
     this.undiscounted_total_amount = sale.undiscounted_total_amount;
     this.amountPaid = sale.amountPaid;
     this.paymentMode = sale.paymentMode;
-    this.storeId = sale.storeId;
+    this.store_id = sale.store_id;
     this.type = sale.type;
     this.status = sale.status;
     this.tableId = sale.tableId;
@@ -109,7 +109,7 @@ class Sale {
         undiscounted_amount: sale.undiscounted_total_amount,
         amount_paid: sale.amountPaid,
         payment_mode: sale.paymentMode,
-        store_id: sale.storeId,
+        store_id: sale.store_id,
         type: sale.type,
         status: sale.status,
         table_id: sale.tableId,
@@ -199,7 +199,7 @@ class Sale {
         undiscounted_amount: sale.undiscounted_total_amount,
         amount_paid: sale.amountPaid,
         payment_mode: sale.paymentMode,
-        store_id: sale.storeId,
+        store_id: sale.store_id,
         type: sale.type,
         status: sale.status,
         table_id: sale.tableId,
@@ -230,7 +230,7 @@ class Sale {
       undiscounted_total_amount: json['undiscounted_amount'],
       amountPaid: json['amount_paid'],
       paymentMode: json['payment_mode'],
-      storeId: json['store_id'],
+      store_id: json['store_id'],
       type: json['type'],
       status: json['status'],
       tableId: json['table_id'],

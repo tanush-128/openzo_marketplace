@@ -64,13 +64,13 @@ const useSalesStore = create<SaleStoreState>((set, get) => ({
 
   updateSaleOrderItems: async (product, sizeVariant, colorVariant, quantity) => {
     let { onlineOrders } = get();
-    const notPlacedOrder = onlineOrders.find(order => order.status === 'not_placed' && order.storeId === product.store_id);
+    const notPlacedOrder = onlineOrders.find(order => order.status === 'not_placed' && order.store_id === product.store_id);
         let userDataId = localStorage.getItem('user_id');
     
     if (!notPlacedOrder) {
       const newSale = await Sale.createSale({
         id: '',
-        storeId: product.store_id,
+        store_id: product.store_id,
         order_items: [{
           product_id: product.id,
           quantity,
@@ -130,7 +130,7 @@ const useSalesStore = create<SaleStoreState>((set, get) => ({
   
   getSaleByStoreId(storeId) {
    const {onlineOrders} = get();
-    return onlineOrders.find(order => order.storeId === storeId && order.status != "delivered") ?? null;
+    return onlineOrders.find(order => order.store_id === storeId && order.status != "delivered") ?? null;
 
   },
 

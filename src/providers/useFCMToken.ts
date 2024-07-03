@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { getMessaging, getToken } from 'firebase/messaging';
-import firebaseApp from '~/app/firebase';
+import firebaseApp from '~/app/(app)/firebase';
 // import firebaseApp from '../firebase/firebase';
 
 const useFcmToken = () => {
