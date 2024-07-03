@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import MiniSearch from "minisearch";
 import { Product } from "~/models/product";
-import ProductCard from "~/widgets/productCard";
+import ProductCard from "~/components/product/productCard";
 
 const SearchBar = ({ productsObj }: { productsObj: any }) => {
   // var products: Product[] = await Product.fetchAll();

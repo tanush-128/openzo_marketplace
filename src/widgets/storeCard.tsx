@@ -93,7 +93,7 @@ const StoreCard = ({ store }: StoreCardProps) => {
             objectFit="cover"
           />
           <div className="absolute top-2 left-2 flex items-center space-x-1 rounded-md bg-black bg-opacity-50 px-2 py-1 text-white">
-            <p className="text-sm font-medium">{store.subCategory}</p>
+            <p className="text-sm font-medium">{store.sub_category}</p>
           </div>
         </div>
         <div className="p-4">
@@ -103,7 +103,7 @@ const StoreCard = ({ store }: StoreCardProps) => {
               <Rating rating={store.rating} />
               {storeType === StoreType.Food && (
                 <>
-                  {store.pureVeg ? (
+                  {store.pure_veg ? (
                     <img
                       src="/assets/icons/veg.png"
                       alt="Veg"
@@ -132,8 +132,8 @@ const StoreCard = ({ store }: StoreCardProps) => {
           </p>
           {storeType === StoreType.Food && (
             <div className="flex justify-between text-sm text-gray-600">
-              <p>{`• ${store.primaryCuisine} • ${store.secondaryCuisine}`}</p>
-              <p>{`₹${store.avgPricePerPerson} for one`}</p>
+              <p>{`• ${store.primary_cuisine} • ${store.secondary_cuisine}`}</p>
+              <p>{`₹${store.avg_price_per_person} for one`}</p>
             </div>
           )}
         </div>

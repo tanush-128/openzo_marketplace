@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Product } from '~/models/product';
 import { Store } from '~/models/store';
-import ProductCard from '~/widgets/productCard';
+import ProductCard from '~/components/product/productCard';
 import StoreCard from '~/widgets/storeCard';
 // import ProductCard from './ProductCard';  // Create a ProductCard component or replace it with actual product display logic
 // import StoreCard from './StoreCard';      // Create a StoreCard component or replace it with actual store display logic

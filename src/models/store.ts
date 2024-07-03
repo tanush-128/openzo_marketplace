@@ -43,17 +43,17 @@ export class Store {
     public selfDeliveryService: boolean,
     public detailsComplete = false,
     public category = "",
-    public subCategory = "",
-    public primaryCuisine?: string,
-    public secondaryCuisine?: string,
-    public avgPricePerPerson?: number,
-    public pureVeg?: boolean,
+    public sub_category = "",
+    public primary_cuisine?: string,
+    public secondary_cuisine?: string,
+    public avg_price_per_person?: number,
+    public pure_veg?: boolean,
     public alcohol?: boolean,
     public tableCount?: number,
     public seatingCapacity?: number,
     public reserveTableOnline?: boolean,
     public rating = 0.0,
-    public reviewCount = 0.0
+    public review_count = 0.0
   ) { }
 
   static async getStoreWithUserEmail(userEmail: string): Promise<Store | null> {

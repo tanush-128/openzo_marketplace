@@ -1,5 +1,7 @@
 // models/types.ts
 
+import axios from "axios";
+
 export interface Customer {
   id: number | null;
   phone: string | null;
@@ -146,19 +148,24 @@ class Sale {
   
 
   static async getSalesByUserDataID(userDataId: string): Promise<Sale[]> {
-    const response = await fetch(`${backendUrl}/sales/user/${userDataId}`, {
+
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get(`${backendUrl}/sales/user`, 
+    {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': token,
       },
-    });
 
-    if (!response.ok) {
-      throw new Error('Failed to get sales');
     }
 
-    const data = await response.json();
-    console.log("fetch sales by user data id " + userDataId);
-    return  data.map((sale: any) => Sale.fromJson(sale));
+    );
+    if (response.status === 200) {
+      return response.data.map((sale: any) => Sale.fromJson(sale));
+    }
+    throw new Error('Failed to get sales');
+
   }
 
   static async changeSaleStatus(id: string, status: string): Promise<Sale> {

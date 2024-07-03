@@ -9,7 +9,7 @@ import OrderStatus from './OrderStatus';
 // import ProductCard from './ProductCard';
 import { Product } from '~/models/product';
 import useSalesStore from '~/providers/salesStore';
-import ProductCard from '~/widgets/productCard';
+import ProductCard from '~/components/product/productCard';
 
 const CartPage = () => {
   const { id } = useParams(); // Get cart ID from URL

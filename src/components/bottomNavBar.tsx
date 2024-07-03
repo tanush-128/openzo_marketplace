@@ -31,7 +31,7 @@ const BottomNavBar = () => {
     const initializeUserData = async () => {
       try {
         // handleUserData(null);
-        await handleUserData(null).then((data) => {
+        await handleUserData().then((data) => {
             console.log(data);
             fetchOrders();
         });

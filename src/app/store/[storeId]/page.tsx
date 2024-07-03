@@ -28,7 +28,7 @@ export async function generateMetadata({
 
   return {
     title: store.name,
-    description: `${store.name} ${store.subCategory} ${store.description}`,
+    description: `${store.name} ${store.sub_category} ${store.description}`,
 
     openGraph: {
       images: [

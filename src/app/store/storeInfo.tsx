@@ -82,38 +82,15 @@ const poppins = Poppins({
 
 
 type StoreDetailsProps = {
-  storeId: string;
+  // storeId: string;
+  store:  Store | null;
+  storeType: StoreType;
 };
 
-const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
-  const [store, setStore] = useState<Store | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [storeType, setStoreType] = useState<StoreType>(StoreType.Store);
+const StoreDetails: React.FC<StoreDetailsProps> = ({ store, storeType }) => {
 
-  useEffect(() => {
-    const fetchStore = async () => {
-      try {
-        const storeData = await Store.fetchStore(storeId);
-        setStore(storeData);
-        setStoreType(GlobalConsts.categories.find((category) => category.name === storeData.category)?.type || StoreType.Store);
-      } catch (error) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStore();
-  }, [storeId]);
-
-
-  if (loading) {
+  if ( !store) {
     return <StoreDetailsSkeleton />;
-  }
-
-  if (error || !store) {
-    return <div>Error</div>;
   }
 
   return (
@@ -130,7 +107,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
           <div className="flex flex-col items-center">
             <div className="flex items-center">
               <Rating rating={store.rating} />
-              <span className="ml-1 text-black text-sm">({store.reviewCount} Reviews)</span>
+              <span className="ml-1 text-black text-sm">({store.review_count} Reviews)</span>
             </div>
             <div className="mt-1 px-3 py-1 bg-gray-100 rounded-full flex items-center">
               <Image src="/assets/icons/schedule.png" width={20} height={20} alt="Schedule" />
@@ -147,10 +124,10 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
           <div>
             <div className="flex justify-between">
               <span className="text-xl font-bold">{store.name}</span>
-              <span className="text-gray-500">{store.subCategory}</span>
+              <span className="text-gray-500">{store.sub_category}</span>
             </div>
             <div className="flex justify-between items-end">
-              {store.pureVeg ? (
+              {store.pure_veg ? (
                 <Image src="/assets/icons/veg.png" width={24} height={24} alt="Veg" className="text-green-500 " />
               ) : (
                 <div className="flex">
@@ -159,15 +136,15 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ storeId }) => {
                 </div>
               )}
               <div className="flex space-x-2 text-gray-500">
-                <span>• {store.primaryCuisine} • {store.secondaryCuisine}</span>
-                <span>₹{store.avgPricePerPerson} for one</span>
+                <span>• {store.primary_cuisine} • {store.secondary_cuisine}</span>
+                <span>₹{store.avg_price_per_person} for one</span>
               </div>
             </div>
           </div>
         ) : (
           <div>
             <div className="text-xl font-bold text-center">{store.name}</div>
-            <div className="text-gray-500 text-center">{store.subCategory}</div>
+            <div className="text-gray-500 text-center">{store.sub_category}</div>
           </div>
         )}
       </div>
