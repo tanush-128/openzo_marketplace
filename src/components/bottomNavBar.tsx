@@ -1,48 +1,50 @@
 // components/BottomNavBar.tsx
-'use client';
+"use client";
 
-import { Poppins } from 'next/font/google';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { handleUserData } from '~/lib/user_util';
-import useSalesStore from '~/providers/salesStore';
-import FcmTokenComp from '~/services/firebaseForeground';
+import { Poppins } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { handleUserData } from "~/lib/user_util";
+import useSalesStore from "~/providers/salesStore";
+import FcmTokenComp from "~/services/firebaseForeground";
 
 const poppins = Poppins({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
 });
 
 const navItems = [
-  { label: 'Home', href: '/', icon: '/icons/Home.png' },
-  { label: 'Categories', href: '/category', icon: '/icons/Categories.png' },
-  { label: 'Bytes', href: '/bytes', icon: '/icons/Bytes.png' },
-  { label: 'Carts', href: '/cart', icon: '/icons/Bags.png' },
-  { label: 'Marketplace', href: '/marketplace', icon: '/icons/Local marketplace.png' },
+  { label: "Home", href: "/", icon: "/icons/Home.png" },
+  { label: "Categories", href: "/category", icon: "/icons/Categories.png" },
+  { label: "Bytes", href: "/bytes", icon: "/icons/Bytes.png" },
+  { label: "Carts", href: "/cart", icon: "/icons/Bags.png" },
+  {
+    label: "Marketplace",
+    href: "/marketplace",
+    icon: "/icons/Local marketplace.png",
+  },
 ];
 
 const BottomNavBar = () => {
   const pathname = usePathname();
   const [selectedIndex, setSelectedIndex] = useState(0);
-   const fetchOrders =  useSalesStore((state) =>state.fetchOrders )
-    useEffect(() => {
+  const fetchOrders = useSalesStore((state) => state.fetchOrders);
+  useEffect(() => {
     const initializeUserData = async () => {
       try {
         // handleUserData(null);
         await handleUserData().then((data) => {
-            console.log(data);
-            fetchOrders();
+          console.log(data);
+          fetchOrders();
         });
       } catch (error) {
-        console.error('Error initializing user data:', error);
+        console.error("Error initializing user data:", error);
       }
     };
 
-    initializeUserData().then(
-
-    );
+    initializeUserData().then();
   }, []);
 
   useEffect(() => {
@@ -51,14 +53,19 @@ const BottomNavBar = () => {
   }, [pathname]);
 
   return (
-    <div className={"fixed bottom-0 w-full max-w-lg mx-auto bg-white border-t border-gray-200 " +poppins.className }>
-        <FcmTokenComp/>
+    <div
+      className={
+        "fixed bottom-0 mx-auto w-full max-w-lg border-t border-gray-200 bg-white " +
+        poppins.className
+      }
+    >
+      <FcmTokenComp />
       <div className="flex justify-around">
         {navItems.map((item, index) => (
           <Link key={item.label} href={item.href} passHref>
             <div
-              className={`flex flex-col items-center py-2 cursor-pointer ${
-                selectedIndex === index ? 'text-primary' : 'text-gray-500'
+              className={`flex cursor-pointer flex-col items-center py-2 ${
+                selectedIndex === index ? "text-primary" : "text-gray-500"
               }`}
               onClick={() => setSelectedIndex(index)}
             >

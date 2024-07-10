@@ -35,37 +35,29 @@ import Link from "next/link";
 
 // export default MainCategories;
 
-
-
-
 // import MainCategoryTile from './MainCategoryTile';
 
 const categories = [
-  { title: 'Food delivery' },
-  { title: 'Services' },
-  { title: 'Stores' },
-  { title: 'Grocery delivery' },
-  { title: 'Service stores' },
-  { title: 'Hotel rooms' },
-  { title: 'Ride hire' },
+  { title: "Food delivery" },
+  { title: "Service stores" },
+  { title: "Stores" },
+  { title: "Grocery delivery" },
+  { title: "Services" },
+  { title: "Hotel rooms" },
+  { title: "Ride hire" },
 ];
 
 const CategoryGrid: React.FC = () => {
-
-
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-2 px-4">
       {categories.map((category) => (
         <MainCategoryTile key={category.title} title={category.title} />
       ))}
       <Link href={"/category"}>
-        <div
-          className="flex flex-col items-center cursor-pointer"
-
-        >
-          <div className="w-16 h-16 p-2 bg-white rounded-full flex items-center justify-center">
+        <div className="flex cursor-pointer flex-col items-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white p-2">
             <svg
-              className="w-6 h-6 text-gray-500"
+              className="h-6 w-6 text-gray-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -79,7 +71,7 @@ const CategoryGrid: React.FC = () => {
               ></path>
             </svg>
           </div>
-          <p className="text-xs text-center mt-2">More</p>
+          <p className="mt-2 text-center text-xs">More</p>
         </div>
       </Link>
     </div>
@@ -88,9 +80,6 @@ const CategoryGrid: React.FC = () => {
 
 export default CategoryGrid;
 
-
-
-
 interface MainCategoryTileProps {
   title: string;
 }
@@ -98,14 +87,14 @@ interface MainCategoryTileProps {
 const MainCategoryTile: React.FC<MainCategoryTileProps> = ({ title }) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 p-2 bg-white rounded-full">
+      <div className="h-14 w-14 rounded-full bg-white p-2">
         <img
           src={`/assets/images/home page icons/${title}.png`}
           alt={title}
-          className="w-full h-full object-contain"
+          className="h-full w-full object-contain"
         />
       </div>
-      <p className="text-xs text-center mt-2">{title}</p>
+      <p className="mt-2 text-center text-xs">{title}</p>
     </div>
   );
 };

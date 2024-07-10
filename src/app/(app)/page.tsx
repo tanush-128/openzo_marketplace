@@ -29,7 +29,7 @@ export default function HomePage() {
       </div>
       <div className="sticky top-0 z-50  ">
         {/* <SearchBar /> */}
-        <div className="p-2">
+        <div className="w-full bg-white p-2">
           <GlobalSearchBar />
         </div>
       </div>
@@ -37,7 +37,10 @@ export default function HomePage() {
       <AdSpace />
       {/* <MainCategories />
        */}
+      <div className="h-4" />
+
       <Separator title="Explore" />
+      <div className="h-4" />
       <CategoryGrid />
       <div className="h-4" />
 

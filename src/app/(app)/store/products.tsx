@@ -1,4 +1,3 @@
-
 // "use client";
 // import {
 //   Accordion,
@@ -11,10 +10,6 @@
 // import { CategorizedProducts } from "./[storeId]/page";
 // import VerticalProductCard from "~/components/product/verticalProduct";
 // import ServiceCard from "~/components/product/ServiceCard";
-
-
-
-
 
 // function categorizeProducts(products: Product[]): CategorizedProducts {
 //   const categories: CategorizedProducts = {};
@@ -68,7 +63,6 @@
 //   );
 // }
 
-
 "use client";
 
 import ServiceCard from "~/components/product/ServiceCard";
@@ -79,7 +73,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import { Product} from "~/models/product";
+import { Product } from "~/models/product";
 import ProductCard from "~/components/product/productCard";
 // import ProductCard from "~/components/product/ProductCard";
 // import VerticalProductCard from "~/components/product/VerticalProductCard";
@@ -111,16 +105,18 @@ export function Products({
   productsObj: any;
   storeType: string;
 }) {
-  const products: Product[] = productsObj.map((product: any) =>
-    // productFromJson(product)
-    Product.fromJson(product)
-  );
+  const products: Product[] = [];
+
+  for (const obj of productsObj) {
+    const product = Product.fromJson(obj);
+    if (product.type !== "post") products.push(product);
+  }
 
   const categorizedProducts = categorizeProducts(products);
 
   const buildContent = (categoryKey: string) => {
     const products = categorizedProducts[categoryKey] ?? [];
-    if (storeType === 'food') {
+    if (storeType === "food") {
       return (
         <div className="flex flex-col space-y-2">
           {products?.map((product, index) => (
@@ -128,7 +124,7 @@ export function Products({
           ))}
         </div>
       );
-    } else if (storeType === 'service') {
+    } else if (storeType === "service") {
       return (
         <div className="flex flex-col space-y-2">
           {products.map((product, index) => (
@@ -138,7 +134,7 @@ export function Products({
       );
     } else {
       return (
-        <div className="grid grid-cols-2 gap-1">
+        <div className="grid grid-cols-2 gap-0.5">
           {products.map((product, index) => (
             <VerticalProductCard key={index} product={product} />
           ))}
@@ -150,15 +146,19 @@ export function Products({
   return (
     <div className="bg-gray-50 p-0">
       {/* <FilterBar /> */}
-      <Accordion type="multiple" defaultValue={
-          Object.keys(categorizedProducts).map((category, index) => `category-${index}`)
-      } className="w-full" >
+      <Accordion
+        type="multiple"
+        defaultValue={Object.keys(categorizedProducts).map(
+          (category, index) => `category-${index}`,
+        )}
+        className="w-full"
+      >
         {Object.keys(categorizedProducts).map((category, index) => (
-          <AccordionItem key={index} value={`category-${index}`}  >
-            <AccordionTrigger className="px-2">{category}</AccordionTrigger>
-            <AccordionContent >
-              {buildContent(category)}
-            </AccordionContent>
+          <AccordionItem key={index} value={`category-${index}`}>
+            <AccordionTrigger className="px-2 text-lg font-semibold">
+              {category}
+            </AccordionTrigger>
+            <AccordionContent>{buildContent(category)}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

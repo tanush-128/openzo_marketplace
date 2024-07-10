@@ -1,11 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 // import { GlobalConsts } from 'path-to-constants';
 // import { get as getAsyncStorageItem, set as setAsyncStorageItem } from '@react-native-async-storage/async-storage';
-import GlobalConsts from '~/constants/constants';
+import GlobalConsts from "~/constants/constants";
 
 export interface StoreData {
   id: string;
   name: string;
+  phone: string;
   image: string;
   location: string;
   selfDeliveryService: boolean;
@@ -33,6 +34,7 @@ export class Store {
   constructor(
     public id: string,
     public name: string,
+    public phone: string,
     public image: string,
     public location: string,
     public pincode: string,
@@ -53,17 +55,20 @@ export class Store {
     public seatingCapacity?: number,
     public reserveTableOnline?: boolean,
     public rating = 0.0,
-    public review_count = 0.0
-  ) { }
+    public review_count = 0.0,
+  ) {}
 
   static async getStoreWithUserEmail(userEmail: string): Promise<Store | null> {
     try {
-      const response = await axios.get(`${GlobalConsts.backend_url}/store/?user_email=${userEmail}`, {
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': GlobalConsts.token,
-        }
-      });
+      const response = await axios.get(
+        `${GlobalConsts.backend_url}/store/?user_email=${userEmail}`,
+        {
+          headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+            Authorization: GlobalConsts.token,
+          },
+        },
+      );
       if (response.status === 200) {
         console.log(response.data);
         return Store.fromJson(response.data);
@@ -81,49 +86,49 @@ export class Store {
       // const token = await getAsyncStorageItem('token');
       // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTkwNzA3MTYsInVzZXJfaWQiOiIzNGJlYjMyYi02MTI3LTQzYTUtOTIyOS04MDcyNzFlZTAzMWEifQ.MRry-kfn6-0tWsPQQV8uTP7ss-TO7mWEO_qbnwf4W2E"
       // if (!token) throw new Error('Token not found');
-  
 
-      const response = await fetch(`${GlobalConsts.backend_url}/stores/${storeId}`,
-    
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': "",
+      const response = await fetch(
+        `${GlobalConsts.backend_url}/stores/${storeId}`,
+
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+            Authorization: "",
+          },
+
+          next: {
+            revalidate: 3600,
+          },
         },
-      
-        next : {
-          revalidate:3600
-        }
-
-        
-      });
+      );
 
       if (response.status === 200) {
         // console.log(Store.fromJson(response.data).name);
         // console.log(await response.json() );
         return Store.fromJson(await response.json());
       } else {
-        throw new Error('Failed to load store');
+        throw new Error("Failed to load store");
       }
     } catch (error) {
       console.error(error);
-      throw new Error('Failed to load store');
+      throw new Error("Failed to load store");
     }
   }
 
   static async getStoresWithPincode(pincode: string): Promise<Store[]> {
     try {
-   const response = await fetch(`${GlobalConsts.backend_url}/stores/pincode/${pincode}`, 
+      const response = await fetch(
+        `${GlobalConsts.backend_url}/stores/pincode/${pincode}`,
         {
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization':"",
+          headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+            Authorization: "",
+          },
+          next: {
+            revalidate: 3600,
+          },
         },
-        next : {
-          revalidate:3600
-        }
-      }
       );
       if (response.status === 200) {
         const stores: Store[] = await response.json();
@@ -131,18 +136,24 @@ export class Store {
       } else {
         return [];
       }
-
     } catch (error) {
       console.error(error);
       return [];
     }
   }
 
-  static async getStoreByPincodeAndCategory(pincode: string, category: string): Promise<Store[]> {
+  static async getStoreByPincodeAndCategory(
+    pincode: string,
+    category: string,
+  ): Promise<Store[]> {
     try {
-      const response = await axios.get(`${GlobalConsts.backend_url}/stores/pincode/${pincode}/category/${category}`);
+      const response = await axios.get(
+        `${GlobalConsts.backend_url}/stores/pincode/${pincode}/category/${category}`,
+      );
       if (response.status === 200) {
-        const stores: Store[] = response.data.map((store: any) => Store.fromJson(store));
+        const stores: Store[] = response.data.map((store: any) =>
+          Store.fromJson(store),
+        );
         return stores;
       } else {
         return [];
@@ -153,16 +164,24 @@ export class Store {
     }
   }
 
-  static async searchStores(pincode: string, nameContains: string): Promise<Store[]> {
+  static async searchStores(
+    pincode: string,
+    nameContains: string,
+  ): Promise<Store[]> {
     try {
-      const response = await axios.get(`${GlobalConsts.backend_url}/search/stores/${pincode}?term=${nameContains}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': GlobalConsts.token,
-        }
-      });
+      const response = await axios.get(
+        `${GlobalConsts.backend_url}/search/stores/${pincode}?term=${nameContains}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: GlobalConsts.token,
+          },
+        },
+      );
       if (response.status === 200) {
-        const stores: Store[] = response.data.map((store: any) => Store.fromJson(store));
+        const stores: Store[] = response.data.map((store: any) =>
+          Store.fromJson(store),
+        );
         return stores;
       } else {
         return [];
@@ -175,32 +194,32 @@ export class Store {
 
   static fromJson(json: any): Store {
     return new Store(
-      json['id'],
-      json['name'],
-      json['image'],
-      json['location'],
-      json['pincode'],
-      json['description'],
-      json['address'],
-      json['opening_time'],
-      json['closing_time'],
-      json['self_delivery_service'],
-      json['details_complete'] ?? false,
-      json['category'] ?? "",
-      json['sub_category'] ?? "",
-      json['primary_cuisine'],
-      json['secondary_cuisine'],
-      json['avg_price_per_person'],
-      json['pure_veg'] ?? false,
-      json['alcohol'],
-      json['table_count'],
-      json['seating_capacity'],
-      json['reserve_table_online'],
-      parseFloat(json['rating'].toString()),
-      parseFloat(json['review_count'].toString())
+      json["id"],
+      json["name"],
+      json["phone"],
+      json["image"],
+      json["location"],
+      json["pincode"],
+      json["description"],
+      json["address"],
+      json["opening_time"],
+      json["closing_time"],
+      json["self_delivery_service"],
+      json["details_complete"] ?? false,
+      json["category"] ?? "",
+      json["sub_category"] ?? "",
+      json["primary_cuisine"],
+      json["secondary_cuisine"],
+      json["avg_price_per_person"],
+      json["pure_veg"] ?? false,
+      json["alcohol"],
+      json["table_count"],
+      json["seating_capacity"],
+      json["reserve_table_online"],
+      parseFloat(json["rating"].toString()),
+      parseFloat(json["review_count"].toString()),
     );
   }
 }
 
-
-// export 
+// export

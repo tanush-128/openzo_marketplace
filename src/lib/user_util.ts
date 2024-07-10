@@ -4,9 +4,6 @@
 // import useUserStore from '~/providers/userStore';
 // import { getLocation } from '~/services/LocationService';
 
-
-
-
 // export async function handleUserLogin( mobileNo : string) {
 //   try {
 //     const isSignedIn = await User.signIn(mobileNo);
@@ -52,7 +49,7 @@
 //   if (userData.notificationToken !== fcmToken || userData.userId !== user?.id) {
 //     userData.notificationToken = fcmToken;
 //     userData.userId = user?.id || "";
-   
+
 //     userData = await UserData.updateUserData(userData);
 //   }
 //   localStorage.setItem('user_data_id', userData.id);
@@ -79,36 +76,32 @@
 //   }
 // }
 
-
-
-
-
-import { User } from '~/models/user';
-import useUserStore from '~/providers/userStore';
-import { getLocation } from '~/services/LocationService';
+import { User } from "~/models/user";
+import useUserStore from "~/providers/userStore";
+import { getLocation } from "~/services/LocationService";
 
 export async function handleUserData() {
-  const fcmToken = localStorage.getItem('fcmToken')!;
-  const token = localStorage.getItem('token');
-   console.log('Token:', token);
+  const fcmToken = localStorage.getItem("fcmToken");
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
   let user: User;
-  if (token === null || token === '') {
-    user = await createUser( null, fcmToken);
+  if (token === null || token === "") {
+    user = await createUser(null, fcmToken ?? "");
   } else {
     user = await User.getUserWithJWT();
-    user = await updateUserData(user, fcmToken);
-    localStorage.setItem('user_id', user.id);
+    user = await updateUserData(user, fcmToken ?? "");
   }
 
   useUserStore.getState().setUser(user);
+  localStorage.setItem("user_id", user.id);
 }
 
-async function updateUserData( user: User, fcmToken: string): Promise<User> {
+async function updateUserData(user: User, fcmToken: string): Promise<User> {
   if (user.notificationToken !== fcmToken || !user.address) {
     user.notificationToken = fcmToken;
     let position = await getLocation();
     if (!position) {
-      console.log('Location permission not granted');
+      console.log("Location permission not granted");
       // position = await showLocationPermissionBottomSheet(context);
     }
 
@@ -122,17 +115,20 @@ async function updateUserData( user: User, fcmToken: string): Promise<User> {
   return user;
 }
 
-async function createUser( phone: string | null, fcmToken: string): Promise<User> {
+async function createUser(
+  phone: string | null,
+  fcmToken: string,
+): Promise<User> {
   let position = await getLocation();
   if (!position) {
-    console.log('Location permission not granted');
+    console.log("Location permission not granted");
     // position = await showLocationPermissionBottomSheet(context);
   }
 
   if (position) {
     const user = new User({
-      id: '',
-      phone: phone ?? '',
+      id: "",
+      phone: phone ?? "",
       latitude: position.coords.latitude.toString(),
       longitude: position.coords.longitude.toString(),
       notificationToken: fcmToken,
@@ -141,6 +137,5 @@ async function createUser( phone: string | null, fcmToken: string): Promise<User
     return await User.registerUser(user);
   }
 
-  throw new Error('Location permission not granted');
+  throw new Error("Location permission not granted");
 }
-

@@ -99,44 +99,59 @@ class User {
   }
 
   static async getUserWithJWT(): Promise<User> {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error("Token not found");
     }
 
     const response = await fetch(`${User.endpoint}/jwt`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': token,
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: token,
       },
     });
 
     if (response.ok) {
       const userJson = await response.json();
-      console.log('User:', userJson.pincode, userJson.city, userJson.state);
+      console.log("User:", userJson.pincode, userJson.city, userJson.state);
       return User.fromJson(userJson);
     } else {
-      localStorage.removeItem('token');
-      throw new Error('Failed to load user');
+      localStorage.removeItem("token");
+      throw new Error("Failed to load user");
     }
   }
 
   static async registerUser(user: User): Promise<User> {
-
+    console.log("Registering user:", user.toJson());
     // use axios instead of fetch
-    const response = await axios.post(User.endpoint +"/", user.toJson());
+    // const response = await axios.post(User.endpoint + "/", user.toJson());
 
-    if (response.status === 201) {
-      localStorage.setItem('token', response.data.token);
-      console.log('JWT Token:', response.data.token);
-      return User.fromJson(response.data.user);
+    const response = await fetch(User.endpoint + "/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(user.toJson()),
+    });
+
+    if (response.ok) {
+      console.log("Response:");
+      // localStorage.setItem("token", response.data.token);
+      // console.log("JWT Token:", response.data.token);
+      // const user = User.fromJson(response.data.user);
+
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      console.log("JWT Token:", data.token);
+      const user = User.fromJson(data.user);
+
+      console.log("User:", user);
+      return user;
     }
 
-    throw new Error(response.data.error);
-
-    
-
+    throw new Error("Failed to register user");
+    // throw new Error(data.error);
 
     // const response = await fetch(User.endpoint, {
     //   method: 'POST',
@@ -159,16 +174,16 @@ class User {
   }
 
   static async updateUser(user: User): Promise<User> {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error("Token not found");
     }
 
-    const response = await fetch(User.endpoint, {
-      method: 'PUT',
+    const response = await fetch(User.endpoint + "/", {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': token,
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: token,
       },
       body: JSON.stringify(user.toJson()),
     });
@@ -181,11 +196,16 @@ class User {
     throw new Error(errorData.error);
   }
 
-  static async verifyOTP(mobile: string, verificationId: string, otp: string, userId: string): Promise<string> {
+  static async verifyOTP(
+    mobile: string,
+    verificationId: string,
+    otp: string,
+    userId: string,
+  ): Promise<string> {
     const response = await fetch(`${User.endpoint}/otp/verify`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify({
         phone_no: mobile,
@@ -197,8 +217,8 @@ class User {
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem('token', data.token);
-      console.log('JWT Token:', data.token);
+      localStorage.setItem("token", data.token);
+      console.log("JWT Token:", data.token);
       return data.token;
     } else {
       const errorData = await response.json();
@@ -208,9 +228,9 @@ class User {
 
   static async generateOTP(mobile: string): Promise<string> {
     const response = await fetch(`${User.endpoint}/otp`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify({ phone_no: mobile }),
     });

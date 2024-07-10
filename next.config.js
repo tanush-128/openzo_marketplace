@@ -4,9 +4,11 @@
  */
 await import("./src/env.js");
 import withPWAInit from "next-pwa";
+import { env } from "process";
 
 const withPWA = withPWAInit({
   dest: "public",
+  disable: env.NODE_ENV === "development",
 });
 
 // /** @type {import("next").NextConfig} */
