@@ -2,47 +2,12 @@
 
 import Link from "next/link";
 
-// const MainCategories = () => {
-//   return (
-//     <div className="grid grid-cols-4 justify-center gap-2 px-6">
-//       <MainCategoryTile title="Order food" />
-//       <MainCategoryTile title="Ride Hail" />
-//       <MainCategoryTile title="Services" />
-//       <MainCategoryTile title="Stores" />
-//       <MainCategoryTile title="Rentals" />
-//       <MainCategoryTile title="Products" />
-//       <MainCategoryTile title="Resell" />
-//       <MainCategoryTile title="Local events" />
-//       <MainCategoryTile title="Hot deals" />
-//     </div>
-//   );
-// };
-
-// const MainCategoryTile = ({ title }: { title: string }) => {
-//   return (
-//     <div className="flex  flex-col items-center justify-center">
-//       <div className=" w-16 overflow-hidden rounded-full bg-white shadow-md">
-//         <img
-//           src={`/assets/images/top/${title}.png`}
-//           alt={title}
-//           className="h-full w-full object-cover"
-//         />
-//       </div>
-//       <p className="mt-2 text-sm font-semibold">{title}</p>
-//     </div>
-//   );
-// };
-
-// export default MainCategories;
-
-// import MainCategoryTile from './MainCategoryTile';
-
 const categories = [
-  { title: "Food delivery" },
-  { title: "Service stores" },
-  { title: "Stores" },
+  { title: "Food delivery", link: "/category/Food" },
+  { title: "Service stores", link: "/category/Services" },
+  { title: "Stores", link: "/category/Stores" },
   { title: "Grocery delivery" },
-  { title: "Services" },
+  { title: "Services", link: "/category/Home Services" },
   { title: "Hotel rooms" },
   { title: "Ride hire" },
 ];
@@ -51,7 +16,11 @@ const CategoryGrid: React.FC = () => {
   return (
     <div className="grid grid-cols-4 gap-2 px-4">
       {categories.map((category) => (
-        <MainCategoryTile key={category.title} title={category.title} />
+        <MainCategoryTile
+          key={category.title}
+          title={category.title}
+          link={category.link}
+        />
       ))}
       <Link href={"/category"}>
         <div className="flex cursor-pointer flex-col items-center">
@@ -82,11 +51,12 @@ export default CategoryGrid;
 
 interface MainCategoryTileProps {
   title: string;
+  link?: string;
 }
 
-const MainCategoryTile: React.FC<MainCategoryTileProps> = ({ title }) => {
+const MainCategoryTile: React.FC<MainCategoryTileProps> = ({ title, link }) => {
   return (
-    <div className="flex flex-col items-center">
+    <Link href={link ?? "#"} className="flex flex-col items-center">
       <div className="h-14 w-14 rounded-full bg-white p-2">
         <img
           src={`/assets/images/home page icons/${title}.png`}
@@ -95,6 +65,6 @@ const MainCategoryTile: React.FC<MainCategoryTileProps> = ({ title }) => {
         />
       </div>
       <p className="mt-2 text-center text-xs">{title}</p>
-    </div>
+    </Link>
   );
 };

@@ -55,7 +55,7 @@ const BottomNavBar = () => {
   return (
     <div
       className={
-        "fixed bottom-0 mx-auto w-full max-w-lg border-t border-gray-200 bg-white " +
+        "fixed bottom-0 mx-auto w-full max-w-lg border-t border-gray-200 bg-white py-2 " +
         poppins.className
       }
     >
@@ -70,7 +70,7 @@ const BottomNavBar = () => {
               onClick={() => setSelectedIndex(index)}
             >
               <Image src={item.icon} alt={item.label} width={24} height={24} />
-              <span className="text-xs">{item.label}</span>
+              {/* <span className="text-xs">{item.label}</span> */}
             </div>
           </Link>
         ))}

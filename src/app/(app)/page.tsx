@@ -29,7 +29,7 @@ export default function HomePage() {
       </div>
       <div className="sticky top-0 z-50  ">
         {/* <SearchBar /> */}
-        <div className="w-full bg-white p-2">
+        <div className="w-full bg-white p-2 px-4 shadow-md">
           <GlobalSearchBar />
         </div>
       </div>
