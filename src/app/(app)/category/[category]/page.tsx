@@ -10,10 +10,12 @@ const Page = ({
     category: string;
   };
 }) => {
-  const category = params.category;
+  const category = params.category.replace(/%20/g, " ");
+
   const searchParams = useSearchParams();
   const subCategory = searchParams.get("subCategory");
-
+  console.log(category);
+  console.log(subCategory);
   return (
     <StoresByCategory
       category={GlobalConsts.categories.find((cat) => cat.name === category)!}

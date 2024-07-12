@@ -10,11 +10,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
     if (product.images.length === 0) return <></>;
 
     return (
-      <div className="w-full overflow-hidden rounded-t-lg bg-white">
+      <div className="max-h-[200px]  overflow-hidden rounded-t-lg bg-white">
         <img
           src={product.images[0]!.image}
           alt={product.name}
-          className="w-full"
+          className="mx-auto max-h-[200px] object-contain"
         />
       </div>
     );

@@ -2,7 +2,9 @@ import { useState, useEffect, Suspense } from "react";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
 import SubcategoryListTile from "./SubcategoryListTile";
 import { Category, SubCategory } from "~/constants/constants";
-import { StoresList } from "~/app/storesList";
+
+import { Store } from "~/models/store";
+import StoreCard from "~/widgets/storeCard";
 
 interface StoresByCategoryProps {
   category: Category;
@@ -59,9 +61,9 @@ const StoresByCategory: React.FC<StoresByCategoryProps> = ({
       <div className="">
         <Suspense fallback={<div>Loading...</div>}>
           <StoresList
-          //   subCategory={subCategory}
-          //   category={category}
-          //   pincode="123456"
+            subCategory={subCategory?.name}
+            category={category.name}
+            //   pincode="123456"
           />
         </Suspense>
       </div>
@@ -70,3 +72,31 @@ const StoresByCategory: React.FC<StoresByCategoryProps> = ({
 };
 
 export default StoresByCategory;
+
+async function StoresList({
+  category,
+  subCategory,
+}: {
+  category: string;
+  subCategory?: string;
+}) {
+  // const stores = await Store.getStoreByPincodeAndCategory("123456", category);
+  let stores;
+
+  if (subCategory) {
+    stores = await Store.getStoresByPincodeAndSubCategory(
+      "123456",
+      subCategory,
+    );
+  } else {
+    stores = await Store.getStoreByPincodeAndCategory("123456", category);
+  }
+
+  return (
+    <div className="p-2">
+      {stores.map((store, index) => (
+        <StoreCard key={index} store={store} />
+      ))}
+    </div>
+  );
+}

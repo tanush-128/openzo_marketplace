@@ -164,6 +164,48 @@ export class Store {
     }
   }
 
+  //   static Future<List<Store>> getStoreByPincodeAndSubCategory(
+  //     String pincode, String subCategory) async {
+  //   http.Request req = http.Request('GET',
+  //       Uri.parse('$endpoint/pincode/$pincode/subcategory/$subCategory'));
+
+  //   http.StreamedResponse response = await req.send();
+  //   if (response.statusCode == 200) {
+  //     List<Store> stores = [];
+  //     var body = await response.stream.bytesToString();
+  //     for (var store in jsonDecode(body)) {
+  //       stores.add(Store.fromJson(store));
+  //     }
+  //     return stores;
+  //   } else {
+  //     return [];
+  //   }
+  // }
+
+
+
+  static async getStoresByPincodeAndSubCategory(
+    pincode: string,
+    subCategory: string,
+  ): Promise<Store[]> {
+    try {
+      const response = await axios.get(
+        `${GlobalConsts.backend_url}/stores/pincode/${pincode}/subcategory/${subCategory}`,
+      );
+      if (response.status === 200) {
+        const stores: Store[] = response.data.map((store: any) =>
+          Store.fromJson(store),
+        );
+        return stores;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   static async searchStores(
     pincode: string,
     nameContains: string,

@@ -75,14 +75,14 @@ const CategoriesPage = () => {
             <div className="mb-4">
               <h2 className="text-2xl font-bold">{category.name}</h2>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4 ">
               {category.subCategories.map((subCategory) => (
                 <Link
                   href={`/category/${category.name}?subCategory=${subCategory.name}`}
                   key={subCategory.name}
                   className="cursor-pointer"
                 >
-                  <div className="flex items-center justify-center rounded-2xl bg-[#e5f3f3] p-4">
+                  <div className="mx-auto flex aspect-square max-h-16 items-center justify-center rounded-2xl bg-[#e5f3f3] p-4">
                     <Image
                       src={`/assets/images/Categories page/${category.name}/${subCategory.name}.png`}
                       width={42}

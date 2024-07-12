@@ -1,68 +1,3 @@
-// "use client";
-// import {
-//   Accordion,
-//   AccordionContent,
-//   AccordionItem,
-//   AccordionTrigger,
-// } from "~/components/ui/accordion";
-// import { Product } from "~/models/product";
-// import ProductCard from "~/widgets/productCard";
-// import { CategorizedProducts } from "./[storeId]/page";
-// import VerticalProductCard from "~/components/product/verticalProduct";
-// import ServiceCard from "~/components/product/ServiceCard";
-
-// function categorizeProducts(products: Product[]): CategorizedProducts {
-//   const categories: CategorizedProducts = {};
-
-//   for (const product of products) {
-//     if (categories[product.category]) {
-//       categories[product.category]?.push(product);
-//     } else {
-//       categories[product.category] = [product];
-//     }
-//   }
-
-//   return categories;
-// }
-
-// export function Products({
-//   productsObj,
-// }: {
-//   productsObj: any;
-// }) {
-
-//   var products: Product[] = productsObj.map((product: any) => Product.fromJson(product));
-
-//   const categorizedProducts = categorizeProducts(products);
-
-//   // console.log('cart', cart);
-//   return (
-//     <div className="bg-white px-4">
-//       <Accordion
-//         type="single"
-//         collapsible
-//         className="w-full"
-
-//         defaultValue="category-0"
-//       >
-//         {Object.keys(categorizedProducts).map((category, index) => (
-//           <AccordionItem key={index} value={`category-${index}`}>
-//             <AccordionTrigger>{category}</AccordionTrigger>
-//             <AccordionContent>
-//               {categorizedProducts[category]?.map((product, index) => (
-//                 // <ProductCard key={index} product={product} />
-//                 // <VerticalProductCard key={index} product={product} />
-//                 <ServiceCard key={index} product={product} />
-//               ))}
-//             </AccordionContent>
-//           </AccordionItem>
-//         ))}
-
-//       </Accordion>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import ServiceCard from "~/components/product/ServiceCard";
@@ -75,6 +10,8 @@ import {
 } from "~/components/ui/accordion";
 import { Product } from "~/models/product";
 import ProductCard from "~/components/product/productCard";
+import { useRef } from "react";
+import CategoryMenu from "./CategoryMenu";
 // import ProductCard from "~/components/product/ProductCard";
 // import VerticalProductCard from "~/components/product/VerticalProductCard";
 // import ServiceCard from "~/components/product/ServiceCard";
@@ -106,7 +43,10 @@ export function Products({
   storeType: string;
 }) {
   const products: Product[] = [];
-
+  const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {
+    // "Category 1": useRef<HTMLDivElement>(null),
+    // "Category 2": useRef<HTMLDivElement>(null),
+  };
   for (const obj of productsObj) {
     const product = Product.fromJson(obj);
     if (product.type !== "post") products.push(product);
@@ -144,7 +84,12 @@ export function Products({
   };
 
   return (
-    <div className="bg-gray-50 p-0">
+    <div className=" bg-gray-50 p-0">
+      <CategoryMenu
+        categoryKeys={categoryKeys}
+        categories={categorizedProducts}
+      />
+
       {/* <FilterBar /> */}
       <Accordion
         type="multiple"
@@ -153,14 +98,22 @@ export function Products({
         )}
         className="w-full"
       >
-        {Object.keys(categorizedProducts).map((category, index) => (
-          <AccordionItem key={index} value={`category-${index}`}>
-            <AccordionTrigger className="px-2 text-lg font-semibold">
-              {category}
-            </AccordionTrigger>
-            <AccordionContent>{buildContent(category)}</AccordionContent>
-          </AccordionItem>
-        ))}
+        {Object.keys(categorizedProducts).map((category, index) => {
+          categoryKeys[category] = useRef<HTMLDivElement>(null);
+
+          return (
+            <AccordionItem
+              ref={categoryKeys[category]}
+              key={index}
+              value={`category-${index}`}
+            >
+              <AccordionTrigger className="px-2 text-lg font-semibold">
+                {category}
+              </AccordionTrigger>
+              <AccordionContent>{buildContent(category)}</AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </div>
   );
