@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchResultsPage from "~/components/search/SearchResultsPage";
 import { Product } from "~/models/product";
 import { Store } from "~/models/store";
@@ -42,4 +42,12 @@ const SearchPage = () => {
   return <SearchResultsPage products={products} stores={stores} />;
 };
 
-export default SearchPage;
+const SearchPageWithSuspense = () => {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <SearchPage />
+    </React.Suspense>
+  );
+};
+
+export default SearchPageWithSuspense;

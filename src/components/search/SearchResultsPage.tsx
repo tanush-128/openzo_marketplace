@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import FilterChip from "./FilterChipWidget";
 import ServiceCard from "../product/ServiceCard";
