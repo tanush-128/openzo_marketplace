@@ -1,12 +1,18 @@
 "use client";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import MiniSearch from "minisearch";
 import { Product } from "~/models/product";
 import ProductCard from "~/components/product/productCard";
 
-const SearchBar = ({ productsObj }: { productsObj: any }) => {
+const SearchBar = ({
+  productsObj,
+  onClose,
+}: {
+  productsObj: any;
+  onClose: () => void;
+}) => {
   // var products: Product[] = await Product.fetchAll();
   // var products: Product[] = Product.fetchByStore(storeId);
   const [products, setProducts] = useState<Product[]>([]);
@@ -34,11 +40,9 @@ const SearchBar = ({ productsObj }: { productsObj: any }) => {
   );
 
   return (
-    <div className="w-full h-12">
-      <div className="w-full h-full bg-gray-100 border border-gray-200 rounded-lg flex items-center px-2">
-        {/* <Search size={24} />
-         */}
-        <img src="/assets/icons/search.png" alt="Search" className="w-6 h-6" />
+    <div className="h-12 w-full px-2">
+      <div className="flex h-full w-full items-center rounded-lg border border-gray-200 bg-gray-100 px-2">
+        <Search size={24} className="font-extrabold text-primary" />
         <input
           type="text"
           placeholder="Search Products..."
@@ -50,15 +54,20 @@ const SearchBar = ({ productsObj }: { productsObj: any }) => {
             });
             setQuery(e.target.value);
           }}
-          className="flex-grow bg-transparent outline-none px-2"
+          className="flex-grow bg-transparent px-2 outline-none"
         />
-        {query !== "" && (
-          <span onClick={() => setQuery("")}>
+        {
+          <span
+            onClick={() => {
+              setQuery("");
+              onClose();
+            }}
+          >
             <X />
           </span>
-        )}
+        }
       </div>
-      <div className="mt-4">
+      <div className="shadow-lg">
         {filteredProducts.map(
           (product) =>
             product && <ProductCard key={product?.id} product={product} />,

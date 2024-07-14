@@ -84,7 +84,7 @@ export function Products({
   };
 
   return (
-    <div className=" bg-gray-50 p-0">
+    <div className=" bg-gray-50 p-0 text-black">
       <CategoryMenu
         categoryKeys={categoryKeys}
         categories={categorizedProducts}
@@ -107,7 +107,7 @@ export function Products({
               key={index}
               value={`category-${index}`}
             >
-              <AccordionTrigger className="px-2 text-lg font-semibold">
+              <AccordionTrigger className="bg-white px-4 text-xl  font-semibold">
                 {category}
               </AccordionTrigger>
               <AccordionContent>{buildContent(category)}</AccordionContent>

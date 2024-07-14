@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Review from "~/models/review";
 import { Store } from "~/models/store";
 import ReviewSummary from "./ReviewSummary";
@@ -8,12 +8,16 @@ import ReviewTile from "./ReviewTile";
 interface ReviewsListProps {
   storeId: string;
   store: Store | null;
+  onScrollToTop: () => void;
 }
 
-const ReviewsList: React.FC<ReviewsListProps> = ({ storeId, store }) => {
+const ReviewsList: React.FC<ReviewsListProps> = ({
+  storeId,
+  store,
+  onScrollToTop,
+}) => {
   const [reviewData, setReviewData] = useState<Review[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
-
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,8 +33,11 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ storeId, store }) => {
     };
 
     fetchReviews();
-    // fetchStore();
-  }, [storeId, store]);
+  }, [storeId]);
+
+  useEffect(() => {
+    onScrollToTop();
+  }, [onScrollToTop]);
 
   if (!store) {
     return (
@@ -56,7 +63,6 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ storeId, store }) => {
     );
   }
 
-  //   const userReview = reviewData.find((review) => review.userId === user.id);
   const reviews = reviewData;
 
   const ratingDistribution = {

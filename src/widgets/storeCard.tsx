@@ -51,24 +51,21 @@
 
 // export default StoreCard;
 
-
-
 // components/StoreCard.tsx
 // "use client";
 // import { useState, useEffect } from 'react';
 // import { useRouter } from 'next/router';
 // import Image from 'next/image';
-import { Store } from '~/models/store';
-import GlobalConsts, { StoreType } from '../constants/constants';
+import { Store } from "~/models/store";
+import GlobalConsts, { StoreType } from "../constants/constants";
 // import { Store } from '~/models/store';
 
 // export default StoreCard;
 
-
 // app/components/StoreCard.tsx
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 // import GlobalConsts{  StoreType, Store } from '../constants/constants';
 
 interface StoreCardProps {
@@ -76,23 +73,21 @@ interface StoreCardProps {
 }
 
 const StoreCard = ({ store }: StoreCardProps) => {
-  const storeType = GlobalConsts.categories.find(
-    (category) => category.name === store.category
-  )?.type || StoreType.Store;
+  const storeType =
+    GlobalConsts.categories.find((category) => category.name === store.category)
+      ?.type || StoreType.Store;
 
   return (
     <Link href={`/store/${store.id}`}>
-      <div
-        className="cursor-pointer rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md my-3 mx-1"
-      >
-        <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+      <div className="mx-1 my-3 cursor-pointer rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md">
+        <div className="relative h-48 w-full overflow-hidden rounded-t-2xl">
           <Image
             src={store.image}
             alt={store.name}
             layout="fill"
             objectFit="cover"
           />
-          <div className="absolute top-2 left-2 flex items-center space-x-1 rounded-md bg-black bg-opacity-50 px-2 py-1 text-white">
+          <div className="absolute left-2 top-2 flex items-center space-x-1 rounded-md bg-black bg-opacity-50 px-2 py-1 text-white">
             <p className="text-sm font-medium">{store.sub_category}</p>
           </div>
         </div>
@@ -139,15 +134,16 @@ const StoreCard = ({ store }: StoreCardProps) => {
         </div>
       </div>
     </Link>
-
   );
 };
 
 const Rating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex items-center space-x-1 rounded-md bg-yellow-100 px-2 py-1">
-
-      <span className="text-sm font-medium text-gray-600"> ⭐ {rating.toFixed(1)}</span>
+      <span className="text-sm font-medium text-gray-600">
+        {" "}
+        ⭐ {rating.toFixed(1)}
+      </span>
     </div>
   );
 };

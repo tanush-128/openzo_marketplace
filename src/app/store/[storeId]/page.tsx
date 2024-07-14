@@ -25,8 +25,10 @@ export async function generateMetadata({
   var store: Store = await Store.fetchStore(storeId);
 
   return {
-    title: store.name,
-    description: `${store.name} Manipal ${store.sub_category} ${store.description} ${store.pincode}
+    title: `${store.name} - ${store.sub_category} in Manipal`,
+    description: `${store.name} Manipal, 576107, 576104, ${store.sub_category} - ${store.category} 
+
+    ${store.description} 
         ${
           GlobalConsts.categories.find(
             (category) => category.name === store.category,
