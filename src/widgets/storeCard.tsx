@@ -93,7 +93,9 @@ const StoreCard = ({ store }: StoreCardProps) => {
         </div>
         <div className="p-4">
           <div className="flex justify-between">
-            <h3 className="text-lg font-semibold">{store.name}</h3>
+            <div className="text-lg  font-semibold text-black">
+              {store.name}
+            </div>
             <div className="flex items-center">
               <Rating rating={store.rating} />
               {storeType === StoreType.Food && (

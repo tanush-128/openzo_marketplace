@@ -17,15 +17,21 @@ const VerticalProductCard: React.FC<VerticalProductCardProps> = ({
         href={`/store/${product.store_id}/product/${product.id}`}
         className="cursor-pointer"
       >
-        <div className="relative mb-3 h-[200px] overflow-hidden rounded-t-lg">
+        {/* <div className="relative z-0 mb-3 h-[200px] overflow-hidden rounded-t-lg">
           <Image
             alt={product.name}
             src={product.images.length > 0 ? product.images[0]!.image : ""}
             layout="fill"
             objectFit="contain"
-            className="h-full w-full"
+            className="z-0 h-full w-full"
           />
-        </div>
+        </div> */}
+        {product.images.length > 0 && (
+          <img
+            src={product.images[0]!.image}
+            className="z-0 h-[200px] max-w-full object-contain"
+          />
+        )}
         <div className="px-2">
           <div className="mb-1 line-clamp-1 text-lg font-medium text-black">
             {product.name}
@@ -51,7 +57,9 @@ const VerticalProductCard: React.FC<VerticalProductCardProps> = ({
               </div>
             </div>
           ) : (
-            <div className="text-lg font-semibold">₹{product.mrp}</div>
+            <div className="text-lg font-semibold text-black">
+              ₹{product.mrp}
+            </div>
           )}
         </div>
       </Link>

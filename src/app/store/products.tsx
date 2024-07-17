@@ -12,10 +12,7 @@ import { Product } from "~/models/product";
 import ProductCard from "~/components/product/productCard";
 import { useRef } from "react";
 import CategoryMenu from "./CategoryMenu";
-// import ProductCard from "~/components/product/ProductCard";
-// import VerticalProductCard from "~/components/product/VerticalProductCard";
-// import ServiceCard from "~/components/product/ServiceCard";
-// import FilterBar from "~/components/product/FilterBar";
+import "~/styles/globals.css";
 
 interface CategorizedProducts {
   [category: string]: Product[];
@@ -43,10 +40,7 @@ export function Products({
   storeType: string;
 }) {
   const products: Product[] = [];
-  const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {
-    // "Category 1": useRef<HTMLDivElement>(null),
-    // "Category 2": useRef<HTMLDivElement>(null),
-  };
+  const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {};
   for (const obj of productsObj) {
     const product = Product.fromJson(obj);
     if (product.type !== "post") products.push(product);
@@ -91,30 +85,32 @@ export function Products({
       />
 
       {/* <FilterBar /> */}
-      <Accordion
-        type="multiple"
-        defaultValue={Object.keys(categorizedProducts).map(
-          (category, index) => `category-${index}`,
-        )}
-        className="w-full"
-      >
-        {Object.keys(categorizedProducts).map((category, index) => {
-          categoryKeys[category] = useRef<HTMLDivElement>(null);
+      <div className="no-scrollbar max-h-screen overflow-y-auto">
+        <Accordion
+          type="multiple"
+          defaultValue={Object.keys(categorizedProducts).map(
+            (category, index) => `category-${index}`,
+          )}
+          className="w-full"
+        >
+          {Object.keys(categorizedProducts).map((category, index) => {
+            categoryKeys[category] = useRef<HTMLDivElement>(null);
 
-          return (
-            <AccordionItem
-              ref={categoryKeys[category]}
-              key={index}
-              value={`category-${index}`}
-            >
-              <AccordionTrigger className="bg-white px-4 text-xl  font-semibold">
-                {category}
-              </AccordionTrigger>
-              <AccordionContent>{buildContent(category)}</AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+            return (
+              <AccordionItem
+                ref={categoryKeys[category]}
+                key={index}
+                value={`category-${index}`}
+              >
+                <AccordionTrigger className="bg-white px-4 text-xl  font-semibold">
+                  {category}
+                </AccordionTrigger>
+                <AccordionContent>{buildContent(category)}</AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </div>
     </div>
   );
 }

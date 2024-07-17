@@ -3,6 +3,7 @@ import StorePageDynamic from "../pageElements";
 import { Store } from "~/models/store";
 import { Metadata } from "next";
 import GlobalConsts from "~/constants/constants";
+import "~/styles/globals.css";
 
 interface CategorizedProducts {
   [category: string]: Product[];

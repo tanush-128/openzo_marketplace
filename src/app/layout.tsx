@@ -36,7 +36,7 @@ export default function RootLayout({
       <body
         className={`mx-auto w-full max-w-lg overflow-x-hidden ${poppins.className} `}
       >
-        <div className="mb-12">{children}</div>
+        <div className="">{children}</div>
       </body>
     </html>
   );

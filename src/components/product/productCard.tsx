@@ -77,8 +77,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     updateSaleOrderItems(product, selectedSize, selectedColor, newQuantity);
   };
 
-  
-
   return (
     <div className="mb-2 bg-white p-2 shadow-sm">
       <Drawer>
@@ -117,7 +115,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {product.images.length > 0 && (
                 <img
                   src={product.images[0]!.image}
-                  className="h-20 w-20 rounded-lg border-2 border-gray-200 object-contain"
+                  className="z-0 h-20 w-20 rounded-lg border-2 border-gray-200 object-contain"
                 />
               )}
             </div>

@@ -27,7 +27,7 @@ const SubcategoryListTile: React.FC<SubcategoryListTileProps> = ({
           className=" h-9 w-9"
         />
       </div>
-      <span className="line-clamp-2 text-center text-xs font-semibold">
+      <span className="line-clamp-2 text-center text-xs font-semibold text-black">
         {e.name}
       </span>
     </div>

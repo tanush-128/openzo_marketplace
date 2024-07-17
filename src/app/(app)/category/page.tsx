@@ -90,7 +90,7 @@ const CategoriesPage = () => {
                       alt={subCategory.name}
                     />
                   </div>
-                  <p className="text-center text-sm font-semibold">
+                  <p className="text-center text-sm font-semibold text-black">
                     {subCategory.name}
                   </p>
                 </Link>

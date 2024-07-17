@@ -14,7 +14,7 @@ const categories = [
 
 const CategoryGrid: React.FC = () => {
   return (
-    <div className="grid grid-cols-4 gap-2 px-4">
+    <div className="grid grid-cols-4 gap-2 px-4 text-black">
       {categories.map((category) => (
         <MainCategoryTile
           key={category.title}
@@ -40,7 +40,7 @@ const CategoryGrid: React.FC = () => {
               ></path>
             </svg>
           </div>
-          <p className="mt-2 text-center text-xs">More</p>
+          <p className="mt-2 text-center text-xs text-black">More</p>
         </div>
       </Link>
     </div>
@@ -64,7 +64,7 @@ const MainCategoryTile: React.FC<MainCategoryTileProps> = ({ title, link }) => {
           className="h-full w-full object-contain"
         />
       </div>
-      <p className="mt-2 text-center text-xs">{title}</p>
+      <p className="mt-2 text-center text-xs text-black">{title}</p>
     </Link>
   );
 };

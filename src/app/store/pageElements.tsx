@@ -1,20 +1,22 @@
 "use client";
 // import { SalesProvider } from "~/providers/salesContext"
 import { NavBar, Space } from "antd-mobile";
-import { MoreOutline, SearchOutline } from "antd-mobile-icons";
-import { Poppins } from "next/font/google";
+import { SearchOutline } from "antd-mobile-icons";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import GlobalConsts, { StoreType } from "~/constants/constants";
 import { Store } from "~/models/store";
 import useSalesStore from "~/providers/salesStore";
-import "../../styles/globals.css";
+
 import { Products } from "./products";
 import StoreInfo from "./storeInfo";
-const poppins = Poppins({
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
+import { Swiper, Tabs } from "antd-mobile";
+import { useRef } from "react";
+
+import { SwiperRef } from "antd-mobile/es/components/swiper";
+import { useRouter } from "next/navigation";
+import ReviewsList from "~/components/ratings/ReviewsList";
+import SearchBar from "./search";
 
 const StorePageDynamic = ({
   storeID,
@@ -107,52 +109,60 @@ const StorePageDynamic = ({
       </div>
 
       <StoreInfo store={store} storeType={storeType} />
-
-      <div ref={containerRef}>
-        <div className="sticky top-12 z-20 bg-white">
-          <Tabs
-            activeKey={tabItems[activeIndex].key}
-            onChange={(key) => {
-              const index = tabItems.findIndex((item) => item.key === key);
+      <Suspense fallback={<div>Loading...</div>}>
+        <div ref={containerRef}>
+          <div className="sticky top-12 z-20 bg-white">
+            <Tabs
+              style={{
+                "--active-line-color": "#CD113B",
+                "--active-title-color": "#CD113B",
+              }}
+              activeKey={tabItems[activeIndex].key}
+              onChange={(key) => {
+                const index = tabItems.findIndex((item) => item.key === key);
+                setActiveIndex(index);
+                swiperRef.current?.swipeTo(index);
+              }}
+            >
+              {tabItems.map((item) => (
+                <Tabs.Tab
+                  title={item.title}
+                  key={item.key}
+                  className={"text-sm "}
+                />
+              ))}
+            </Tabs>
+          </div>
+          <Swiper
+            direction="horizontal"
+            loop
+            indicator={() => null}
+            ref={swiperRef}
+            defaultIndex={activeIndex}
+            onIndexChange={(index) => {
               setActiveIndex(index);
-              swiperRef.current?.swipeTo(index);
+              if (index === 1) {
+                // Assuming 1 is the index for Reviews tab
+                scrollToTop();
+              }
             }}
           >
-            {tabItems.map((item) => (
-              <Tabs.Tab title={item.title} key={item.key} className="text-sm" />
-            ))}
-          </Tabs>
+            <Swiper.Item>
+              <Products productsObj={productsObj} storeType={storeType} />
+            </Swiper.Item>
+            <Swiper.Item>
+              <ReviewsList
+                storeId={storeID}
+                store={store}
+                onScrollToTop={scrollToTop}
+              />
+            </Swiper.Item>
+            <Swiper.Item>
+              <div>蚂蚁</div>
+            </Swiper.Item>
+          </Swiper>
         </div>
-        <Swiper
-          direction="horizontal"
-          loop
-          indicator={() => null}
-          ref={swiperRef}
-          defaultIndex={activeIndex}
-          onIndexChange={(index) => {
-            setActiveIndex(index);
-            if (index === 1) {
-              // Assuming 1 is the index for Reviews tab
-              scrollToTop();
-            }
-          }}
-        >
-          <Swiper.Item>
-            <Products productsObj={productsObj} storeType={storeType} />
-          </Swiper.Item>
-          <Swiper.Item>
-            <ReviewsList
-              storeId={storeID}
-              store={store}
-              onScrollToTop={scrollToTop}
-            />
-          </Swiper.Item>
-          <Swiper.Item>
-            <div>蚂蚁</div>
-          </Swiper.Item>
-        </Swiper>
-      </div>
-
+      </Suspense>
       {cart?.total_amount && (
         <div className="fixed bottom-0 z-50 w-full max-w-lg bg-white p-2">
           <div className="flex justify-between">
@@ -189,27 +199,3 @@ const StorePageDynamic = ({
 };
 
 export default StorePageDynamic;
-
-// // import { Tabs, TabsList, TabsTrigger, TabsContent } from '@shadcn/ui';
-// import { AppBar, Toolbar } from "@mui/material";
-// import { styled } from "@mui/system";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-// import ReviewsList from "~/components/ratings/ReviewsList";
-
-// const StickyAppBar = styled(AppBar)({
-//   position: "sticky",
-//   top: 50,
-//   zIndex: 1000,
-//   boxShadow: "none",
-//   borderBottom: "1px solid #e0e0e0",
-//   backgroundColor: "white",
-// });
-
-import { Swiper, Tabs } from "antd-mobile";
-import { useRef } from "react";
-
-import { SwiperRef } from "antd-mobile/es/components/swiper";
-import { useRouter } from "next/navigation";
-import ReviewsList from "~/components/ratings/ReviewsList";
-import SearchBar from "./search";
-import { Locate } from "lucide-react";
