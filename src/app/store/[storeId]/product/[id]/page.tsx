@@ -9,6 +9,8 @@ import MoreBySameSeller from "../components/MoreBySameSeller";
 import useSalesStore from "~/providers/salesStore";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
 
+
+
 const ProductPage = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<SizeVariant | null>(null);
