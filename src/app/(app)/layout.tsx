@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google";
 import { Metadata, Viewport } from "next";
 import BottomNavBar from "~/components/bottomNavBar";
 import PWAInstallPrompt from "~/components/PWAInstallPrompt";
+import { Analytics } from "@vercel/analytics/react";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -12,7 +13,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: {
     default: "Openzo",
-    template: "%s | Openzo"
+    template: "%s | Openzo",
   },
   description: "Marketplace for locality",
   manifest: "/manifest.json",
@@ -35,18 +36,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-
-
-      <body className={`overflow-x-hidden w-full max-w-lg mx-auto ${poppins.className} `}>
+      <body
+        className={`mx-auto w-full max-w-lg overflow-x-hidden ${poppins.className} `}
+      >
         <div className="mb-12">
-        {children}
-
+          {children}
+          <Analytics />
         </div>
-          <PWAInstallPrompt />
-      <BottomNavBar  />
-      
+        <PWAInstallPrompt />
+        <BottomNavBar />
       </body>
-   
     </html>
   );
 }

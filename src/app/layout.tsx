@@ -1,5 +1,5 @@
 import "~/styles/globals.css";
-
+import { Analytics } from "@vercel/analytics/react";
 import { Poppins } from "next/font/google";
 import { Metadata, Viewport } from "next";
 
@@ -36,7 +36,10 @@ export default function RootLayout({
       <body
         className={`mx-auto w-full max-w-lg overflow-x-hidden ${poppins.className} `}
       >
-        <div className="">{children}</div>
+        <div className="">
+          {children}
+          <Analytics />
+        </div>
       </body>
     </html>
   );
