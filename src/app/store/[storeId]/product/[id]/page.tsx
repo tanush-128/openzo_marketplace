@@ -8,8 +8,7 @@ import SimilarProducts from "../components/SimilarProducts";
 import MoreBySameSeller from "../components/MoreBySameSeller";
 import useSalesStore from "~/providers/salesStore";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
-
-
+import { useRouter } from "next/navigation";
 
 const ProductPage = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<Product | null>(null);
@@ -18,7 +17,8 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const productId = params.id;
-  const { isInCart, updateSaleOrderItems } = useSalesStore();
+  const router = useRouter();
+  const { isInCart, updateSaleOrderItems, getSaleByStoreId } = useSalesStore();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -50,7 +50,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="mx-auto min-h-screen max-w-lg bg-gray-50">
       <div className="sticky top-0 z-30 mx-auto flex max-w-7xl justify-center bg-white px-3 py-2 md:px-4 lg:px-8">
         <GlobalSearchBar />
       </div>
@@ -120,20 +120,19 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
           </div>
         )}
 
-        <div className="fixed bottom-10 left-0 right-0 z-10 mb-4 bg-white px-4">
+        <div className="fixed bottom-0 left-0 right-0 z-10 mx-auto  max-w-lg bg-white px-4">
           {isInCart(product.id) ? (
             <button
-              className="w-full rounded bg-primary p-4 text-white"
-              onClick={
-                () => {}
-                // router.push(`/cart/${getSaleByStoreId(product.store_id)!.id}`)
-              }
+              className="w-full  bg-primary p-4 text-white"
+              onClick={() => {
+                router.push(`/cart/${getSaleByStoreId(product.store_id)!.id}`);
+              }}
             >
               View Cart
             </button>
           ) : (
             <button
-              className="w-full rounded bg-primary p-4 text-white"
+              className="w-full  bg-primary p-4 text-white"
               onClick={() =>
                 updateSaleOrderItems(product, selectedSize, selectedColor, 1)
               }

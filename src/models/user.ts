@@ -95,6 +95,7 @@ class User {
       country: this.country,
       notification_token: this.notificationToken,
       is_verified: this.isVerified,
+      password: "",
     };
   }
 
