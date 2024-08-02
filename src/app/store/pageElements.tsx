@@ -17,6 +17,8 @@ import { SwiperRef } from "antd-mobile/es/components/swiper";
 import { useRouter } from "next/navigation";
 import ReviewsList from "~/components/ratings/ReviewsList";
 import SearchBar from "./search";
+import CategoryMenuButton, { CategoryMenu } from "./CategoryMenu";
+import useCategoryMenu from "./hooks";
 
 const StorePageDynamic = ({
   storeID,
@@ -48,6 +50,15 @@ const StorePageDynamic = ({
             (category) => category.name === storeData.category,
           )?.type || StoreType.Store,
         );
+        console.log(storeType);
+        if (storeType === StoreType.Food) {
+          // tabItems[0]?.title == "Menu";
+          setTabItems([
+            { key: "products", title: "Menu" },
+            { key: "reviews", title: "Reviews" },
+            { key: "posts", title: "Posts" },
+          ]);
+        }
       } catch (error) {
         setError(true);
       } finally {
@@ -61,9 +72,9 @@ const StorePageDynamic = ({
   const right = (
     <div style={{ fontSize: 24 }}>
       <Space style={{ "--gap": "16px" }}>
-        <button onClick={() => setShowSearch(true)}>
+        <div onClick={() => setShowSearch(true)}>
           <SearchOutline />
-        </button>
+        </div>
         {/* <MoreOutline /> */}
         {/* <Location */}
       </Space>
@@ -76,30 +87,58 @@ const StorePageDynamic = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef(null);
 
-  const tabItems = [
+  var _tabItems = [
     { key: "products", title: "Products" },
     { key: "reviews", title: "Reviews" },
     { key: "posts", title: "Posts" },
   ];
+  const [tabItems, setTabItems] = useState(_tabItems);
   const scrollToTop = () => {
-    if (containerRef.current && activeIndex === 1) {
+    if (containerRef.current && activeIndex === 0) {
       containerRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    console.log(storeType);
+    if (storeType === StoreType.Food) {
+      setTabItems([
+        { key: "products", title: "Menu" },
+        { key: "reviews", title: "Reviews" },
+        { key: "posts", title: "Posts" },
+      ]);
+    }
+  }, [storeType]);
+
+  const {
+    categoryKeys,
+    categories,
+    setCategoriesAndKeys,
+    categoryMenuVisible,
+    handleScrollToCategory,
+    setCategoryMenuVisible,
+  } = useCategoryMenu({
+    categoryKeys: {},
+    categories: {},
+  });
+
   return (
-    <div>
+    <div className="max-w-xl">
       <div className="sticky top-0 z-50  bg-white  py-1">
-        {!showSearch && (
-          <NavBar
-            right={right}
-            back={store ? true : false}
-            onBack={back}
-            className="text-left font-semibold"
-            left={<div className="flex text-lg">{store?.name}</div>}
-          >
-            {/* <div className="flex">{store?.name}</div> */}
-          </NavBar>
-        )}
+        <Suspense fallback={<div>... loading</div>}>
+          {!showSearch && (
+            <NavBar
+              right={right}
+              back={false}
+              backIcon={false}
+              // onBack={back}
+              className="text-left font-semibold"
+              left={<div className="flex text-lg">{store?.name}</div>}
+            >
+              {/* <div className="flex">{store?.name}</div> */}
+            </NavBar>
+          )}
+        </Suspense>
         {showSearch && (
           <SearchBar
             productsObj={productsObj}
@@ -141,6 +180,7 @@ const StorePageDynamic = ({
             defaultIndex={activeIndex}
             onIndexChange={(index) => {
               setActiveIndex(index);
+              console.log(index);
               if (index === 1) {
                 // Assuming 1 is the index for Reviews tab
                 scrollToTop();
@@ -148,7 +188,11 @@ const StorePageDynamic = ({
             }}
           >
             <Swiper.Item>
-              <Products productsObj={productsObj} storeType={storeType} />
+              <Products
+                productsObj={productsObj}
+                storeType={storeType}
+                setCategoriesAndKeys={setCategoriesAndKeys}
+              />
             </Swiper.Item>
             <Swiper.Item>
               <ReviewsList
@@ -194,6 +238,20 @@ const StorePageDynamic = ({
           </div>
         </div>
       )}
+      <CategoryMenu
+        categoryKeys={categoryKeys}
+        categories={categories}
+        categoryMenuVisible={categoryMenuVisible}
+        setCategoryMenuVisible={setCategoryMenuVisible}
+        handleScrollToCategory={handleScrollToCategory}
+        key={storeID}
+      />
+      <CategoryMenuButton
+        categoryKeys={categoryKeys}
+        categories={categories}
+        categoryMenuVisible={categoryMenuVisible}
+        setCategoryMenuVisible={setCategoryMenuVisible}
+      />
     </div>
   );
 };

@@ -4,25 +4,54 @@ import { useState } from "react";
 interface CategoryMenuProps {
   categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> };
   categories: { [key: string]: any[] };
+  categoryMenuVisible: boolean;
+  setCategoryMenuVisible: (visible: boolean) => void;
 }
 
-const CategoryMenu: React.FC<CategoryMenuProps> = ({
+const CategoryMenuButton: React.FC<CategoryMenuProps> = ({
   categoryKeys,
   categories,
+  categoryMenuVisible,
+  setCategoryMenuVisible,
 }) => {
-  const [categoryMenuVisible, setCategoryMenuVisible] = useState(false);
-
   const handleScrollToCategory = (key: string) => {
-    if (categoryKeys[key].current) {
-      categoryKeys[key].current!.scrollIntoView({ behavior: "smooth" });
+    if (categoryKeys[key]?.current) {
+      categoryKeys[key]?.current!.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <div className="right-0 z-50 ">
+    <div className="fixed bottom-0 right-0 z-50 ">
+      <div
+        className="absolute bottom-0 right-0 m-4 cursor-pointer rounded-full bg-black p-2 shadow-lg"
+        onClick={() => setCategoryMenuVisible(!categoryMenuVisible)}
+      >
+        <Menu size={24} color="white" />
+      </div>
+    </div>
+  );
+};
+
+export default CategoryMenuButton;
+
+export function CategoryMenu({
+  categoryKeys,
+  categories,
+  categoryMenuVisible,
+  setCategoryMenuVisible,
+  handleScrollToCategory,
+}: {
+  categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> };
+  categories: { [key: string]: any[] };
+  categoryMenuVisible: boolean;
+  setCategoryMenuVisible: (visible: boolean) => void;
+  handleScrollToCategory: (key: string) => void;
+}) {
+  return (
+    <div className="fixed bottom-10 right-6 z-50 w-3/4 rounded-lg bg-white shadow-lg">
       {categoryMenuVisible && (
-        <div className=" absolute bottom-10 right-6 z-auto max-h-96 min-h-[150px] w-3/4 rounded-lg bg-white shadow-lg">
-          <div className="no-scrollbar  max-h-96  min-h-[150px] overflow-auto p-4 ">
+        <div className="">
+          <div className="  max-h-96  min-h-[150px] overflow-y-auto p-4 ">
             {Object.keys(categories).map((category) => (
               <button
                 key={category}
@@ -34,7 +63,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
               >
                 <span className="font-medium text-black">{category}</span>
                 <span className="font-medium text-black">
-                  {categories[category].length}
+                  {categories[category]?.length}
                 </span>
               </button>
             ))}
@@ -49,14 +78,6 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
           </button>
         </div>
       )}
-      <div
-        className="absolute bottom-0 right-0 m-4 cursor-pointer rounded-full bg-black p-2 shadow-lg"
-        onClick={() => setCategoryMenuVisible(!categoryMenuVisible)}
-      >
-        <Menu size={24} color="white" />
-      </div>
     </div>
   );
-};
-
-export default CategoryMenu;
+}

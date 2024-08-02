@@ -10,9 +10,10 @@ import {
 } from "~/components/ui/accordion";
 import { Product } from "~/models/product";
 import ProductCard from "~/components/product/productCard";
-import { useRef } from "react";
-import CategoryMenu from "./CategoryMenu";
+import { use, useEffect, useRef } from "react";
+import CategoryMenuButton from "./CategoryMenu";
 import "~/styles/globals.css";
+import { CategoryMenuProps } from "./hooks";
 
 interface CategorizedProducts {
   [category: string]: Product[];
@@ -35,9 +36,11 @@ function categorizeProducts(products: Product[]): CategorizedProducts {
 export function Products({
   productsObj,
   storeType,
+  setCategoriesAndKeys,
 }: {
   productsObj: any;
   storeType: string;
+  setCategoriesAndKeys: (categoryMenuProps: CategoryMenuProps) => void;
 }) {
   const products: Product[] = [];
   const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {};
@@ -48,11 +51,18 @@ export function Products({
 
   const categorizedProducts = categorizeProducts(products);
 
+  useEffect(() => {
+    setCategoriesAndKeys({
+      categoryKeys: categoryKeys,
+      categories: categorizedProducts,
+    });
+  }, [categoryKeys, categorizedProducts]);
+
   const buildContent = (categoryKey: string) => {
     const products = categorizedProducts[categoryKey] ?? [];
     if (storeType === "food") {
       return (
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-0">
           {products?.map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}
@@ -79,13 +89,8 @@ export function Products({
 
   return (
     <div className=" bg-gray-50 p-0 text-black">
-      <CategoryMenu
-        categoryKeys={categoryKeys}
-        categories={categorizedProducts}
-      />
-
       {/* <FilterBar /> */}
-      <div className="no-scrollbar max-h-screen overflow-y-auto">
+      <div className="">
         <Accordion
           type="multiple"
           defaultValue={Object.keys(categorizedProducts).map(

@@ -78,12 +78,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="mb-2 bg-white p-2 shadow-sm">
+    <div className="mb-2 border-b bg-white p-2 shadow-sm">
       <Drawer>
         <DrawerTrigger className="w-full">
           <div className=" w-full   rounded-lg">
             <div className="flex items-start justify-between">
-              <div className="flex-1 flex-col justify-start justify-items-start">
+              <div className=" flex-col items-start justify-start">
                 {product.type === "food" && (
                   <img
                     src={
@@ -108,14 +108,48 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     <span className="text-primary-500 text-left text-lg font-semibold">{`₹ ${product.mrp}`}</span>
                   </div>
                 )}
-                <p className="mt-1 text-left text-sm text-gray-600">
-                  {product.description}
-                </p>
+                {product.description.length > 2 && (
+                  <p className="mt-1 text-left text-sm text-gray-600">
+                    {product.description}
+                  </p>
+                )}
+                {addable ? (
+                  <div className="flex p-1">
+                    {quantity ?? 0 > 0 ? (
+                      <div className="flex items-center">
+                        <button
+                          className="rounded-lg border border-primary px-2 py-1 text-primary"
+                          onClick={() => handleUpdateQuantity(quantity - 1)}
+                        >
+                          -
+                        </button>
+                        <span className="mx-1 rounded-lg bg-primary px-3 py-1 font-semibold text-white">
+                          {quantity ?? 0}
+                        </span>
+                        <button
+                          className="rounded-lg border border-primary px-2 py-1 text-primary"
+                          onClick={() => handleUpdateQuantity(quantity + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        className="mt-1 rounded-lg border border-primary bg-primary bg-opacity-10 px-4 py-1 font-semibold text-primary"
+                        onClick={() => handleUpdateQuantity(1)}
+                      >
+                        ADD
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <p className="mt-1 text-sm text-gray-600">{`Quantity: ${quantity}`}</p>
+                )}
               </div>
               {product.images.length > 0 && (
                 <img
                   src={product.images[0]!.image}
-                  className="z-0 h-20 w-20 rounded-lg border-2 border-gray-200 object-contain"
+                  className="z-0  max-w-[33%] rounded-lg border-2 border-gray-200 object-contain"
                 />
               )}
             </div>
@@ -177,38 +211,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-      {addable ? (
-        <div className="">
-          {quantity ?? 0 > 0 ? (
-            <div className="flex items-center">
-              <button
-                className="rounded-lg border border-primary px-2 py-1 text-primary"
-                onClick={() => handleUpdateQuantity(quantity - 1)}
-              >
-                -
-              </button>
-              <span className="mx-1 rounded-lg bg-primary px-3 py-1 font-semibold text-white">
-                {quantity ?? 0}
-              </span>
-              <button
-                className="rounded-lg border border-primary px-2 py-1 text-primary"
-                onClick={() => handleUpdateQuantity(quantity + 1)}
-              >
-                +
-              </button>
-            </div>
-          ) : (
-            <button
-              className="mt-1 rounded-lg bg-primary px-4 py-2 font-semibold text-white"
-              onClick={() => handleUpdateQuantity(1)}
-            >
-              ADD
-            </button>
-          )}
-        </div>
-      ) : (
-        <p className="mt-1 text-sm text-gray-600">{`Quantity: ${quantity}`}</p>
-      )}
     </div>
   );
 };
