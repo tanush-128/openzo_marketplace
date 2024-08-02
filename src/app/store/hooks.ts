@@ -7,7 +7,7 @@ interface CategoryMenuProps {
 }
 
 const useCategoryMenu = (props: CategoryMenuProps) => {
-  const [categoryMenuVisible, setCategoryMenuVisible] = useState(true);
+  const [categoryMenuVisible, setCategoryMenuVisible] = useState(false);
 
   const [categories, setCategories] = useState(props.categories);
   const [categoryKeys, setCategoryKeys] = useState(props.categoryKeys);

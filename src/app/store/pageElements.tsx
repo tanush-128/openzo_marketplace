@@ -94,7 +94,7 @@ const StorePageDynamic = ({
   ];
   const [tabItems, setTabItems] = useState(_tabItems);
   const scrollToTop = () => {
-    if (containerRef.current && activeIndex === 0) {
+    if (containerRef.current && activeIndex === 1) {
       containerRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -156,7 +156,7 @@ const StorePageDynamic = ({
                 "--active-line-color": "#CD113B",
                 "--active-title-color": "#CD113B",
               }}
-              activeKey={tabItems[activeIndex].key}
+              activeKey={tabItems[activeIndex]?.key}
               onChange={(key) => {
                 const index = tabItems.findIndex((item) => item.key === key);
                 setActiveIndex(index);
@@ -181,18 +181,20 @@ const StorePageDynamic = ({
             onIndexChange={(index) => {
               setActiveIndex(index);
               console.log(index);
+              scrollToTop();
               if (index === 1) {
                 // Assuming 1 is the index for Reviews tab
-                scrollToTop();
               }
             }}
           >
             <Swiper.Item>
-              <Products
-                productsObj={productsObj}
-                storeType={storeType}
-                setCategoriesAndKeys={setCategoriesAndKeys}
-              />
+              {activeIndex === 0 && (
+                <Products
+                  productsObj={productsObj}
+                  storeType={storeType}
+                  setCategoriesAndKeys={setCategoriesAndKeys}
+                />
+              )}
             </Swiper.Item>
             <Swiper.Item>
               <ReviewsList
