@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Poppins } from "next/font/google";
 import { Metadata, Viewport } from "next";
+import LoginAndLoadOrders from "~/components/loginAndLoadOrders";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`mx-auto w-full max-w-lg overflow-x-hidden ${poppins.className} `}
       >
         <div className="">
+          <LoginAndLoadOrders />
           {children}
           <Analytics />
         </div>

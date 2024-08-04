@@ -1,19 +1,16 @@
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useCategoryContext } from "./CategoryContext";
 
-interface CategoryMenuProps {
-  categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> };
-  categories: { [key: string]: any[] };
-  categoryMenuVisible: boolean;
-  setCategoryMenuVisible: (visible: boolean) => void;
-}
+const CategoryMenuButton = () => {
+  const {
+    categories,
+    setCategories,
+    setCategoryKeys,
+    setCategoryMenuVisible,
+    categoryMenuVisible,
+    categoryKeys,
+  } = useCategoryContext();
 
-const CategoryMenuButton: React.FC<CategoryMenuProps> = ({
-  categoryKeys,
-  categories,
-  categoryMenuVisible,
-  setCategoryMenuVisible,
-}) => {
   const handleScrollToCategory = (key: string) => {
     if (categoryKeys[key]?.current) {
       categoryKeys[key]?.current!.scrollIntoView({ behavior: "smooth" });
@@ -21,7 +18,7 @@ const CategoryMenuButton: React.FC<CategoryMenuProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 right-0 z-50 ">
+    <div className="fixed bottom-5 right-0 z-50 ">
       <div
         className="absolute bottom-0 right-0 m-4 cursor-pointer rounded-full bg-black p-2 shadow-lg"
         onClick={() => setCategoryMenuVisible(!categoryMenuVisible)}
@@ -34,19 +31,20 @@ const CategoryMenuButton: React.FC<CategoryMenuProps> = ({
 
 export default CategoryMenuButton;
 
-export function CategoryMenu({
-  categoryKeys,
-  categories,
-  categoryMenuVisible,
-  setCategoryMenuVisible,
-  handleScrollToCategory,
-}: {
-  categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> };
-  categories: { [key: string]: any[] };
-  categoryMenuVisible: boolean;
-  setCategoryMenuVisible: (visible: boolean) => void;
-  handleScrollToCategory: (key: string) => void;
-}) {
+export function CategoryMenu() {
+  const {
+    categories,
+    setCategories,
+    setCategoryKeys,
+    setCategoryMenuVisible,
+    categoryMenuVisible,
+    categoryKeys,
+  } = useCategoryContext();
+  const handleScrollToCategory = (key: string) => {
+    if (categoryKeys[key]?.current) {
+      categoryKeys[key]?.current!.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <div className="fixed bottom-10 right-6 z-50 w-3/4 rounded-lg bg-white shadow-lg">
       {categoryMenuVisible && (
@@ -58,6 +56,7 @@ export function CategoryMenu({
                 className="flex w-full cursor-pointer justify-between p-4"
                 onClick={() => {
                   handleScrollToCategory(category);
+
                   setCategoryMenuVisible(false);
                 }}
               >

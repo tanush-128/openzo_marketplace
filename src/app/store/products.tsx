@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import ServiceCard from "~/components/product/ServiceCard";
+import ProductCard from "~/components/product/productCard";
 import VerticalProductCard from "~/components/product/verticalProduct";
 import {
   Accordion,
@@ -9,11 +11,9 @@ import {
   AccordionTrigger,
 } from "~/components/ui/accordion";
 import { Product } from "~/models/product";
-import ProductCard from "~/components/product/productCard";
-import { use, useEffect, useRef } from "react";
-import CategoryMenuButton from "./CategoryMenu";
 import "~/styles/globals.css";
-import { CategoryMenuProps } from "./hooks";
+import { useCategoryContext } from "./CategoryContext";
+import CategoryMenu from "./CategoryMenu";
 
 interface CategorizedProducts {
   [category: string]: Product[];
@@ -36,14 +36,15 @@ function categorizeProducts(products: Product[]): CategorizedProducts {
 export function Products({
   productsObj,
   storeType,
-  setCategoriesAndKeys,
 }: {
   productsObj: any;
   storeType: string;
-  setCategoriesAndKeys: (categoryMenuProps: CategoryMenuProps) => void;
 }) {
   const products: Product[] = [];
   const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {};
+
+  const { setCategories, setCategoryKeys } = useCategoryContext();
+
   for (const obj of productsObj) {
     const product = Product.fromJson(obj);
     if (product.type !== "post") products.push(product);
@@ -52,11 +53,9 @@ export function Products({
   const categorizedProducts = categorizeProducts(products);
 
   useEffect(() => {
-    setCategoriesAndKeys({
-      categoryKeys: categoryKeys,
-      categories: categorizedProducts,
-    });
-  }, [categoryKeys, categorizedProducts]);
+    setCategories(categorizedProducts);
+    setCategoryKeys(categoryKeys);
+  }, []);
 
   const buildContent = (categoryKey: string) => {
     const products = categorizedProducts[categoryKey] ?? [];

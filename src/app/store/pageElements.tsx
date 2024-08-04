@@ -18,7 +18,8 @@ import { useRouter } from "next/navigation";
 import ReviewsList from "~/components/ratings/ReviewsList";
 import SearchBar from "./search";
 import CategoryMenuButton, { CategoryMenu } from "./CategoryMenu";
-import useCategoryMenu from "./hooks";
+
+import { CategoryProvider } from "./CategoryContext";
 
 const StorePageDynamic = ({
   storeID,
@@ -110,151 +111,132 @@ const StorePageDynamic = ({
     }
   }, [storeType]);
 
-  const {
-    categoryKeys,
-    categories,
-    setCategoriesAndKeys,
-    categoryMenuVisible,
-    handleScrollToCategory,
-    setCategoryMenuVisible,
-  } = useCategoryMenu({
-    categoryKeys: {},
-    categories: {},
-  });
-
   return (
-    <div className="max-w-xl">
-      <div className="sticky top-0 z-50  bg-white  py-1">
-        <Suspense fallback={<div>... loading</div>}>
-          {!showSearch && (
-            <NavBar
-              right={right}
-              back={false}
-              backIcon={false}
-              // onBack={back}
-              className="text-left font-semibold"
-              left={<div className="flex text-lg">{store?.name}</div>}
-            >
-              {/* <div className="flex">{store?.name}</div> */}
-            </NavBar>
-          )}
-        </Suspense>
-        {showSearch && (
-          <SearchBar
-            productsObj={productsObj}
-            onClose={() => setShowSearch(false)}
-          />
-        )}
-      </div>
-
-      <StoreInfo store={store} storeType={storeType} />
-      <Suspense fallback={<div>Loading...</div>}>
-        <div ref={containerRef}>
-          <div className="sticky top-12 z-20 bg-white">
-            <Tabs
-              style={{
-                "--active-line-color": "#CD113B",
-                "--active-title-color": "#CD113B",
-              }}
-              activeKey={tabItems[activeIndex]?.key}
-              onChange={(key) => {
-                const index = tabItems.findIndex((item) => item.key === key);
-                setActiveIndex(index);
-                swiperRef.current?.swipeTo(index);
-              }}
-            >
-              {tabItems.map((item) => (
-                <Tabs.Tab
-                  title={item.title}
-                  key={item.key}
-                  className={"text-sm "}
-                />
-              ))}
-            </Tabs>
-          </div>
-          <Swiper
-            direction="horizontal"
-            loop
-            indicator={() => null}
-            ref={swiperRef}
-            defaultIndex={activeIndex}
-            onIndexChange={(index) => {
-              setActiveIndex(index);
-              console.log(index);
-              scrollToTop();
-              if (index === 1) {
-                // Assuming 1 is the index for Reviews tab
-              }
-            }}
-          >
-            <Swiper.Item>
-              {activeIndex === 0 && (
-                <Products
-                  productsObj={productsObj}
-                  storeType={storeType}
-                  setCategoriesAndKeys={setCategoriesAndKeys}
-                />
-              )}
-            </Swiper.Item>
-            <Swiper.Item>
-              <ReviewsList
-                storeId={storeID}
-                store={store}
-                onScrollToTop={scrollToTop}
-              />
-            </Swiper.Item>
-            <Swiper.Item>
-              <div>蚂蚁</div>
-            </Swiper.Item>
-          </Swiper>
-        </div>
-      </Suspense>
-      {cart?.total_amount && (
-        <div className="fixed bottom-0 z-50 w-full max-w-lg bg-white p-2">
-          <div className="flex justify-between">
-            <div>
-              <p className="text-sm">Total: ₹{cart.total_amount}</p>
-              <p className="text-xs">Items: {cart.order_items.length}</p>
-            </div>
-            <Link
-              href={`/cart/${cart.id}`}
-              className="flex items-center rounded-lg bg-primary px-4 py-1 text-white"
-            >
-              <span>View Cart</span>
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="ml-2 h-5 w-5"
+    <CategoryProvider>
+      <div className="max-w-xl">
+        <div className="sticky top-0 z-50  bg-white  py-1">
+          <Suspense fallback={<div>... loading</div>}>
+            {!showSearch && (
+              <NavBar
+                right={right}
+                back={false}
+                backIcon={false}
+                // onBack={back}
+                className="text-left font-semibold"
+                left={<div className="flex text-lg">{store?.name}</div>}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.25 12H6.75m10.5 0l-3-3m3 3l-3 3"
-                />
-              </svg>
-            </Link>
-          </div>
+                {/* <div className="flex">{store?.name}</div> */}
+              </NavBar>
+            )}
+          </Suspense>
+          {showSearch && (
+            <SearchBar
+              productsObj={productsObj}
+              onClose={() => setShowSearch(false)}
+            />
+          )}
         </div>
-      )}
-      <CategoryMenu
-        categoryKeys={categoryKeys}
-        categories={categories}
-        categoryMenuVisible={categoryMenuVisible}
-        setCategoryMenuVisible={setCategoryMenuVisible}
-        handleScrollToCategory={handleScrollToCategory}
-        key={storeID}
-      />
-      <CategoryMenuButton
-        categoryKeys={categoryKeys}
-        categories={categories}
-        categoryMenuVisible={categoryMenuVisible}
-        setCategoryMenuVisible={setCategoryMenuVisible}
-      />
-    </div>
+
+        <StoreInfo store={store} storeType={storeType} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <div ref={containerRef}>
+            <div className="sticky top-12 z-20 bg-white">
+              <Tabs
+                style={{
+                  "--active-line-color": "#CD113B",
+                  "--active-title-color": "#CD113B",
+                }}
+                activeKey={tabItems[activeIndex]?.key}
+                onChange={(key) => {
+                  const index = tabItems.findIndex((item) => item.key === key);
+                  setActiveIndex(index);
+                  swiperRef.current?.swipeTo(index);
+                }}
+              >
+                {tabItems.map((item) => (
+                  <Tabs.Tab
+                    title={item.title}
+                    key={item.key}
+                    className={"text-sm "}
+                  />
+                ))}
+              </Tabs>
+            </div>
+            <Swiper
+              direction="horizontal"
+              loop
+              indicator={() => null}
+              ref={swiperRef}
+              defaultIndex={activeIndex}
+              onIndexChange={(index) => {
+                setActiveIndex(index);
+                console.log(index);
+                scrollToTop();
+                if (index === 1) {
+                  // Assuming 1 is the index for Reviews tab
+                }
+              }}
+            >
+              <Swiper.Item>
+                {activeIndex === 0 && (
+                  <Products productsObj={productsObj} storeType={storeType} />
+                )}
+              </Swiper.Item>
+              <Swiper.Item>
+                <ReviewsList
+                  storeId={storeID}
+                  store={store}
+                  onScrollToTop={scrollToTop}
+                />
+              </Swiper.Item>
+              <Swiper.Item>
+                <div>蚂蚁</div>
+              </Swiper.Item>
+            </Swiper>
+          </div>
+        </Suspense>
+        {cart?.total_amount && (
+          <div className="fixed bottom-0 z-50 w-full max-w-lg bg-white p-2">
+            <div className="flex justify-between">
+              <div>
+                <p className="text-sm">Total: ₹{cart.total_amount}</p>
+                <p className="text-xs">
+                  Items:{" "}
+                  {cart.order_items.filter((item) => item.quantity > 0).length}
+                </p>
+              </div>
+              <button
+                className="flex items-center rounded-lg bg-primary px-4 py-1 text-white"
+                onClick={() => {
+                  console.log(cart.id);
+                  // router.push(`/cartxgdf`);
+                  router.replace(`/cart/${cart.id}`);
+                }}
+              >
+                <span>View Cart</span>
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="ml-2 h-5 w-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.25 12H6.75m10.5 0l-3-3m3 3l-3 3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+        <CategoryMenu />
+        <CategoryMenuButton />
+      </div>
+    </CategoryProvider>
   );
 };
 

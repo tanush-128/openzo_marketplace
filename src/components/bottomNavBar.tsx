@@ -30,22 +30,6 @@ const navItems = [
 const BottomNavBar = () => {
   const pathname = usePathname();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const fetchOrders = useSalesStore((state) => state.fetchOrders);
-  useEffect(() => {
-    const initializeUserData = async () => {
-      try {
-        // handleUserData(null);
-        await handleUserData().then((data) => {
-          console.log(data);
-          fetchOrders();
-        });
-      } catch (error) {
-        console.error("Error initializing user data:", error);
-      }
-    };
-
-    initializeUserData().then();
-  }, []);
 
   useEffect(() => {
     const currentIndex = navItems.findIndex((item) => item.href === pathname);

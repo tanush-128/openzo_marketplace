@@ -34,6 +34,7 @@ const CartPage: React.FC<CartPageProps> = () => {
 
   useEffect(() => {
     const cart = onlineOrders.find((order) => order.id === id);
+
     if (cart) {
       setNotPlaced(cart.status === "not_placed");
       Store.fetchStore(cart.store_id).then(setStore);
@@ -42,7 +43,9 @@ const CartPage: React.FC<CartPageProps> = () => {
       Product.fetchMany(cart.store_id).then((fetchedProducts) => {
         setProducts(
           fetchedProducts.filter((product) =>
-            cart.order_items.some((item) => item.product_id === product.id),
+            cart.order_items.some(
+              (item) => item.product_id === product.id && item.quantity > 0,
+            ),
           ),
         );
       });
