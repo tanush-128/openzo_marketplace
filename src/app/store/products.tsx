@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import ServiceCard from "~/components/product/ServiceCard";
+import ProductCard from "~/components/product/productCard";
 import VerticalProductCard from "~/components/product/verticalProduct";
 import {
   Accordion,
@@ -9,10 +11,9 @@ import {
   AccordionTrigger,
 } from "~/components/ui/accordion";
 import { Product } from "~/models/product";
-import ProductCard from "~/components/product/productCard";
-import { useRef } from "react";
-import CategoryMenu from "./CategoryMenu";
 import "~/styles/globals.css";
+import { useCategoryContext } from "./CategoryContext";
+import CategoryMenu from "./CategoryMenu";
 
 interface CategorizedProducts {
   [category: string]: Product[];
@@ -41,12 +42,20 @@ export function Products({
 }) {
   const products: Product[] = [];
   const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {};
+
+  const { categories, setCategories, setCategoryKeys } = useCategoryContext();
+
   for (const obj of productsObj) {
     const product = Product.fromJson(obj);
     if (product.type !== "post") products.push(product);
   }
 
   const categorizedProducts = categorizeProducts(products);
+
+  useEffect(() => {
+    setCategories(categorizedProducts);
+    setCategoryKeys(categoryKeys);
+  }, [categorizedProducts, categoryKeys]);
 
   const buildContent = (categoryKey: string) => {
     const products = categorizedProducts[categoryKey] ?? [];
@@ -79,13 +88,8 @@ export function Products({
 
   return (
     <div className=" bg-gray-50 p-0 text-black">
-      <CategoryMenu
-        categoryKeys={categoryKeys}
-        categories={categorizedProducts}
-      />
-
       {/* <FilterBar /> */}
-      <div className="no-scrollbar max-h-screen overflow-y-auto">
+      <div className="">
         <Accordion
           type="multiple"
           defaultValue={Object.keys(categorizedProducts).map(
