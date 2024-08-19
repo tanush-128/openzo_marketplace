@@ -79,7 +79,8 @@ const StoreCard = ({ store }: StoreCardProps) => {
 
   return (
     <Link href={`/store/${store.id}`}>
-      <div className="mx-1 my-3 cursor-pointer rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md">
+      {/* <div>{store.storeType}</div> */}
+      <div className="mx-1 my-3  min-w-72 cursor-pointer rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md lg:min-w-80">
         <div className="relative h-48 w-full overflow-hidden rounded-t-2xl">
           <Image
             src={store.image}
@@ -93,10 +94,10 @@ const StoreCard = ({ store }: StoreCardProps) => {
         </div>
         <div className="p-4">
           <div className="flex justify-between">
-            <div className="text-lg  font-semibold text-black">
+            <div className="line-clamp-1  max-w-44 text-lg font-semibold text-black">
               {store.name}
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center ">
               <Rating rating={store.rating} />
               {storeType === StoreType.Food && (
                 <>
@@ -124,12 +125,12 @@ const StoreCard = ({ store }: StoreCardProps) => {
               )}
             </div>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="line-clamp-1 text-sm text-gray-600">
             {storeType === StoreType.Store && store.description}
           </p>
           {storeType === StoreType.Food && (
             <div className="flex justify-between text-sm text-gray-600">
-              <p>{`• ${store.primary_cuisine} • ${store.secondary_cuisine}`}</p>
+              <p>{`• ${store.primary_cuisine} `}</p>
               <p>{`₹${store.avg_price_per_person} for one`}</p>
             </div>
           )}
@@ -141,9 +142,8 @@ const StoreCard = ({ store }: StoreCardProps) => {
 
 const Rating = ({ rating }: { rating: number }) => {
   return (
-    <div className="flex items-center space-x-1 rounded-md bg-yellow-100 px-2 py-1">
+    <div className="flex flex-nowrap items-center space-x-1 rounded-md bg-yellow-100 px-2 py-1">
       <span className="text-sm font-medium text-gray-600">
-        {" "}
         ⭐ {rating.toFixed(1)}
       </span>
     </div>

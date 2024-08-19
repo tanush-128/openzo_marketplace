@@ -127,7 +127,7 @@ const CartListTile = ({ cart }: CartListTileProps) => {
             className="rounded"
           />
           <div className="ml-4 flex-grow">
-            <h2 className="text-lg font-bold">{store.name}</h2>
+            <h2 className="text-lg font-bold text-black">{store.name}</h2>
             <p>Total: ₹{cart.total_amount.toFixed(2)}</p>
             <p className="text-gray-500">
               {/* {format(cart.orderTime ? new Date(cart.orderTime) : new Date(), 'hh:mm a   dd-MMMM')} */}

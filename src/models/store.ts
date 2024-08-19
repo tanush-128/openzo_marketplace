@@ -1,7 +1,7 @@
 import axios from "axios";
 // import { GlobalConsts } from 'path-to-constants';
 // import { get as getAsyncStorageItem, set as setAsyncStorageItem } from '@react-native-async-storage/async-storage';
-import GlobalConsts from "~/constants/constants";
+import GlobalConsts, { StoreType } from "~/constants/constants";
 
 export interface StoreData {
   id: string;
@@ -57,6 +57,13 @@ export class Store {
     public rating = 0.0,
     public review_count = 0.0,
   ) {}
+  // StoreType get storeType {
+  //   return GlobalConsts.categories
+  //           .where((element) => element.name == category)
+  //           .firstOrNull
+  //           ?.type ??
+  //       StoreType.service;
+  // }
 
   static async getStoreWithUserEmail(userEmail: string): Promise<Store | null> {
     try {
@@ -181,8 +188,6 @@ export class Store {
   //     return [];
   //   }
   // }
-
-
 
   static async getStoresByPincodeAndSubCategory(
     pincode: string,
