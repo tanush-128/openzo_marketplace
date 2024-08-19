@@ -1,11 +1,11 @@
 "use client";
-import GlobalConsts from "~/constants/constants";
-import StoresByCategory from "../StoresByCategory";
-import { useParams, useSearchParams } from "next/navigation";
-import { Store } from "~/models/store";
-import StoreCard from "~/widgets/storeCard";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import GlobalSearchBar from "~/components/search/globalSearchBar";
+import GlobalConsts from "~/constants/constants";
+import { Store } from "~/models/store";
+import StoreCard from "~/widgets/storeCard";
+import StoresByCategory from "../StoresByCategory";
 
 const Page = ({
   params,
@@ -18,8 +18,6 @@ const Page = ({
 
   const searchParams = useSearchParams();
   const subCategory = searchParams.get("subCategory");
-  console.log(category);
-  console.log(subCategory);
 
   if (category === "Grocery delivery" || category === "MIT Campus only") {
     // const stores: Store[] = [];
