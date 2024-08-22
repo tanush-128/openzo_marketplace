@@ -63,7 +63,7 @@ const StoresByCategory: React.FC<StoresByCategoryProps> = ({
           <StoresList
             subCategory={subCategory?.name}
             category={category.name}
-            //   pincode="123456"
+            //   pincode="576104"
           />
         </Suspense>
       </div>
@@ -80,16 +80,16 @@ async function StoresList({
   category: string;
   subCategory?: string;
 }) {
-  // const stores = await Store.getStoreByPincodeAndCategory("123456", category);
+  // const stores = await Store.getStoreByPincodeAndCategory("576104", category);
   let stores;
 
   if (subCategory) {
     stores = await Store.getStoresByPincodeAndSubCategory(
-      "123456",
+      "576104",
       subCategory,
     );
   } else {
-    stores = await Store.getStoreByPincodeAndCategory("123456", category);
+    stores = await Store.getStoreByPincodeAndCategory("576104", category);
   }
 
   return (

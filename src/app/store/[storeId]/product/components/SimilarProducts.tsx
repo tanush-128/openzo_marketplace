@@ -15,7 +15,7 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({ product }) => {
     const fetchSimilarProducts = async () => {
       try {
         const fetchedProducts = await Product.searchProducts(
-          "123456",
+          "576104",
           product.name,
         );
 

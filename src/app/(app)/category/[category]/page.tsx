@@ -23,7 +23,7 @@ const Page = ({
     // const stores: Store[] = [];
     const [stores, setStores] = useState<Store[]>([]);
     if (category === "MIT Campus only") {
-      Store.getStoreByPincodeAndCategory("123456", "Food").then(
+      Store.getStoreByPincodeAndCategory("576104", "Food").then(
         (fetchedStores) => {
           fetchedStores = fetchedStores.filter(
             (store) =>
@@ -34,7 +34,7 @@ const Page = ({
         },
       );
     } else {
-      Store.getStoresByPincodeAndSubCategory("123456", "Grocery stores").then(
+      Store.getStoresByPincodeAndSubCategory("576104", "Grocery stores").then(
         (fetchedStores) => {
           // stores.push(...fetchedStores);
           setStores(fetchedStores);

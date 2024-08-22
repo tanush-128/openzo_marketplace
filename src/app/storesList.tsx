@@ -3,7 +3,7 @@ import { Store } from "~/models/store";
 import StoreCard from "~/widgets/storeCard";
 
 async function fetchStores() {
-  const response = await Store.getStoresWithPincode("123456");
+  const response = await Store.getStoresWithPincode("576104");
   return response;
 }
 

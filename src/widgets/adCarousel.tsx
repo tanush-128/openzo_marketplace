@@ -8,7 +8,7 @@ import {
 import { Ad } from "~/models/ad";
 
 async function fetchAds() {
-  const response = await Ad.fetchMany("123456");
+  const response = await Ad.fetchMany("576104");
   return response;
   //   setAds(response);
   //   setLoading(false);
@@ -17,11 +17,9 @@ async function fetchAds() {
   //   setLoading(false);
 }
 
-
-
 const AdSpace = async () => {
   // const ads = await fetchAds();
-const ads:Ad[] = []
+  const ads: Ad[] = [];
   //   fetchAds();
   // }, []);
 

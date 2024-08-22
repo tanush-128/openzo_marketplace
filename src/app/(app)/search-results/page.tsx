@@ -19,8 +19,8 @@ const SearchPage = () => {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      const productsResult = await Product.searchProducts("123456", query); // Replace with actual API call
-      const storesResult = await Store.searchStores("123456", query); // Replace with actual API call
+      const productsResult = await Product.searchProducts("576104", query); // Replace with actual API call
+      const storesResult = await Store.searchStores("576104", query); // Replace with actual API call
       setProducts(productsResult);
       setStores(storesResult);
       setLoading(false);

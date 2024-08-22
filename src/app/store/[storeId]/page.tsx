@@ -13,7 +13,7 @@ interface CategorizedProducts {
 export type { CategorizedProducts };
 
 export async function generateStaticParams() {
-  var stores = await Store.getStoresWithPincode("123456");
+  var stores = await Store.getStoresWithPincode("576104");
   return stores.map((store) => ({ storeId: store.id }));
 }
 
