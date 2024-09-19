@@ -193,7 +193,7 @@ const CartPage: React.FC<CartPageProps> = () => {
         )}
       </main>
 
-      {cart.status === "not_placed" && (
+      {/* {cart.status === "not_placed" && (
         <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between bg-white px-4 py-4">
           <div className="flex items-center text-gray-700">
             <img src="/icons/bill.png" alt="Bill" className="mr-2 h-5 w-5" />
@@ -210,7 +210,7 @@ const CartPage: React.FC<CartPageProps> = () => {
             </button>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

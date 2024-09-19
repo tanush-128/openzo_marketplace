@@ -30,7 +30,7 @@ const AddressDetails: React.FC<AddressDetailsProps> = ({
 
   return (
     <div>
-      <div className="mb-2 flex items-center">
+      {/* <div className="mb-2 flex items-center">
         <img src="/icons/Home.png" alt="Home" className="mr-2 h-5 w-5" />
         <div className="flex-1">
           <div className="flex items-center justify-between">
@@ -44,11 +44,11 @@ const AddressDetails: React.FC<AddressDetailsProps> = ({
           </div>
           <span className="text-gray-700">{newAddress}</span>
         </div>
-      </div>
+      </div> */}
 
-      <div className="my-2 border-t border-gray-200"></div>
+      {/* <div className="my-2 border-t border-gray-200"></div> */}
 
-      <div className="mb-2 flex items-center">
+      {/* <div className="mb-2 flex items-center">
         <img src="/icons/phone.png" alt="Phone" className="mr-2 h-5 w-5" />
         <div className="flex-1">
           <div className="flex items-center justify-between">
@@ -61,9 +61,9 @@ const AddressDetails: React.FC<AddressDetailsProps> = ({
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <div className="my-2 border-t border-gray-200"></div>
+      {/* <div className="my-2 border-t border-gray-200"></div> */}
 
       <div className="mb-2 flex items-center">
         <img src="/icons/bill.png" alt="Bill" className="mr-2 h-5 w-5" />
@@ -71,7 +71,7 @@ const AddressDetails: React.FC<AddressDetailsProps> = ({
           <div className="flex items-center justify-between space-x-3">
             <div>
               <span className="mr-3 text-gray-500">Total Bill</span>
-              <span className="text-gray-700">₹{cart.total_amount + 40}</span>
+              <span className="text-gray-700">₹{cart.total_amount}</span>
             </div>
             <button
               onClick={() => setShowModal(true)}
