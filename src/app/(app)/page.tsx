@@ -55,7 +55,7 @@ export default function HomePage() {
       <div className="h-2" />
 
       <StoresList />
-      <div className="mb-2">
+      <div className="mb-2">w
         <Link href={"/privacy-policy"} className="text-blue-600">
           Read our Privacy Policy
         </Link>

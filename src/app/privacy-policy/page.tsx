@@ -1,6 +1,6 @@
 const PrivacyPolicy = () => {
   return (
-    <div className="prose prose-stone  prose-p:text-gray prose-a:text-blue-600 max-w-[100svw] p-4 lg:px-16">
+    <div className="prose-p:text-gray prose  prose-stone max-w-[100svw] p-4 prose-a:text-blue-600 lg:px-16">
       <h1>Terms & Conditions</h1>
 
       <h2>Introduction</h2>
@@ -238,7 +238,26 @@ const PrivacyPolicy = () => {
           customer service within 1 day of receiving the product.
         </li>
       </ul>
-
+      <h2>Refund policy</h2>
+      <ol>
+        <li>
+          Refunds will be proceesed for products within. 3-4 business days
+        </li>
+        <li>
+          ⁠refunds will be processed for cancellation of services within 2-3
+          business days
+        </li>
+      </ol>
+      <h2>Return policy</h2>
+      <ol>
+        <li>
+          Returns of products will be fullfiled by 4-5 days if you ask for a
+          return with in 48hours
+        </li>
+        <li>
+          ⁠Returns of services will be fullfiled by 4-5 days. business days
+        </li>
+      </ol>
       <h2>Contact Us</h2>
       <p>
         If you have any questions or concerns about this Privacy Policy, please
