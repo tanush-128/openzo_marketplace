@@ -1241,21 +1241,7 @@ class GlobalConsts {
             "Hidden Gems",
           ],
         ),
-        new SubCategory(
-          "Pubs & Bars",
 
-          "Discover the perfect spot for after work drinks or a night out with friends in [location]. Explore pubs, bars, and nightlife options on Openzo Super App. Find local watering holes, trendy cocktail bars, sports bars, and live music venues to suit your taste.",
-          [
-            "Pubs & Bars",
-            "Pubs",
-            "Bars",
-            "Cocktail Bars",
-            "Nightlife",
-            "Drinking Spots",
-            "Live Music",
-            "Openzo",
-          ],
-        ),
         new SubCategory(
           "Parks",
 
