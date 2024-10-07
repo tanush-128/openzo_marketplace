@@ -26,12 +26,14 @@ interface ProductCardProps {
   product: Product;
   addable?: boolean;
   _quantity?: number;
+  sendMessageToFlutterChannel?: (message: string) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   addable = true,
   _quantity = 0,
+  sendMessageToFlutterChannel,
 }) => {
   // const addable = true;
   // const [quantity, setQuantity] = useState(0);
@@ -43,6 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     cart: state.getSaleByStoreId(product.store_id),
     updateSaleOrderItems: state.updateSaleOrderItems,
   }));
+
   // let orderItem = cart?.orderItems.find(item => item.product_id === product.id);
   // let quantity = orderItem?.quantity || 0;
   const [quantity, setQuantity] = useState(0);
@@ -74,11 +77,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   // Function to handle adding or updating quantity
   const handleUpdateQuantity = (quantityChange: number) => {
-    updateSaleOrderItems(product, selectedSize, selectedColor, quantityChange);
+    updateSaleOrderItems(
+      product,
+      selectedSize,
+      selectedColor,
+      quantityChange,
+    ).then(() => {
+      // setQuantity((prevQuantity) => prevQuantity + quantityChange);
+      const cartId = useSalesStore
+        .getState()
+        .getSaleByStoreId(product.store_id)?.id;
+      sendMessageToFlutterChannel?.(cartId || "");
+    });
   };
 
   return (
-    <div className="mb-2 border-b bg-white p-2 shadow-sm">
+    <div className="mx-1   border-[1.5px] border-gray-100 bg-white  p-4 shadow-sm">
       <div className=" w-full   rounded-lg">
         <div className="flex items-start justify-between">
           <div className=" flex-col items-start justify-start">
@@ -112,20 +126,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </p>
             )}
             {addable ? (
-              <div className="flex p-1">
+              <div className="mt-2 flex">
                 {quantity ?? 0 > 0 ? (
-                  <div className="flex items-center">
+                  <div className="mt-1 flex items-center rounded-lg border border-primary bg-[#ff85a0] bg-opacity-10 px-1 py-[2px] text-base font-semibold text-primary">
                     <button
-                      className="rounded-lg border border-primary px-2 py-1 text-primary"
+                      className=" px-2 pr-3 text-lg text-primary"
                       onClick={() => handleUpdateQuantity(-1)}
                     >
                       -
                     </button>
-                    <span className="mx-1 rounded-lg bg-primary px-3 py-1 font-semibold text-white">
+                    <span className="  font-semibold text-black">
                       {quantity ?? 0}
                     </span>
                     <button
-                      className="rounded-lg border border-primary px-2 py-1 text-primary"
+                      className=" px-2   pl-3 text-lg text-primary"
                       onClick={() => handleUpdateQuantity(1)}
                     >
                       +
@@ -133,7 +147,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   </div>
                 ) : (
                   <button
-                    className="mt-1 rounded-lg border border-primary bg-primary bg-opacity-10 px-4 py-1 font-semibold text-primary"
+                    className="mt-1 rounded-lg border border-primary bg-[#ff85a0] bg-opacity-10 px-5 py-[4px] text-base font-semibold text-primary"
                     onClick={() => handleUpdateQuantity(1)}
                   >
                     ADD

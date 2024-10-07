@@ -2,9 +2,10 @@ import { Product } from "~/models/product";
 import StorePageDynamic from "../pageElements";
 import { Store } from "~/models/store";
 import { Metadata } from "next";
-import GlobalConsts from "~/constants/constants";
+import GlobalConsts, { StoreType } from "~/constants/constants";
 import "~/styles/globals.css";
 import Script from "next/script";
+import { cookies } from "next/headers";
 
 interface CategorizedProducts {
   [category: string]: Product[];
@@ -67,7 +68,13 @@ export default async function StorePage({
   var products: Product[] = await Product.fetchMany(storeId);
 
   var productsObj = products.map((product) => product.toJson());
-
+  var storeObj = store.toJson();
+  const cookieStore = cookies();
+  const allCookies = cookieStore.getAll();
+  console.log(allCookies);
+  const userId = cookieStore.get("userId")?.value;
+  const token = cookieStore.get("token")?.value;
+  console.log(userId);
   return (
     <html>
       <head>
@@ -106,7 +113,18 @@ export default async function StorePage({
       </head>
       <body className="mx-auto max-w-lg">
         <div>
-          <StorePageDynamic storeID={storeId} productsObj={productsObj} />
+          <StorePageDynamic
+            storeID={storeId}
+            storeObj={storeObj}
+            productsObj={productsObj}
+            userID={userId}
+            token={token}
+            storeType={
+              GlobalConsts.categories.find(
+                (category) => category.name === store.category,
+              )?.type || StoreType.Store
+            }
+          />
         </div>
       </body>
     </html>

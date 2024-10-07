@@ -264,9 +264,38 @@ export class Store {
       json["seating_capacity"],
       json["reserve_table_online"],
       parseFloat(json["rating"].toString()),
-      parseFloat(json["review_count"].toString()),
+      json["review_count"],
     );
   }
+  toJson() {
+    return {
+      id: this.id,
+      name: this.name,
+      phone: this.phone,
+      image: this.image,
+      location: this.location,
+      pincode: this.pincode,
+      description: this.description,
+      opening_time: this.openingTime,
+      closing_time: this.closingTime,
+      self_delivery_service: this.selfDeliveryService,
+      details_complete: this.detailsComplete,
+      category: this.category,
+      sub_category: this.sub_category,
+      primary_cuisine: this.primary_cuisine,
+      secondary_cuisine: this.secondary_cuisine,
+      avg_price_per_person: this.avg_price_per_person,
+      pure_veg: this.pure_veg,
+      alcohol: this.alcohol,
+      table_count: this.tableCount,
+      seating_capacity: this.seatingCapacity,
+      reserve_table_online: this.reserveTableOnline,
+      rating: this.rating,
+      review_count: this.review_count,
+    };
+  }
+
+  // Map<String, dynamic> toJson() {
 }
 
 // export

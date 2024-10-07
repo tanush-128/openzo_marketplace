@@ -36,9 +36,11 @@ function categorizeProducts(products: Product[]): CategorizedProducts {
 export function Products({
   productsObj,
   storeType,
+  sendMessageToFlutterChannel,
 }: {
   productsObj: any;
   storeType: string;
+  sendMessageToFlutterChannel: (message: string) => void;
 }) {
   const products: Product[] = [];
   const categoryKeys: { [key: string]: React.RefObject<HTMLDivElement> } = {};
@@ -63,7 +65,11 @@ export function Products({
       return (
         <div className="flex flex-col space-y-0">
           {products?.map((product, index) => (
-            <ProductCard key={index} product={product} />
+            <ProductCard
+              key={index}
+              product={product}
+              sendMessageToFlutterChannel={sendMessageToFlutterChannel}
+            />
           ))}
         </div>
       );
@@ -87,9 +93,12 @@ export function Products({
   };
 
   return (
-    <div className=" bg-gray-50 p-0 text-black">
-      {/* <FilterBar /> */}
-      <div className="">
+    <div className="relative bg-gray-100 p-0 text-black">
+      {/* Sticky FilterBar */}
+
+
+      {/* Accordion Content */}
+      <div className="relative">
         <Accordion
           type="multiple"
           defaultValue={Object.keys(categorizedProducts).map(
@@ -106,7 +115,7 @@ export function Products({
                 key={index}
                 value={`category-${index}`}
               >
-                <AccordionTrigger className="bg-white px-4 text-xl  font-semibold">
+                <AccordionTrigger className="bg-white px-4 text-xl font-extrabold">
                   {category}
                 </AccordionTrigger>
                 <AccordionContent>{buildContent(category)}</AccordionContent>

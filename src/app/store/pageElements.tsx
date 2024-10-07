@@ -2,73 +2,95 @@
 // import { SalesProvider } from "~/providers/salesContext"
 import { NavBar, Space } from "antd-mobile";
 import { SearchOutline } from "antd-mobile-icons";
-import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import GlobalConsts, { StoreType } from "~/constants/constants";
 import { Store } from "~/models/store";
 import useSalesStore from "~/providers/salesStore";
 
-import { Products } from "./products";
-import StoreInfo from "./storeInfo";
 import { Swiper, Tabs } from "antd-mobile";
 import { useRef } from "react";
+import { Products } from "./products";
+import StoreInfo from "./storeInfo";
 
 import { SwiperRef } from "antd-mobile/es/components/swiper";
 import { useRouter } from "next/navigation";
 import ReviewsList from "~/components/ratings/ReviewsList";
+import CategoryMenuButton, {
+  CategoryMenu,
+  HorizontalCategoryMenu,
+} from "./CategoryMenu";
 import SearchBar from "./search";
-import CategoryMenuButton, { CategoryMenu } from "./CategoryMenu";
 
+import { handleUserData } from "~/lib/user_util";
+import useUserStore from "~/providers/userStore";
 import { CategoryProvider } from "./CategoryContext";
 
 const StorePageDynamic = ({
   storeID,
+  storeObj,
   productsObj,
+  userID,
+  token,
+  storeType,
 }: {
   storeID: string;
+  storeObj: any;
   productsObj: any;
+  userID: string | undefined;
+  token: string | undefined;
+  storeType: StoreType;
 }) => {
   const cart = useSalesStore((state) => state.getSaleByStoreId(storeID));
-  const [store, setStore] = useState<Store | null>(null);
+  const [store, setStore] = useState<Store | null>(Store.fromJson(storeObj));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [storeType, setStoreType] = useState<StoreType>(StoreType.Store);
+  // const [storeType, setStoreType] = useState<StoreType>(StoreType.Store);
   const [value, setValue] = useState(0);
   const router = useRouter();
 
   const [showSearch, setShowSearch] = useState(false);
+  const user = useUserStore((state) => state.user);
 
   const handleChange = (newValue: number) => {
     setValue(newValue);
   };
+
+  //get cookies
+  const fetchOrders = useSalesStore((state) => state.fetchOrders);
   useEffect(() => {
-    const fetchStore = async () => {
+    localStorage.setItem("token", token || "");
+    const initializeUserData = async () => {
       try {
-        const storeData = await Store.fetchStore(storeID);
-        setStore(storeData);
-        setStoreType(
-          GlobalConsts.categories.find(
-            (category) => category.name === storeData.category,
-          )?.type || StoreType.Store,
-        );
-        console.log(storeType);
-        if (storeType === StoreType.Food) {
-          // tabItems[0]?.title == "Menu";
-          setTabItems([
-            { key: "products", title: "Menu" },
-            { key: "reviews", title: "Reviews" },
-            { key: "posts", title: "Posts" },
-          ]);
-        }
+        // handleUserData(null);
+        await handleUserData().then((data) => {
+          console.log(data);
+          fetchOrders();
+        });
       } catch (error) {
-        setError(true);
-      } finally {
-        setLoading(false);
+        console.error("Error initializing user data:", error);
       }
     };
 
-    fetchStore();
+    initializeUserData().then();
+    if (storeType === StoreType.Food) {
+      // tabItems[0]?.title == "Menu";
+      setTabItems([
+        { key: "products", title: "Menu" },
+        { key: "reviews", title: "Reviews" },
+        { key: "posts", title: "Posts" },
+      ]);
+    }
   }, [storeID]);
+  // Function to send message to Flutter
+
+  const sendMessageToFlutter = (msg: string) => {
+    if (window.FlutterChannel) {
+      // Send a message to Flutter via FlutterChannel
+      window.FlutterChannel.postMessage(msg);
+    } else {
+      console.log("FlutterChannel is not available");
+    }
+  };
 
   const right = (
     <div style={{ fontSize: 24 }}>
@@ -123,7 +145,9 @@ const StorePageDynamic = ({
                 backIcon={false}
                 // onBack={back}
                 className="text-left font-semibold"
-                left={<div className="flex text-lg">{store?.name}</div>}
+                left={
+                  <div className="flex text-xl font-bold">{store?.name}</div>
+                }
               >
                 {/* <div className="flex">{store?.name}</div> */}
               </NavBar>
@@ -136,7 +160,7 @@ const StorePageDynamic = ({
             />
           )}
         </div>
-
+        <div>{user.id}</div>
         <StoreInfo store={store} storeType={storeType} />
         <Suspense fallback={<div>Loading...</div>}>
           <div ref={containerRef}>
@@ -161,6 +185,7 @@ const StorePageDynamic = ({
                   />
                 ))}
               </Tabs>
+              <HorizontalCategoryMenu />
             </div>
             <Swiper
               direction="horizontal"
@@ -179,7 +204,11 @@ const StorePageDynamic = ({
             >
               <Swiper.Item>
                 {activeIndex === 0 && (
-                  <Products productsObj={productsObj} storeType={storeType} />
+                  <Products
+                    productsObj={productsObj}
+                    storeType={storeType}
+                    sendMessageToFlutterChannel={sendMessageToFlutter}
+                  />
                 )}
               </Swiper.Item>
               <Swiper.Item>
@@ -195,7 +224,7 @@ const StorePageDynamic = ({
             </Swiper>
           </div>
         </Suspense>
-        {cart?.total_amount && (
+        {/* {cart?.total_amount && (
           <div className="fixed bottom-0 z-50 w-full max-w-lg bg-white p-2">
             <div className="flex justify-between">
               <div>
@@ -232,7 +261,7 @@ const StorePageDynamic = ({
               </button>
             </div>
           </div>
-        )}
+        )} */}
         <CategoryMenu />
         <CategoryMenuButton />
       </div>

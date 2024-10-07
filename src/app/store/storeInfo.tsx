@@ -1,19 +1,23 @@
 "use client";
 import Image from "next/image";
-
 import { Store } from "~/models/store";
-
-// components/StoreDetails.tsx
-
 import { Rating } from "./Rating"; // Assuming you have a Rating component
-// import {'; // Assuming you have a skeleton loader component
 import { StoreType } from "~/constants/constants";
 import { StoreDetailsSkeleton } from "./StoreDetailsSkeleton";
 
 type StoreDetailsProps = {
-  // storeId: string;
   store: Store | null;
   storeType: StoreType;
+};
+
+// Helper function to extract time in 'hh:mm AM/PM' format
+const formatTime = (timeString: string) => {
+  const date = new Date(timeString); // Directly parse the ISO string
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 };
 
 const StoreDetails: React.FC<StoreDetailsProps> = ({ store, storeType }) => {
@@ -47,7 +51,8 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ store, storeType }) => {
                 alt="Schedule"
               />
               <span className="ml-1 text-sm text-black">
-                {store.openingTime} - {store.closingTime}
+                {formatTime(store.openingTime)} -{" "}
+                {formatTime(store.closingTime)}
               </span>
             </div>
           </div>
